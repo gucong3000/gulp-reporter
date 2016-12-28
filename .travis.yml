@@ -1,0 +1,10 @@
+sudo: required
+language: node_js
+node_js:
+  - "stable"
+  - "6"
+  - "4"
+before_install:
+  - sudo apt-get update && sudo apt-get --reinstall install bsdiff
+after_success:
+  - "npm run coveralls"
