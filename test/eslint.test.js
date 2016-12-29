@@ -8,23 +8,24 @@ const reporter = require('../');
 
 require('./sandbox');
 
-describe('eslint', function() {
+describe('ESLint', function() {
 	it('console reporter', function(done) {
 		return gulp.src('test/fixtures/eslint/invalid.js', {
 			base: process.cwd()
 		})
 			.pipe(eslint())
 			.pipe(reporter({
-				map: function(error) {
-					return error.inspect();
+				filter: function(error) {
+					error.toString = error.inspect;
+					return error;
 				}
 			})).on('error', function(ex) {
 				assert.equal(ex.plugin, 'gulp-reporter');
 				assert.equal(ex.message, 'Lint failed for: test/fixtures/eslint/invalid.js');
 			}).on('finish', function() {
-				// console.log(gutil.log.lastCall.args[0]);
-				assert.ok(/^test\/fixtures\/eslint\/invalid\.js\n/.test(gutil.log.lastCall.args[0]));
-				assert.ok(/\s+ESLint\:\s+'a' is not defined\.\s*\(ESLint no-undef\)\n/.test(gutil.log.lastCall.args[0]));
+				var result = gutil.log.lastCall.args[0].split(/\s*\r?\n\s*/g);
+				assert.equal(result[0], 'test/fixtures/eslint/invalid.js');
+				assert.equal(result[1], 'ESLint: \'a\' is not defined. (ESLint no-undef)');
 				done();
 			});
 	});

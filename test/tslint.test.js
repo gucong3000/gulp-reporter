@@ -9,7 +9,7 @@ const reporter = require('../');
 
 require('./sandbox');
 
-describe('tslint', function() {
+describe('TSLint', function() {
 	it('console reporter', function(done) {
 		return gulp.src('test/fixtures/tslint/invalid.ts', {
 			base: process.cwd()
@@ -21,9 +21,29 @@ describe('tslint', function() {
 				assert.equal(ex.plugin, 'gulp-reporter');
 				assert.equal(ex.message, 'Lint failed for: test/fixtures/eslint/invalid.js');
 			}).on('finish', function() {
-				assert.ok(/^test\/fixtures\/tslint\/invalid.ts\n/.test(gutil.log.lastCall.args[0]));
-				assert.ok(/\s+\[\d+\:\d+\] missing whitespace \(TSLint one-line\)\n/.test(gutil.log.lastCall.args[0]));
-				assert.ok(/\s+\[\d+\:\d+\] missing whitespace \(TSLint whitespace\)\n/.test(gutil.log.lastCall.args[0]));
+				var result = gutil.log.lastCall.args[0].split(/\s*\r?\n\s*/g);
+				assert.equal(result[0], 'test/fixtures/tslint/invalid.ts');
+				assert.equal(result[1], '[1:9] missing whitespace (TSLint one-line)');
+				assert.equal(result[5], '[1:15] missing whitespace (TSLint whitespace)');
+				done();
+			});
+	});
+	it('fail function', function(done) {
+		var error;
+		return gulp.src('test/fixtures/tslint/invalid.ts', {
+			base: process.cwd()
+		})
+			.pipe(tslint())
+			.pipe(reporter({
+				fail: function() {
+					return false;
+				}
+			}))
+
+			.on('error', function(ex) {
+				error = error || ex;
+			}).on('finish', function() {
+				assert.ok(! error);
 				done();
 			});
 	});

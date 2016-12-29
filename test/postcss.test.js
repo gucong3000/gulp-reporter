@@ -9,7 +9,7 @@ const reporter = require('../');
 
 require('./sandbox');
 
-describe('postcss', function() {
+describe('PostCSS', function() {
 	it('console reporter', function(done) {
 		this.timeout(10000);
 		return gulp.src('test/fixtures/postcss/empty-block-with-disables.css', {
@@ -25,8 +25,9 @@ describe('postcss', function() {
 			.on('error', function(ex) {
 				assert.equal(ex.message, 'Lint failed for: test/fixtures/postcss/empty-block-with-disables.css');
 			}).on('finish', function() {
-				assert.ok(/^test\/fixtures\/postcss\/empty-block-with-disables.css\n/.test(gutil.log.lastCall.args[0]));
-				assert.ok(/\s+\[\d+\:\d+\] Unexpected empty block \(stylelint block-no-empty\)\n/.test(gutil.log.lastCall.args[0]));
+				var result = gutil.log.lastCall.args[0].split(/\s*\r?\n\s*/g);
+				assert.equal(result[0], 'test/fixtures/postcss/empty-block-with-disables.css');
+				assert.equal(result[1], '[2:3] Unexpected empty block (stylelint block-no-empty)');
 				done();
 			});
 
