@@ -2,8 +2,7 @@ const describe = require('mocha').describe;
 const it = require('mocha').it;
 const assert = require('assert');
 const gutil = require('gulp-util');
-const gulp = require('gulp');
-// const plumber = require('gulp-plumber');
+const vfs = require('vinyl-fs');
 const postcss = require('./fixtures/postcss/gulp-postcss');
 const reporter = require('../');
 
@@ -12,7 +11,7 @@ require('./sandbox');
 describe('PostCSS', function() {
 	it('console reporter', function(done) {
 		this.timeout(10000);
-		return gulp.src('test/fixtures/postcss/empty-block-with-disables.css', {
+		return vfs.src('test/fixtures/postcss/empty-block-with-disables.css', {
 			base: process.cwd()
 		})
 
@@ -35,7 +34,7 @@ describe('PostCSS', function() {
 
 	it('browser reporter', function(done) {
 		this.timeout(10000);
-		return gulp.src('test/fixtures/postcss/empty-block-with-disables.css', {
+		return vfs.src('test/fixtures/postcss/empty-block-with-disables.css', {
 			base: process.cwd()
 		})
 

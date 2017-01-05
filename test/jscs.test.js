@@ -2,8 +2,7 @@ const describe = require('mocha').describe;
 const it = require('mocha').it;
 const assert = require('assert');
 const gutil = require('gulp-util');
-const gulp = require('gulp');
-// const plumber = require('gulp-plumber');
+const vfs = require('vinyl-fs');
 const jscs = require('gulp-jscs');
 const reporter = require('../');
 
@@ -11,9 +10,7 @@ require('./sandbox');
 
 describe('JSCS', function() {
 	it('console reporter', function(done) {
-		return gulp.src('test/fixtures/jscs/invalid.js', {
-			base: process.cwd()
-		})
+		return vfs.src('test/fixtures/jscs/invalid.js')
 			.pipe(jscs({
 				configPath: 'test/fixtures/jscs/.jscsrc'
 			}))

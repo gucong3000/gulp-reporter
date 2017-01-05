@@ -1,7 +1,7 @@
 const describe = require('mocha').describe;
 const it = require('mocha').it;
 const assert = require('assert');
-const gulp = require('gulp');
+const vfs = require('vinyl-fs');
 const gutil = require('gulp-util');
 const eslint = require('gulp-eslint');
 const reporter = require('../');
@@ -10,9 +10,7 @@ require('./sandbox');
 
 describe('ESLint', function() {
 	it('console reporter', function(done) {
-		return gulp.src('test/fixtures/eslint/invalid.js', {
-			base: process.cwd()
-		})
+		return vfs.src('test/fixtures/eslint/invalid.js')
 			.pipe(eslint())
 			.pipe(reporter({
 				filter: function(error) {
@@ -31,9 +29,7 @@ describe('ESLint', function() {
 	});
 
 	it('browser reporter', function(done) {
-		return gulp.src('test/fixtures/eslint/invalid.js', {
-			base: process.cwd()
-		})
+		return vfs.src('test/fixtures/eslint/invalid.js')
 			.pipe(eslint())
 			.pipe(reporter({
 				browser: true

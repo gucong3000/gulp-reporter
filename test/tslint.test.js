@@ -2,8 +2,7 @@ const describe = require('mocha').describe;
 const it = require('mocha').it;
 const assert = require('assert');
 const gutil = require('gulp-util');
-const gulp = require('gulp');
-// const plumber = require('gulp-plumber');
+const vfs = require('vinyl-fs');
 const tslint = require('gulp-tslint');
 const reporter = require('../');
 
@@ -11,9 +10,7 @@ require('./sandbox');
 
 describe('TSLint', function() {
 	it('console reporter', function(done) {
-		return gulp.src('test/fixtures/tslint/invalid.ts', {
-			base: process.cwd()
-		})
+		return vfs.src('test/fixtures/tslint/invalid.ts')
 			.pipe(tslint())
 			.pipe(reporter())
 
@@ -30,9 +27,7 @@ describe('TSLint', function() {
 	});
 	it('fail function', function(done) {
 		var error;
-		return gulp.src('test/fixtures/tslint/invalid.ts', {
-			base: process.cwd()
-		})
+		return vfs.src('test/fixtures/tslint/invalid.ts')
 			.pipe(tslint())
 			.pipe(reporter({
 				fail: function() {
