@@ -22,6 +22,8 @@ gulp.src('test/fixtures/eslint/invalid.js')
 	.pipe(reporter(options));
 ```
 
+![demo](demo.gif)
+
 ## API
 
 ```js

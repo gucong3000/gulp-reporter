@@ -1,3 +1,4 @@
+'use strict';
 const describe = require('mocha').describe;
 const it = require('mocha').it;
 const assert = require('assert');
@@ -22,8 +23,9 @@ describe('ESLint', function() {
 				assert.equal(ex.message, 'Lint failed for: test/fixtures/eslint/invalid.js');
 			}).on('finish', function() {
 				var result = gutil.log.lastCall.args[0].split(/\s*\r?\n\s*/g);
+				// console.log(result);
 				assert.equal(result[0], 'test/fixtures/eslint/invalid.js');
-				assert.equal(result[1], 'ESLint: \'a\' is not defined. (ESLint no-undef)');
+				assert.equal(result[result.length - 2], 'ESLint: \'a\' is not defined. (ESLint no-undef)');
 				done();
 			});
 	});

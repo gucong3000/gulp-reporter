@@ -1,3 +1,4 @@
+'use strict';
 const gutil = require('gulp-util');
 const sinon = require('sinon');
 const before = require('mocha').before;

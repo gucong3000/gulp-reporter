@@ -23,6 +23,13 @@
 				"SwitchCase": 1
 			}
 		],
+		"keyword-spacing": [
+			"error",
+			{
+				"after": true,
+				"before": true
+			}
+		],
 		"no-console": [
 			"off",
 			{
@@ -53,6 +60,9 @@
 		"spaced-comment": [
 			"error",
 			"always"
+		],
+		"strict": [
+			"error"
 		],
 		"valid-jsdoc": [
 			"warn",
