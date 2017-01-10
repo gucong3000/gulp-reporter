@@ -11,6 +11,7 @@ require('./sandbox');
 
 describe('JSCS', function() {
 	it('console reporter', function(done) {
+		this.timeout(10000);
 		return vfs.src('test/fixtures/jscs/invalid.js')
 			.pipe(jscs({
 				configPath: 'test/fixtures/jscs/.jscsrc'
@@ -21,7 +22,7 @@ describe('JSCS', function() {
 			}).on('finish', function() {
 				var result = gutil.log.lastCall.args[0].split(/\s*\r?\n\s*/g);
 				assert.equal(result[0], 'test/fixtures/jscs/invalid.js');
-				assert.equal(result[1], '[1:8] Multiple var declaration (JSCS disallowMultipleVarDecl)');
+				assert.ok(/\[\d+\:\d+\] Multiple var declaration \(JSCS disallowMultipleVarDecl\)/.test(result[1]));
 				done();
 			});
 	});

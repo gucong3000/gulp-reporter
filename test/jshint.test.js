@@ -11,6 +11,7 @@ require('./sandbox');
 
 describe('JSHint', function() {
 	it('console reporter', function(done) {
+		this.timeout(10000);
 		return vfs.src('test/fixtures/jshint/invalid.js')
 			.pipe(jshint())
 			.pipe(reporter()).on('error', function(ex) {
