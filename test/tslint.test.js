@@ -21,8 +21,8 @@ describe('TSLint', function() {
 			}).on('finish', function() {
 				var result = gutil.log.lastCall.args[0].split(/\s*\r?\n\s*/g);
 				assert.equal(result[0], 'test/fixtures/tslint/invalid.ts');
-				assert.equal(result[1], '[1:9] missing whitespace (TSLint one-line)');
-				assert.equal(result[5], '[1:15] missing whitespace (TSLint whitespace)');
+				assert.equal(result[1], '[1:9] \u{274C}\u{FE0F} missing whitespace (TSLint one-line)');
+				assert.equal(result[5], '[1:15] \u{274C}\u{FE0F} missing whitespace (TSLint whitespace)');
 				done();
 			});
 	});

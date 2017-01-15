@@ -27,7 +27,7 @@ describe('PostCSS', function() {
 			}).on('finish', function() {
 				var result = gutil.log.lastCall.args[0].split(/\s*\r?\n\s*/g);
 				assert.equal(result[0], 'test/fixtures/postcss/empty-block-with-disables.css');
-				assert.equal(result[1], '[2:3] Unexpected empty block (stylelint block-no-empty)');
+				assert.equal(result[1], '[2:3] \u{26A0}\u{FE0F} Unexpected empty block (stylelint block-no-empty)');
 				done();
 			});
 
@@ -49,7 +49,8 @@ describe('PostCSS', function() {
 			})).on('data', function(file) {
 				var contents = file.contents.toString();
 				assert.ok(/\btest\/fixtures\/postcss\/empty-block-with-disables.css\b/.test(contents));
-				assert.ok(/\[\d+\:\d+\] Unexpected empty block \(stylelint block-no-empty\)/.test(contents));
+				assert.ok(/\[\d+\:\d+\]/.test(contents));
+				assert.ok(/\bUnexpected empty block \(stylelint block-no-empty\)/.test(contents));
 				done();
 			});
 

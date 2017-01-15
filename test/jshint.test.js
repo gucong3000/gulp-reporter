@@ -19,7 +19,8 @@ describe('JSHint', function() {
 				assert.equal(ex.message, 'Lint failed for: test/fixtures/jshint/invalid.js');
 			}).on('finish', function() {
 				assert.ok(/^test\/fixtures\/jshint\/invalid.js\n/.test(gutil.log.lastCall.args[0]));
-				assert.ok(/\s+\[\d+\:\d+\] Missing semicolon. \(JSHint W033\)\n/.test(gutil.log.lastCall.args[0]));
+				assert.ok(/\s+\[\d+\:\d+\]/.test(gutil.log.lastCall.args[0]));
+				assert.ok(/\bMissing semicolon. \(JSHint W033\)\n/.test(gutil.log.lastCall.args[0]));
 				done();
 			});
 	});
