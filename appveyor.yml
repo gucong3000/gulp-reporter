@@ -16,7 +16,7 @@ install:
 # Post-install test scripts.
 test_script:
   # run tests
-  - "npm run test"
+  - npm run test-cov
 
 # Don't actually build.
 build: off
