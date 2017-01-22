@@ -31,18 +31,28 @@ describe('ESLint', function() {
 			});
 	});
 
-	it('browser reporter', function(done) {
-		return vfs.src('test/fixtures/eslint/invalid.js', {
+	it('ignoreMatcher *.min.js', function(done) {
+		return vfs.src('test/fixtures/eslint/invalid.min.js', {
 			base: process.cwd()
 		})
 			.pipe(eslint())
-			.pipe(reporter({
-				browser: true,
-				fail: false,
-			})).on('data', function(file) {
-				var contents = file.contents.toString();
-				assert.ok(/\bSyntaxError\b/.test(contents));
+			.pipe(reporter()).on('error', done).on('data', file => {
+				assert.ok(file.report.ignore);
 				done();
 			});
 	});
+
+	// it('sort errors', function(done) {
+	// 	this.timeout(8000);
+	// 	return vfs.src('test/fixtures/eslint/sort.js', {
+	// 		base: process.cwd()
+	// 	})
+	// 		.pipe(eslint())
+	// 		.pipe(reporter()).on('data', function(file) {
+	// 			assert.ok(assert.ok(file.report.error));
+	// 			done();
+	// 		}).on('error', function(ex) {
+	// 			assert.equal(ex.plugin, 'gulp-reporter');
+	// 		}).on('finish', done);
+	// });
 });

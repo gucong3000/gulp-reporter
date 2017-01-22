@@ -46,6 +46,7 @@ describe('PostCSS', function() {
 			}))
 			.pipe(reporter({
 				browser: true,
+				fail: false,
 			})).on('data', function(file) {
 				var contents = file.contents.toString();
 				assert.ok(/\btest\/fixtures\/postcss\/empty-block-with-disables.css\b/.test(contents));
