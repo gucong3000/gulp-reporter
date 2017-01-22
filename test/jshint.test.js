@@ -12,7 +12,9 @@ require('./sandbox');
 describe('JSHint', function() {
 	it('console reporter', function(done) {
 		this.timeout(10000);
-		return vfs.src('test/fixtures/jshint/invalid.js')
+		return vfs.src('test/fixtures/jshint/invalid.js', {
+			base: process.cwd()
+		})
 			.pipe(jshint())
 			.pipe(reporter()).on('error', function(ex) {
 				assert.equal(ex.plugin, 'gulp-reporter');

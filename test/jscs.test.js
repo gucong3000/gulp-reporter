@@ -12,7 +12,9 @@ require('./sandbox');
 describe('JSCS', function() {
 	it('console reporter', function(done) {
 		this.timeout(10000);
-		return vfs.src('test/fixtures/jscs/invalid.js')
+		return vfs.src('test/fixtures/jscs/invalid.js', {
+			base: process.cwd()
+		})
 			.pipe(jscs({
 				configPath: 'test/fixtures/jscs/.jscsrc'
 			}))
