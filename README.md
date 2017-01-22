@@ -64,16 +64,20 @@ Messages will not be sorted by severity/line/column, [or your function](https://
 
 ### options.filter
 
-Type: `Function`
+Type: `Array`
+Default: `[require('gulp-reporter/lib/filter-author')()]`
 
-Filter `Error` object by your callback function.
+Filter `Error` object by your callback functions. support Async function
+
+The default function will check the GIT author of the code that is in errors, and adjusts the error level to 'warn' if this is not related to the current author
 
 ```js
 gulp.src('test/fixtures/postcss/test.css')
 	.pipe(postcss())
 	.pipe(reporter({
-		filter: function(err, file) {
-			return err.plugin === 'stylelint' && /^src\b/.test(file.relative);
+		filter: async function (errs, file){
+			await readFile(file.path);
+			return errs.filter(err => err.plugin === 'stylelint');
 		}
 	})
 )

@@ -25,7 +25,6 @@ describe('ESLint', function() {
 				assert.equal(ex.message, 'Lint failed for: test/fixtures/eslint/invalid.js');
 			}).on('finish', function() {
 				var result = gutil.log.lastCall.args[0].split(/\s*\r?\n\s*/g);
-				console.log(result);
 				assert.equal(result[0], 'test/fixtures/eslint/invalid.js');
 				assert.ok(result.indexOf('[1:1] \u{274C}\u{FE0F} \'a\' is not defined. (ESLint no-undef)') > 0);
 				done();
@@ -33,10 +32,13 @@ describe('ESLint', function() {
 	});
 
 	it('browser reporter', function(done) {
-		return vfs.src('test/fixtures/eslint/invalid.js')
+		return vfs.src('test/fixtures/eslint/invalid.js', {
+			base: process.cwd()
+		})
 			.pipe(eslint())
 			.pipe(reporter({
-				browser: true
+				browser: true,
+				fail: false,
 			})).on('data', function(file) {
 				var contents = file.contents.toString();
 				assert.ok(/\bSyntaxError\b/.test(contents));

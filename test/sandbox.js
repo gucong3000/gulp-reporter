@@ -15,3 +15,11 @@ after(function () {
 	gutil.colors.enabled = colorsEnabled;
 	sandbox.restore();
 });
+
+function errorHandle(error) {
+	gutil.log(error);
+	if (!process.exitCode) {
+		process.exitCode = 1;
+	}
+}
+process.on('unhandledRejection', errorHandle);

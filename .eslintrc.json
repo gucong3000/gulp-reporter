@@ -23,6 +23,10 @@
 				"before": false
 			}
 		],
+		"eol-last": [
+			"error",
+			"always"
+		],
 		"indent": [
 			"error",
 			"tab",
@@ -38,7 +42,7 @@
 			}
 		],
 		"no-console": [
-			"off",
+			"warn",
 			{
 			}
 		],
@@ -73,7 +77,7 @@
 			"safe"
 		],
 		"valid-jsdoc": [
-			"warn",
+			"error",
 			{
 				"requireReturn": false
 			}
