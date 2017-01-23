@@ -19,8 +19,7 @@ describe('TSLint', function() {
 
 			.on('error', function(ex) {
 				assert.equal(ex.plugin, 'gulp-reporter');
-				assert.equal(ex.message, 'Lint failed for: test/fixtures/eslint/invalid.js');
-			}).on('finish', function() {
+				assert.equal(ex.message, 'Lint failed for: test/fixtures/tslint/invalid.ts');
 				var result = gutil.log.lastCall.args[0].split(/\s*\r?\n\s*/g);
 				assert.equal(result[0], 'test/fixtures/tslint/invalid.ts');
 				assert.ok(result.indexOf('[1:9] \u{274C}\u{FE0F} missing whitespace (TSLint one-line)') > 0);
