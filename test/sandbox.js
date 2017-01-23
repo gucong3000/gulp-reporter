@@ -23,3 +23,5 @@ function errorHandle(error) {
 	}
 }
 process.on('unhandledRejection', errorHandle);
+
+process.on('uncaughtException', errorHandle);

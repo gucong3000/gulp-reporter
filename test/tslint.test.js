@@ -30,7 +30,9 @@ describe('TSLint', function() {
 	});
 	it('fail function', function(done) {
 		var error;
-		return vfs.src('test/fixtures/tslint/invalid.ts')
+		return vfs.src('test/fixtures/tslint/invalid.ts', {
+			base: process.cwd()
+		})
 			.pipe(tslint())
 			.pipe(reporter({
 				fail: function() {

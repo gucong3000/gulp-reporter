@@ -20,10 +20,9 @@ describe('ESLint', function() {
 					error.toString = error.inspect;
 					return error;
 				}
-			})).on('error', function(ex) {
+			})).on('error', ex => {
 				assert.equal(ex.plugin, 'gulp-reporter');
 				assert.equal(ex.message, 'Lint failed for: test/fixtures/eslint/invalid.js');
-			}).on('finish', function() {
 				var result = gutil.log.lastCall.args[0].split(/\s*\r?\n\s*/g);
 				assert.equal(result[0], 'test/fixtures/eslint/invalid.js');
 				assert.ok(result.indexOf('[1:1] \u{274C}\u{FE0F} \'a\' is not defined. (ESLint no-undef)') > 0);
@@ -31,7 +30,7 @@ describe('ESLint', function() {
 			});
 	});
 
-	it('ignoreMatcher *.min.js', function(done) {
+	it('ignoreMatcher *.min.js', done => {
 		return vfs.src('test/fixtures/eslint/invalid.min.js', {
 			base: process.cwd()
 		})
@@ -42,17 +41,48 @@ describe('ESLint', function() {
 			});
 	});
 
-	// it('sort errors', function(done) {
-	// 	this.timeout(8000);
-	// 	return vfs.src('test/fixtures/eslint/sort.js', {
-	// 		base: process.cwd()
-	// 	})
-	// 		.pipe(eslint())
-	// 		.pipe(reporter()).on('data', function(file) {
-	// 			assert.ok(assert.ok(file.report.error));
-	// 			done();
-	// 		}).on('error', function(ex) {
-	// 			assert.equal(ex.plugin, 'gulp-reporter');
-	// 		}).on('finish', done);
-	// });
+	it('sort errors', done => {
+		return vfs.src('test/fixtures/eslint/sort.js', {
+			base: process.cwd()
+		})
+			.pipe(eslint())
+			.pipe(reporter()).on('data', file => {
+				assert.ok(file.report.errors);
+				assert.ok(/sort\.js:1:1\)$/.test(file.report.errors[0].inspect()));
+			}).on('error', ex => {
+				assert.equal(ex.plugin, 'gulp-reporter');
+				done();
+			});
+	});
+
+	it('multi file', done => {
+		let files  = [];
+		return vfs.src('test/fixtures/eslint/*.js', {
+			base: process.cwd(),
+		}).pipe(eslint())
+			.pipe(reporter()).on('data', file => {
+				files.push(file);
+				assert.ok(file.report.errors || file.report.ignore);
+			}).on('error', ex => {
+				assert.equal(ex.plugin, 'gulp-reporter');
+				assert.ok(files.length >= 2);
+				done();
+			});
+	});
+
+	it('not fail & console', done => {
+		let lastMsg;
+		return vfs.src('test/fixtures/eslint/*.js', {
+			base: process.cwd(),
+		}).pipe(eslint()).pipe(reporter({
+			fail: false,
+			console: function(msg) {
+				lastMsg = msg;
+			}
+		})).on('finish', () => {
+			assert.ok(/^Lint failed for:/.test(lastMsg));
+			done();
+		}).on('error', done);
+	});
+
 });
