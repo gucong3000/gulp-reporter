@@ -41,7 +41,10 @@
     "jscs",
     "jshint",
     "postcss",
-    "tslint"
+    "tslint",
+    "git",
+    "blame",
+    "author"
   ],
   "license": "MIT",
   "main": "./lib/gulp-plugin.js",
