@@ -35,7 +35,9 @@ describe('ESLint', function() {
 			base: process.cwd()
 		})
 			.pipe(eslint())
-			.pipe(reporter()).on('error', done).on('data', file => {
+			.pipe(reporter({
+				filter: null
+			})).on('error', done).on('data', file => {
 				assert.ok(file.report.ignore);
 				done();
 			});
@@ -46,7 +48,9 @@ describe('ESLint', function() {
 			base: process.cwd()
 		})
 			.pipe(eslint())
-			.pipe(reporter()).on('data', file => {
+			.pipe(reporter({
+				filter: null
+			})).on('data', file => {
 				assert.ok(file.report.errors);
 				assert.ok(/sort\.js:1:1\)$/.test(file.report.errors[0].inspect()));
 			}).on('error', ex => {
@@ -60,7 +64,9 @@ describe('ESLint', function() {
 		return vfs.src('test/fixtures/eslint/*.js', {
 			base: process.cwd(),
 		}).pipe(eslint())
-			.pipe(reporter()).on('data', file => {
+			.pipe(reporter({
+				filter: null
+			})).on('data', file => {
 				files.push(file);
 				assert.ok(file.report.errors || file.report.ignore);
 			}).on('error', ex => {
@@ -76,6 +82,7 @@ describe('ESLint', function() {
 			base: process.cwd(),
 		}).pipe(eslint()).pipe(reporter({
 			fail: false,
+			filter: null,
 			console: function(msg) {
 				lastMsg = msg;
 			}
