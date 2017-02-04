@@ -21,7 +21,9 @@ describe('PostCSS', function() {
 					require('stylelint'),
 				]
 			}))
-			.pipe(reporter({}))
+			.pipe(reporter({
+				filter: null
+			}))
 			.on('error', function(ex) {
 				assert.equal(ex.message, 'Lint failed for: test/fixtures/postcss/empty-block-with-disables.css');
 			}).on('finish', function() {
@@ -47,6 +49,7 @@ describe('PostCSS', function() {
 			.pipe(reporter({
 				browser: true,
 				fail: false,
+				filter: null,
 			})).on('data', function(file) {
 				var contents = file.contents.toString();
 				assert.ok(/\btest\/fixtures\/postcss\/empty-block-with-disables.css\b/.test(contents));

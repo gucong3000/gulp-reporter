@@ -15,7 +15,9 @@ describe('TSLint', function() {
 			base: process.cwd()
 		})
 			.pipe(tslint())
-			.pipe(reporter())
+			.pipe(reporter({
+				filter: null
+			}))
 
 			.on('error', function(ex) {
 				assert.equal(ex.plugin, 'gulp-reporter');
@@ -34,6 +36,7 @@ describe('TSLint', function() {
 		})
 			.pipe(tslint())
 			.pipe(reporter({
+				filter: null,
 				fail: function() {
 					return false;
 				}
@@ -42,7 +45,7 @@ describe('TSLint', function() {
 			.on('error', function(ex) {
 				error = error || ex;
 			}).on('finish', function() {
-				assert.ok(! error);
+				assert.ok(!error);
 				done();
 			});
 	});
