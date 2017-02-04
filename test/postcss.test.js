@@ -29,7 +29,7 @@ describe('PostCSS', function() {
 			}).on('finish', function() {
 				var result = gutil.log.lastCall.args[0].split(/\s*\r?\n\s*/g);
 				assert.equal(result[0], 'test/fixtures/postcss/empty-block-with-disables.css');
-				assert.equal(result[1], '[2:3] \u{26A0}\u{FE0F} Unexpected empty block (stylelint block-no-empty)');
+				assert.equal(result[1], '[2:3] \u{26A0}\u{FE0F} Unexpected empty block (stylelint block-no-empty https://stylelint.io/user-guide/rules/block-no-empty/)');
 				done();
 			});
 

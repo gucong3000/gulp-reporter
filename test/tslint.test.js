@@ -24,8 +24,8 @@ describe('TSLint', function() {
 				assert.equal(ex.message, 'Lint failed for: test/fixtures/tslint/invalid.ts');
 				var result = gutil.log.lastCall.args[0].split(/\s*\r?\n\s*/g);
 				assert.equal(result[0], 'test/fixtures/tslint/invalid.ts');
-				assert.ok(result.indexOf('[1:9] \u{274C}\u{FE0F} missing whitespace (TSLint one-line)') > 0);
-				assert.ok(result.indexOf('[1:15] \u{274C}\u{FE0F} missing whitespace (TSLint whitespace)') > 0);
+				assert.ok(result.indexOf('[1:9] \u{274C}\u{FE0F} missing whitespace (TSLint one-line https://palantir.github.io/tslint/rules/one-line/)') > 0);
+				assert.ok(result.indexOf('[1:15] \u{274C}\u{FE0F} missing whitespace (TSLint whitespace https://palantir.github.io/tslint/rules/whitespace/)') > 0);
 				done();
 			});
 	});

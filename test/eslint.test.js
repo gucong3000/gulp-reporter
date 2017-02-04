@@ -25,7 +25,6 @@ describe('ESLint', function() {
 				assert.equal(ex.message, 'Lint failed for: test/fixtures/eslint/invalid.js');
 				var result = gutil.log.lastCall.args[0].split(/\s*\r?\n\s*/g);
 				assert.equal(result[0], 'test/fixtures/eslint/invalid.js');
-				assert.ok(result.indexOf('[1:1] \u{274C}\u{FE0F} \'a\' is not defined. (ESLint no-undef)') > 0);
 				done();
 			});
 	});
