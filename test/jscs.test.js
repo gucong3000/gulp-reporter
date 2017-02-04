@@ -25,7 +25,7 @@ describe('JSCS', function() {
 				var result = gutil.log.lastCall.args[0].split(/\s*\r?\n\s*/g);
 				assert.equal(result[0], 'test/fixtures/jscs/invalid.js');
 				assert.ok(/\[\d+\:\d+\]/.test(result[1]));
-				assert.ok(/\bMultiple var declaration \(JSCS disallowMultipleVarDecl\)/.test(result[1]));
+				assert.ok(/\bMultiple var declaration \(JSCS disallowMultipleVarDecl http:\/\/jscs.info\/rule\/disallowMultipleVarDecl\)/.test(result[1]));
 				done();
 			});
 	});

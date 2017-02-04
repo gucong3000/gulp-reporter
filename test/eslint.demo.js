@@ -8,4 +8,9 @@ vfs.src('test/fixtures/eslint/invalid.js', {
 	cwd: path.join(__dirname, '..')
 })
 	.pipe(eslint())
-	.pipe(reporter());
+	.pipe(reporter()).on('error', error => {
+		process.exitCode = 1;
+		if (error) {
+			console.error(String(error));
+		}
+	});
