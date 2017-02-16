@@ -27,6 +27,10 @@
 			"error",
 			"always"
 		],
+		"eqeqeq": [
+			"error",
+			"smart"
+		],
 		"indent": [
 			"error",
 			"tab",
