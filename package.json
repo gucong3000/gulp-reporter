@@ -24,7 +24,7 @@
     "node-version-check": "^2.1.1",
     "postcss": "^5.2.11",
     "sinon": "^1.17.6",
-    "stylelint": "^7.8.0",
+    "stylelint": "^7.9.0",
     "stylelint-config-standard": "^16.0.0",
     "through2": "^2.0.3",
     "tslint": "^4.4.2",
