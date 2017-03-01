@@ -10,11 +10,11 @@
     "gulp-util": "^3.0.7",
     "os-locale": "^2.0.0"
   },
-  "description": "Error reporter for eslint/jscs/jshint/postcss/tslint",
+  "description": "Error reporter for: EditorConfig/ESLint/JSCS/JSHint/PostCSS/TSLint",
   "devDependencies": {
     "cover": "^0.2.9",
     "coveralls": "^2.11.15",
-    "eclint": "file:///E:\\work\\eclint",
+    "eclint": "^1.1.5",
     "eslint": "^3.15.0",
     "gulp-eslint": "^3.0.1",
     "gulp-jscs": "^4.0.0",
@@ -64,5 +64,5 @@
     "test": "npm run lint && mocha test/*.test.js",
     "test-cov": "npm run lint && istanbul cover node_modules/mocha/bin/_mocha test/*.test.js"
   },
-  "version": "1.4.0"
+  "version": "1.5.0"
 }

@@ -27,9 +27,8 @@ describe('PostCSS', function() {
 			.on('error', function(ex) {
 				assert.equal(ex.message, 'Lint failed for: test/fixtures/postcss/empty-block-with-disables.css');
 			}).on('finish', function() {
-				var result = gutil.log.lastCall.args[0].split(/\s*\r?\n\s*/g);
-				assert.equal(result[0], 'test/fixtures/postcss/empty-block-with-disables.css');
-				assert.equal(result[1], '[2:3] \u{26A0}\u{FE0F} Unexpected empty block (stylelint block-no-empty https://stylelint.io/user-guide/rules/block-no-empty/)');
+				assert.ok(/\s+\[\d+\:\d+\]/.test(gutil.log.lastCall.args[0]));
+				assert.ok(gutil.log.lastCall.args[0].indexOf('Unexpected empty block (stylelint block-no-empty https://stylelint.io/user-guide/rules/block-no-empty/)') >= 0);
 				done();
 			});
 
