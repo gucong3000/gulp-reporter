@@ -16,10 +16,18 @@ describe('ESLint', function() {
 		})
 			.pipe(eslint())
 			.pipe(reporter({
-				filter: function(error) {
-					error.toString = error.inspect;
-					return error;
-				}
+				filter: [
+					reporter.filterByAuthor({
+						email: 'qil@jumei.com'
+					}),
+					reporter.filterByAuthor({
+						name: '刘祺'
+					}),
+					function(error) {
+						error.toString = error.inspect;
+						return error;
+					}
+				]
 			})).on('error', ex => {
 				assert.equal(ex.plugin, 'gulp-reporter');
 				assert.equal(ex.message, 'Lint failed for: test/fixtures/eslint/invalid.js');
