@@ -38,7 +38,7 @@ reporter(options)
 
 ### options.ignore
 
-Type: `Array|String|RegExp|Function`
+Type: `Array|string|RegExp|function`
 
 Default: `/[\.\-]min\.\w+$/`
 
@@ -46,7 +46,7 @@ Glob patterns for paths to ignore. String or array of strings.
 
 ### options.browser
 
-Type: `Boolean`
+Type: `boolean`
 
 Default: `false`
 
@@ -54,7 +54,7 @@ Default: `false`
 
 ### options.console
 
-Type: `Boolean|Function`
+Type: `boolean|function`
 
 Default: `true`
 
@@ -62,7 +62,7 @@ Report error messages in [gutil.log()](https://github.com/gulpjs/gulp-util#logms
 
 ### options.sort
 
-Type: `Boolean|Function`
+Type: `boolean|function`
 
 Default: `true`
 
@@ -71,7 +71,7 @@ Messages will not be sorted by severity/line/column, [or your function](https://
 ### options.filter
 
 Type: `Array`
-Default: `[require('gulp-reporter/lib/filter-author')()]`
+Default: `[reporter.filterByAuthor()]`
 
 Filter `Error` object by your callback functions. support Async function
 
@@ -91,7 +91,7 @@ gulp.src('test/fixtures/postcss/test.css')
 
 ### options.beep
 
-Type: `Boolean`
+Type: `boolean`
 
 Default: `true`
 
@@ -99,7 +99,7 @@ Make your terminal beep if an error has been reported for any file.
 
 ### options.fail
 
-Type: `Boolean|Function`
+Type: `boolean|function`
 
 Stop a task/stream if an error has been reported for any file, but wait for all of them to be processed first.
 
@@ -115,3 +115,21 @@ gulp.src('test/fixtures/postcss/test.css')
 	})
 )
 ```
+
+## `reporter.filterByAuthor(options)`
+
+According to the author of GIT commit, downgraded each error to warning that is not commit by this author.
+
+If options are unset, It will lookup author info from environment or git log
+
+### options.name
+
+Type: `string`
+
+Default: `${GIT_AUTHOR_NAME}` || `git log --max-count=1 --no-merges --format=%aN`
+
+### options.email
+
+Type: `string`
+
+Default: `${GIT_AUTHOR_EMAIL}` || `git log --max-count=1 --no-merges --format=%aE`
