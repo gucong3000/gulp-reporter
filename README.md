@@ -119,7 +119,6 @@ gulp.src('test/fixtures/postcss/test.css')
 ## `reporter.filterByAuthor(options)`
 
 According to the author of GIT commit, downgraded each error to warning that is not commit by this author.
-
 If options are unset, It will lookup author info from environment or git log
 
 ### options.name
