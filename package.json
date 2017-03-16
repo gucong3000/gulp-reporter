@@ -31,6 +31,7 @@
     "through2": "^2.0.3",
     "tslint": "^4.5.1",
     "typescript": "^2.2.1",
+    "vinyl": "^2.0.1",
     "vinyl-fs": "^2.4.4"
   },
   "directories": {
@@ -59,10 +60,9 @@
     "url": "git+https://github.com/gucong3000/gulp-reporter.git"
   },
   "scripts": {
-    "coveralls": "npm run test-cov && coveralls < coverage/lcov.info",
-    "lint": "node-version-gte-4 && eslint lib || echo \"ESLint not supported\"",
-    "test": "npm run lint && mocha test/*.test.js",
-    "test-cov": "npm run lint && istanbul cover node_modules/mocha/bin/_mocha test/*.test.js"
+    "coveralls": "npm run test && coveralls < coverage/lcov.info",
+    "pretest": "node-version-gte-4 && eslint lib test/*.test.js || echo \"ESLint not supported\"",
+    "test": "istanbul cover node_modules/mocha/bin/_mocha test/*.test.js"
   },
-  "version": "1.5.3"
+  "version": "1.5.4"
 }
