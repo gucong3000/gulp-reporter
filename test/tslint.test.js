@@ -29,7 +29,7 @@ describe('TSLint', function() {
 			});
 	});
 	it('fail function', function(done) {
-		var error;
+		let error;
 		return vfs.src('test/fixtures/tslint/invalid.ts', {
 			base: process.cwd()
 		})

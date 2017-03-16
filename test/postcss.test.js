@@ -50,7 +50,7 @@ describe('PostCSS', function() {
 				fail: false,
 				filter: null,
 			})).on('data', function(file) {
-				var contents = file.contents.toString();
+				const contents = file.contents.toString();
 				assert.ok(/\btest\/fixtures\/postcss\/empty-block-with-disables.css\b/.test(contents));
 				assert.ok(/\[\d+\:\d+\]/.test(contents));
 				assert.ok(/\bUnexpected empty block \(stylelint block-no-empty\)/.test(contents));
