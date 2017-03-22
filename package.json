@@ -14,7 +14,7 @@
   "devDependencies": {
     "cover": "^0.2.9",
     "coveralls": "^2.12.0",
-    "eclint": "^1.1.5",
+    "eclint": "^2.0.0",
     "eslint": "^3.17.1",
     "gulp-eslint": "^3.0.1",
     "gulp-jscs": "^4.0.0",
