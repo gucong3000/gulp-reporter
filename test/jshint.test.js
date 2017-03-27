@@ -11,15 +11,13 @@ require('./sandbox');
 
 describe('JSHint', function() {
 	it('console reporter', function(done) {
-		this.timeout(10000);
 		return vfs.src('test/fixtures/jshint/invalid.js', {
 			base: process.cwd()
 		})
 			.pipe(jshint())
-			.pipe(reporter()).on('error', function(ex) {
-				assert.equal(ex.plugin, 'gulp-reporter');
-				assert.equal(ex.message, 'Lint failed for: test/fixtures/jshint/invalid.js');
-			}).on('finish', function() {
+			.pipe(reporter({
+				filter: null
+			})).on('error', done).on('finish', function() {
 				assert.ok(/^test\/fixtures\/jshint\/invalid.js\n/.test(gutil.log.lastCall.args[0]));
 				assert.ok(/\s+\[\d+\:\d+\]/.test(gutil.log.lastCall.args[0]));
 				assert.ok(/\bMissing semicolon. \(JSHint W033\)\n/.test(gutil.log.lastCall.args[0]));
