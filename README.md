@@ -11,6 +11,7 @@ Error reporter for:
 [ESLint](https://github.com/adametry/gulp-eslint)
 [JSCS](https://github.com/jscs-dev/gulp-jscs)
 [JSHint](https://github.com/spalger/gulp-jshint)
+[CssLint](https://github.com/lazd/gulp-csslint)
 PostCSS
 [TSLint](https://github.com/panuhorsmalahti/gulp-tslint)
 
