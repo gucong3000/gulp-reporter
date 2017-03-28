@@ -4,8 +4,8 @@ const it = require('mocha').it;
 const assert = require('assert');
 const gutil = require('gulp-util');
 const vfs = require('vinyl-fs');
-const postcss = require('./fixtures/postcss/gulp-postcss');
 const reporter = require('../');
+const postcss = require('gulp-postcss');
 
 require('./sandbox');
 
@@ -16,11 +16,9 @@ describe('PostCSS', function() {
 			base: process.cwd()
 		})
 
-			.pipe(postcss({
-				processors:[
-					require('stylelint'),
-				]
-			}))
+			.pipe(postcss([
+				require('stylelint'),
+			]))
 			.pipe(reporter({
 				filter: null
 			}))
@@ -40,11 +38,9 @@ describe('PostCSS', function() {
 			base: process.cwd()
 		})
 
-			.pipe(postcss({
-				processors:[
-					require('stylelint'),
-				]
-			}))
+			.pipe(postcss([
+				require('stylelint'),
+			]))
 			.pipe(reporter({
 				browser: true,
 				fail: false,
