@@ -19,7 +19,6 @@ describe('ECLint', function() {
 			.pipe(reporter({
 				filter: null
 			})).on('finish', () => {
-				console.log(gutil.log.lastCall.args.join('\n'));
 				assert.ok(gutil.log.lastCall.args[0].indexOf('test/fixtures/csslint/invalid.css') >= 0);
 				assert.ok(gutil.log.lastCall.args[0].indexOf('(CssLint order-alphabetical') >= 0);
 				assert.ok(gutil.log.lastCall.args[0].indexOf('(CssLint duplicate-properties') >= 0);
