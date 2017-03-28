@@ -68,5 +68,5 @@
     "pretest": "node-version-gte-4 && eslint lib test/*.test.js || echo \"ESLint not supported\"",
     "test": "istanbul cover node_modules/mocha/bin/_mocha test/*.test.js"
   },
-  "version": "1.6.0"
+  "version": "1.7.0"
 }
