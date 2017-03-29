@@ -6,7 +6,7 @@ gulp-reporter
 [![AppVeyor](https://img.shields.io/appveyor/ci/gucong3000/gulp-reporter.svg?&label=Windows)](https://ci.appveyor.com/project/gucong3000/gulp-reporter)
 [![Coverage Status](https://img.shields.io/coveralls/gucong3000/gulp-reporter.svg)](https://coveralls.io/r/gucong3000/gulp-reporter)
 
-Error reporter for:
+Error report localization for:
 [EditorConfig](https://github.com/jedmao/eclint)
 [ESLint](https://github.com/adametry/gulp-eslint)
 [JSCS](https://github.com/jscs-dev/gulp-jscs)

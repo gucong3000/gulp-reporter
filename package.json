@@ -11,7 +11,7 @@
     "lodash.get": "^4.4.2",
     "os-locale": "^2.0.0"
   },
-  "description": "Error reporter for: EditorConfig/ESLint/JSCS/JSHint/CssLint/PostCSS/TSLint",
+  "description": "Error report localization for: EditorConfig/ESLint/JSCS/JSHint/CssLint/PostCSS/TSLint",
   "devDependencies": {
     "cover": "^0.2.9",
     "coveralls": "^2.12.0",
@@ -44,6 +44,8 @@
   "keywords": [
     "gulp",
     "reporter",
+    "report",
+    "localization",
     "eslint",
     "jscs",
     "jshint",
@@ -68,5 +70,5 @@
     "pretest": "node-version-gte-4 && eslint lib test/*.test.js || echo \"ESLint not supported\"",
     "test": "istanbul cover node_modules/mocha/bin/_mocha test/*.test.js"
   },
-  "version": "1.8.0"
+  "version": "1.8.1"
 }
