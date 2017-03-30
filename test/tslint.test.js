@@ -10,6 +10,7 @@ const reporter = require('../');
 require('./sandbox');
 
 describe('TSLint', function() {
+	this.timeout(10000);
 	it('console reporter', function(done) {
 		return vfs.src('test/fixtures/tslint/invalid.ts', {
 			base: process.cwd()
