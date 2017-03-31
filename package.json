@@ -16,7 +16,7 @@
     "cover": "^0.2.9",
     "coveralls": "^2.12.0",
     "eclint": "^2.0.1",
-    "eslint": "^3.18.0",
+    "eslint": "^3.19.0",
     "gulp-csslint": "^1.0.0",
     "gulp-eslint": "^3.0.1",
     "gulp-jscs": "^4.0.0",
