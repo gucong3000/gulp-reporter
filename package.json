@@ -22,7 +22,7 @@
     "gulp-jscs": "^4.0.0",
     "gulp-jshint": "^2.0.4",
     "gulp-postcss": "^6.4.0",
-    "gulp-tslint": "^7.1.0",
+    "gulp-tslint": "^8.0.0",
     "istanbul": "^0.4.5",
     "jshint": "^2.9.4",
     "mocha": "^3.2.0",
