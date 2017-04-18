@@ -18,7 +18,9 @@ describe('JSCS', function() {
 			.pipe(jscs({
 				configPath: 'test/fixtures/jscs/.jscsrc'
 			}))
-			.pipe(reporter()).on('error', function(ex) {
+			.pipe(reporter({
+				filter: null,
+			})).on('error', function(ex) {
 				assert.equal(ex.plugin, 'gulp-reporter');
 				assert.equal(ex.message, 'Lint failed for: test/fixtures/jscs/invalid.js');
 			}).on('finish', function() {
