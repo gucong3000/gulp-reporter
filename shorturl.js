@@ -27,16 +27,18 @@ function get(url, selector) {
 		});
 	});
 }
-var log = false;
+
+let log = false;
 
 Promise.all([
-	get('https://github.com/yaniswang/HTMLHint/wiki/Rules', 'h2+ul a[href]'),
-	get('http://eslint.org/docs/rules/', '.rule-list a[href]'),
 	get('http://cn.eslint.org/docs/rules/', '.rule-list a[href]'),
-	get('https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties', 'h3 a[href]'),
+	get('http://eslint.org/docs/rules/', '.rule-list a[href]'),
+	get('http://jscs.info/rules', '.rule-list a[href]'),
+	get('https://github.com/CSSLint/csslint/wiki/Rules', '.markdown-body ul a[href^="/CSSLint"]'),
+	get('https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties', '.markdown-body h3 a[href^="#"]'),
+	get('https://github.com/yaniswang/HTMLHint/wiki/Rules', '.markdown-body ul a[href*="HTMLHint"]'),
 	get('https://palantir.github.io/tslint/rules/', '.rules-list a[href]'),
-	get('https://github.com/yaniswang/HTMLHint/wiki/Rules', 'h2+ul a[href]'),
-	get('https://stylelint.io/user-guide/rules/', 'ul a[href]'),
+	get('https://stylelint.io/user-guide/rules/', 'h1 ~ ul a[href$="/"]'),
 ]).then(urls => {
 	urls = [].concat.apply([], urls).map(url => url.toLowerCase());
 	Promise.all(urls.map(url => {
@@ -52,9 +54,9 @@ Promise.all([
 	})).then(() => {
 		const json = JSON.stringify(shorturlCache, 0, '\t');
 		const fs = require('fs');
-		if(log) {
+		if (log) {
 			fs.writeFile(require.resolve('./lib/shorturl.json'), json, 'utf8', () => {
-					console.log(json);
+				console.log(json);
 			});
 		}
 	});
