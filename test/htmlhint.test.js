@@ -17,6 +17,7 @@ describe('HTMLHint', () => {
 
 	before(() => {
 		localeModule.exports = 'zh_CN';
+		delete require.cache[require.resolve('../lib/lint-error')];
 	});
 
 	after(() => {
