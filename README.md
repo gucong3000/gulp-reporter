@@ -7,11 +7,12 @@ gulp-reporter
 [![Coverage Status](https://img.shields.io/coveralls/gucong3000/gulp-reporter.svg)](https://coveralls.io/r/gucong3000/gulp-reporter)
 
 Error report localization for:
+[CSSLint](https://github.com/lazd/gulp-csslint)
 [EditorConfig](https://github.com/jedmao/eclint)
 [ESLint](https://github.com/adametry/gulp-eslint)
+[HTMLHint](https://github.com/bezoerb/gulp-htmlhint)
 [JSCS](https://github.com/jscs-dev/gulp-jscs)
 [JSHint](https://github.com/spalger/gulp-jshint)
-[CssLint](https://github.com/lazd/gulp-csslint)
 [PostCSS](https://github.com/postcss/gulp-postcss)
 [TSLint](https://github.com/panuhorsmalahti/gulp-tslint)
 

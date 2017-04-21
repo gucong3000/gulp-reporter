@@ -9,8 +9,9 @@ const reporter = require('../');
 
 require('./sandbox');
 
-describe('ECLint', function() {
-	it('console reporter', function(done) {
+describe('CSSLint', function() {
+	this.timeout(10000);
+	it('console reporter', done => {
 		return vfs.src('test/fixtures/csslint/invalid.css', {
 			base: process.cwd(),
 			stripBOM: false,
@@ -20,8 +21,8 @@ describe('ECLint', function() {
 				filter: null
 			})).on('finish', () => {
 				assert.ok(gutil.log.lastCall.args[0].indexOf('test/fixtures/csslint/invalid.css') >= 0);
-				assert.ok(gutil.log.lastCall.args[0].indexOf('(CssLint order-alphabetical') >= 0);
-				assert.ok(gutil.log.lastCall.args[0].indexOf('(CssLint duplicate-properties') >= 0);
+				assert.ok(gutil.log.lastCall.args[0].indexOf('(CSSLint order-alphabetical') >= 0);
+				assert.ok(gutil.log.lastCall.args[0].indexOf('(CSSLint duplicate-properties') >= 0);
 				done();
 			});
 	});

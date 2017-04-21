@@ -9,15 +9,15 @@ const reporter = require('../');
 
 require('./sandbox');
 
-describe('JSHint', function() {
-	it('console reporter', function(done) {
+describe('JSHint', () => {
+	it('console reporter', done => {
 		return vfs.src('test/fixtures/jshint/invalid.js', {
 			base: process.cwd()
 		})
 			.pipe(jshint())
 			.pipe(reporter({
 				filter: null
-			})).on('error', done).on('finish', function() {
+			})).on('error', done).on('finish', () => {
 				assert.ok(/^test\/fixtures\/jshint\/invalid.js\n/.test(gutil.log.lastCall.args[0]));
 				assert.ok(/\s+\[\d+\:\d+\]/.test(gutil.log.lastCall.args[0]));
 				assert.ok(/\(JSHint W033\)\n/.test(gutil.log.lastCall.args[0]));
