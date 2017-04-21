@@ -35,10 +35,12 @@ describe('HTMLHint', () => {
 				assert.equal(ex.plugin, 'gulp-reporter');
 				assert.equal(ex.message, 'Lint failed for: test/fixtures/htmlhint/invalid.html');
 				assert.ok(/^test\/fixtures\/htmlhint\/invalid.html\n/.test(gutil.log.lastCall.args[0]));
-				assert.ok(gutil.log.lastCall.args[0].indexOf('doctype必须首先声明。') >= 0);
 				assert.ok(gutil.log.lastCall.args[0].indexOf('(HTMLHint doctype-first https://goo.gl/jcpmfT)') >= 0);
-				assert.ok(gutil.log.lastCall.args[0].indexOf('标签必须匹配，缺失') >= 0);
 				assert.ok(gutil.log.lastCall.args[0].indexOf('(HTMLHint tag-pair https://goo.gl/wFHTJ5)') >= 0);
+				if (+process.version.replace(/^v?(\d+).+?$/, '$1') >= 5) {
+					assert.ok(gutil.log.lastCall.args[0].indexOf('doctype必须首先声明。') >= 0);
+					assert.ok(gutil.log.lastCall.args[0].indexOf('标签必须匹配，缺失') >= 0);
+				}
 				done();
 			});
 	});
