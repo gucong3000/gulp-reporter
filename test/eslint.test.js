@@ -10,8 +10,8 @@ const Vinyl = require('vinyl');
 
 require('./sandbox');
 
-describe('ESLint', function() {
-	it('console reporter', function(done) {
+describe('ESLint', () => {
+	it('console reporter', done => {
 		return vfs.src('test/fixtures/eslint/invalid.js', {
 			base: process.cwd()
 		})
@@ -24,7 +24,7 @@ describe('ESLint', function() {
 					reporter.filterByAuthor({
 						name: '刘祺'
 					}),
-					function(error) {
+					error => {
 						error.toString = error.inspect;
 						return error;
 					}
@@ -91,7 +91,7 @@ describe('ESLint', function() {
 		}).pipe(eslint()).pipe(reporter({
 			fail: false,
 			filter: null,
-			console: function(msg) {
+			console: msg => {
 				lastMsg = msg;
 			}
 		})).on('finish', () => {
@@ -108,7 +108,7 @@ describe('ESLint', function() {
 		stream.pipe(reporter({
 			fail: false,
 			filter: null,
-			console: function(msg) {
+			console: msg => {
 				message.push(msg);
 			}
 		})).on('finish', () => {

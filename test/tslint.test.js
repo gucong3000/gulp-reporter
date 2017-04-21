@@ -11,7 +11,7 @@ require('./sandbox');
 
 describe('TSLint', function() {
 	this.timeout(10000);
-	it('console reporter', function(done) {
+	it('console reporter', done => {
 		return vfs.src('test/fixtures/tslint/invalid.ts', {
 			base: process.cwd()
 		})
@@ -20,7 +20,7 @@ describe('TSLint', function() {
 				filter: null
 			}))
 
-			.on('error', function(ex) {
+			.on('error', ex => {
 				assert.equal(ex.plugin, 'gulp-reporter');
 				assert.equal(ex.message, 'Lint failed for: test/fixtures/tslint/invalid.ts');
 				assert.ok(/\s+\[\d+\:\d+\]/.test(gutil.log.lastCall.args[0]));
@@ -29,7 +29,7 @@ describe('TSLint', function() {
 				done();
 			});
 	});
-	it('fail function', function(done) {
+	it('fail function', done => {
 		let error;
 		return vfs.src('test/fixtures/tslint/invalid.ts', {
 			base: process.cwd()
@@ -37,14 +37,14 @@ describe('TSLint', function() {
 			.pipe(tslint())
 			.pipe(reporter({
 				filter: null,
-				fail: function() {
+				fail: () => {
 					return false;
 				}
 			}))
 
-			.on('error', function(ex) {
+			.on('error', ex => {
 				error = error || ex;
-			}).on('finish', function() {
+			}).on('finish', () => {
 				assert.ok(!error);
 				done();
 			});

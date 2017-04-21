@@ -6,12 +6,13 @@ const after = require('mocha').after;
 
 const sandbox = sinon.sandbox.create();
 const colorsEnabled = gutil.colors.enabled;
-before(function () {
+
+before(() => {
 	gutil.colors.enabled = false;
 	sandbox.stub(gutil, 'log');
 });
 
-after(function () {
+after(() => {
 	gutil.colors.enabled = colorsEnabled;
 	sandbox.restore();
 });

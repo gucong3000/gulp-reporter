@@ -11,7 +11,7 @@ require('./sandbox');
 
 describe('CSSLint', function() {
 	this.timeout(10000);
-	it('console reporter', function(done) {
+	it('console reporter', done => {
 		return vfs.src('test/fixtures/csslint/invalid.css', {
 			base: process.cwd(),
 			stripBOM: false,

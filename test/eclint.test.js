@@ -9,8 +9,8 @@ const reporter = require('../');
 
 require('./sandbox');
 
-describe('ECLint', function() {
-	it('console reporter', function(done) {
+describe('ECLint', () => {
+	it('console reporter', done => {
 		return vfs.src('test/fixtures/eclint/invalid.js', {
 			base: process.cwd(),
 			stripBOM: false,
