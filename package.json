@@ -35,7 +35,7 @@
     "stylelint": "^7.10.1",
     "stylelint-config-standard": "^16.0.0",
     "through2": "^2.0.3",
-    "tslint": "^5.1.0",
+    "tslint": "^5.2.0",
     "typescript": "^2.2.2",
     "vinyl": "^2.0.1",
     "vinyl-fs": "^2.4.4"
