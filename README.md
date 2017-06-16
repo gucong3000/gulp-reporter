@@ -42,7 +42,7 @@ reporter(options)
 
 Type: `Array|string|RegExp|function`
 
-Default: `/[\.\-]min\.\w+$/`
+Default: `/\Wmin\.\w+$/`
 
 Glob patterns for paths to ignore. String or array of strings.
 
