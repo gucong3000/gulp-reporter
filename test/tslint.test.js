@@ -4,7 +4,8 @@ const it = require('mocha').it;
 const assert = require('assert');
 const gutil = require('gulp-util');
 const vfs = require('vinyl-fs');
-const tslint = require('gulp-tslint');
+const gulpTslint = require('gulp-tslint');
+const tslint = require('tslint');
 const reporter = require('../');
 
 require('./sandbox');
@@ -15,7 +16,9 @@ describe('TSLint', function() {
 		return vfs.src('test/fixtures/tslint/invalid.ts', {
 			base: process.cwd()
 		})
-			.pipe(tslint())
+			.pipe(gulpTslint({
+				program: tslint.Linter.createProgram('test/fixtures/tslint/tslint.json')
+			}))
 			.pipe(reporter({
 				filter: null
 			}))
@@ -34,7 +37,9 @@ describe('TSLint', function() {
 		return vfs.src('test/fixtures/tslint/invalid.ts', {
 			base: process.cwd()
 		})
-			.pipe(tslint())
+			.pipe(gulpTslint({
+				program: tslint.Linter.createProgram('test/fixtures/tslint/tslint.json')
+			}))
 			.pipe(reporter({
 				filter: null,
 				fail: () => {
