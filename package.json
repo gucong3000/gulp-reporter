@@ -30,7 +30,6 @@
     "jshint": "^2.9.4",
     "json-stable-stringify": "^1.0.1",
     "mocha": "^3.4.2",
-    "node-version-check": "^2.1.1",
     "postcss": "^6.0.2",
     "sinon": "^2.3.4",
     "stylelint": "^7.11.1",
@@ -72,7 +71,7 @@
   },
   "scripts": {
     "coveralls": "npm run test && coveralls < coverage/lcov.info",
-    "pretest": "node-version-gte-4 && eslint lib test/*.test.js || echo \"ESLint not supported\"",
+    "pretest": "eslint lib test/*.test.js",
     "test": "istanbul cover node_modules/mocha/bin/_mocha test/*.test.js"
   },
   "version": "1.9.1"
