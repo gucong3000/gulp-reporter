@@ -125,4 +125,17 @@ describe('ESLint', () => {
 		stream.end();
 	});
 
+	it('Syntax error', done => {
+		return vfs.src('test/fixtures/eslint/SyntaxError.js', {
+			base: process.cwd()
+		})
+			.pipe(eslint())
+			.pipe(reporter({
+				filter: function(error) {
+					assert.ok(/^Parsing error:/.test(error[0].message));
+					done();
+				}
+			}));
+	});
+
 });
