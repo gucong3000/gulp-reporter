@@ -30,7 +30,7 @@
     "jshint": "^2.9.4",
     "json-stable-stringify": "^1.0.1",
     "mocha": "^3.4.2",
-    "postcss": "^6.0.2",
+    "postcss": "^6.0.3",
     "sinon": "^2.3.4",
     "stylelint": "^7.11.1",
     "stylelint-config-standard": "^16.0.0",
