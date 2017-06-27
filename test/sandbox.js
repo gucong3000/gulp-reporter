@@ -1,9 +1,6 @@
 'use strict';
 const gutil = require('gulp-util');
 const sinon = require('sinon');
-const before = require('mocha').before;
-const after = require('mocha').after;
-
 const sandbox = sinon.sandbox.create();
 const colorsEnabled = gutil.colors.enabled;
 

@@ -1,13 +1,9 @@
 'use strict';
-const describe = require('mocha').describe;
-const it = require('mocha').it;
 const assert = require('assert');
 const gutil = require('gulp-util');
 const vfs = require('vinyl-fs');
 const htmlhint = require('gulp-htmlhint');
 const reporter = require('../');
-const before = require('mocha').before;
-const after = require('mocha').after;
 
 require('./sandbox');
 

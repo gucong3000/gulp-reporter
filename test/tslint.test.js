@@ -1,6 +1,4 @@
 'use strict';
-const describe = require('mocha').describe;
-const it = require('mocha').it;
 const assert = require('assert');
 const gutil = require('gulp-util');
 const vfs = require('vinyl-fs');
