@@ -6,6 +6,7 @@ const gitAuthor = require('../lib/git-author');
 const vfs = require('vinyl-fs');
 const eslint = require('gulp-eslint');
 const reporter = require('../');
+const gutil = require('gulp-util');
 
 require('./sandbox');
 
@@ -37,7 +38,7 @@ describe('API', () => {
 			}
 		]);
 
-		assert.ok(!result[0].severity);
+		assert.ifError(result[0].severity);
 		assert.equal(result[1].severity, 'error');
 		assert.equal(result[2].severity, 'warn');
 		assert.equal(result[3].severity, 'info');
@@ -69,6 +70,24 @@ describe('API', () => {
 		return gitAuthor('/').then(result => {
 			assert.ifError(result);
 		});
+	});
+
+	it('file not in git repo', done => {
+		const stream = reporter();
+
+		stream.on('data', (file) => {
+			assert.ok(file.report);
+			assert.ifError(file.report.author);
+			done();
+		});
+
+		stream.on('error', done);
+
+		stream.write(new gutil.File({
+			cwd: '/',
+			path: '/testcase.js',
+			contents: new Buffer('')
+		}));
 	});
 
 	it('`options` as callback', done => {
