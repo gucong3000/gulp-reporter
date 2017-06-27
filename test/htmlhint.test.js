@@ -30,7 +30,7 @@ describe('HTMLHint', () => {
 		})
 			.pipe(htmlhint())
 			.pipe(reporter({
-				filter: reporter.shortDocUrl
+				author: null
 			})).on('error', ex => {
 				assert.equal(ex.plugin, 'gulp-reporter');
 				assert.equal(ex.message, 'Lint failed for: test/fixtures/htmlhint/invalid.html');

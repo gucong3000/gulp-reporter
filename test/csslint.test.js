@@ -18,7 +18,7 @@ describe('CSSLint', function() {
 		})
 			.pipe(csslint())
 			.pipe(reporter({
-				filter: null
+				author: null
 			})).on('finish', () => {
 				assert.ok(gutil.log.lastCall.args[0].indexOf('test/fixtures/csslint/invalid.css') >= 0);
 				assert.ok(gutil.log.lastCall.args[0].indexOf('(CSSLint order-alphabetical') >= 0);

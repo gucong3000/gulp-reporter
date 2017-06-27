@@ -12,7 +12,7 @@ describe('API', () => {
 		return shortDocUrl([{
 			doc: 'http://163.com'
 		}]).then(errors => {
-			assert.ok(/^https?:\/\/goo.gl\//.test(errors[0].doc));
+			assert.ok(/^https?:\/\/goo.gl\//.test(errors[0].docShort));
 		});
 	});
 	it('sort-errors', () => {

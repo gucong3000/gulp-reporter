@@ -20,13 +20,13 @@ describe('PostCSS', function() {
 				require('stylelint'),
 			]))
 			.pipe(reporter({
-				filter: null
+				author: null
 			}))
 			.on('error', ex => {
 				assert.equal(ex.message, 'Lint failed for: test/fixtures/postcss/empty-block-with-disables.css');
 			}).on('finish', () => {
 				assert.ok(/\s+\[\d+:\d+\]/.test(gutil.log.lastCall.args[0]));
-				assert.ok(gutil.log.lastCall.args[0].indexOf('Unexpected empty block (stylelint block-no-empty https://stylelint.io/user-guide/rules/block-no-empty/)') >= 0);
+				assert.ok(gutil.log.lastCall.args[0].indexOf('Unexpected empty block (stylelint block-no-empty http') >= 0);
 				done();
 			});
 
@@ -44,7 +44,7 @@ describe('PostCSS', function() {
 			.pipe(reporter({
 				browser: true,
 				fail: false,
-				filter: null,
+				author: null,
 			})).on('data', file => {
 				const contents = file.contents.toString();
 				assert.ok(/\btest\/fixtures\/postcss\/empty-block-with-disables.css\b/.test(contents));

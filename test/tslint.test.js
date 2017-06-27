@@ -20,15 +20,15 @@ describe('TSLint', function() {
 				program: tslint.Linter.createProgram('test/fixtures/tslint/tslint.json')
 			}))
 			.pipe(reporter({
-				filter: null
+				author: null
 			}))
 
 			.on('error', ex => {
 				assert.equal(ex.plugin, 'gulp-reporter');
 				assert.equal(ex.message, 'Lint failed for: test/fixtures/tslint/invalid.ts');
 				assert.ok(/\s+\[\d+:\d+\]/.test(gutil.log.lastCall.args[0]));
-				assert.ok(gutil.log.lastCall.args[0].indexOf('missing whitespace (TSLint one-line https://palantir.github.io/tslint/rules/one-line/)') >= 0);
-				assert.ok(gutil.log.lastCall.args[0].indexOf('missing whitespace (TSLint whitespace https://palantir.github.io/tslint/rules/whitespace/)') >= 0);
+				assert.ok(gutil.log.lastCall.args[0].indexOf('missing whitespace (TSLint one-line http') >= 0);
+				assert.ok(gutil.log.lastCall.args[0].indexOf('missing whitespace (TSLint whitespace http') >= 0);
 				done();
 			});
 	});
@@ -41,7 +41,7 @@ describe('TSLint', function() {
 				program: tslint.Linter.createProgram('test/fixtures/tslint/tslint.json')
 			}))
 			.pipe(reporter({
-				filter: null,
+				author: null,
 				fail: () => {
 					return false;
 				}
