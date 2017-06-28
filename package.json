@@ -32,7 +32,7 @@
     "json-stable-stringify": "^1.0.1",
     "mocha": "^3.4.2",
     "postcss": "^6.0.2",
-    "sinon": "^2.3.4",
+    "sinon": "^2.3.6",
     "stylelint": "^7.11.1",
     "stylelint-config-standard": "^16.0.0",
     "through2": "^2.0.3",
