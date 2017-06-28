@@ -5,7 +5,7 @@ const assert = require('assert');
 const gutil = require('gulp-util');
 const vfs = require('vinyl-fs');
 const reporter = require('../');
-const postcss = require('gulp-postcss');
+const postcss = require('gulp-html-postcss');
 
 require('./sandbox');
 
