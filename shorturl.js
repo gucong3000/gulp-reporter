@@ -18,7 +18,9 @@ function shortUrl(url) {
 }
 
 function get(url, selector) {
-	return JSDOM.fromURL(url).then(dom => {
+	return JSDOM.fromURL(url, {
+		referrer: url
+	}).then(dom => {
 		return Array.from(dom.window.document.querySelectorAll(selector)).map(a => a.href);
 	});
 }
@@ -38,7 +40,7 @@ Promise.all([
 	eslintRules.then(rules => rules.map(rule => 'http://cn.eslint.org/docs/rules/' + rule)),
 	eslintRules.then(rules => rules.map(rule => 'http://eslint.org/docs/rules/' + rule)),
 ]).then(urls => {
-	urls = [].concat.apply([], urls).map(url => url.toLowerCase());
+	urls = [].concat.apply([], urls).filter(Boolean).map(url => url.toLowerCase());
 	Promise.all(urls.map(url => {
 		if (shorturlCache[url]) {
 			return;
