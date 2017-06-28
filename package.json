@@ -80,7 +80,7 @@
   "scripts": {
     "coveralls": "npm run test && coveralls < coverage/lcov.info",
     "pretest": "eslint lib test/*.test.js",
-    "test": "nyc mocha test/*.test.js"
+    "test": "nyc mocha test/*.test.js --no-timeouts"
   },
   "version": "1.9.2"
 }
