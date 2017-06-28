@@ -20,7 +20,7 @@
     "eslint": "^4.0.0",
     "gulp-csslint": "^1.0.0",
     "gulp-eslint": "^4.0.0",
-    "gulp-html-postcss": "github:StartPolymer/gulp-html-postcss",
+    "gulp-html-postcss": "github:gucong3000/gulp-postcss#fix_git_install",
     "gulp-htmlhint": "^0.3.1",
     "gulp-jscs": "^4.0.0",
     "gulp-jshint": "^2.0.4",
