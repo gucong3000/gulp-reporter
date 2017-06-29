@@ -26,13 +26,13 @@
     "gulp-jshint": "^2.0.4",
     "gulp-postcss": "^7.0.0",
     "gulp-tslint": "^8.1.1",
-    "istanbul": "^0.4.5",
     "jsdom": "^11.0.0",
     "jshint": "^2.9.4",
     "json-stable-stringify": "^1.0.1",
     "mocha": "^3.4.2",
+    "nyc": "^11.0.3",
     "postcss": "^6.0.2",
-    "sinon": "^2.3.4",
+    "sinon": "^2.3.6",
     "stylelint": "^7.11.1",
     "stylelint-config-standard": "^16.0.0",
     "through2": "^2.0.3",
@@ -66,6 +66,12 @@
   "license": "MIT",
   "main": "./lib/gulp-plugin.js",
   "name": "gulp-reporter",
+  "nyc": {
+    "reporter": [
+      "lcov",
+      "text-summary"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gucong3000/gulp-reporter.git"
@@ -73,7 +79,7 @@
   "scripts": {
     "coveralls": "npm run test && coveralls < coverage/lcov.info",
     "pretest": "eslint lib test/*.test.js",
-    "test": "istanbul cover node_modules/mocha/bin/_mocha test/*.test.js"
+    "test": "nyc mocha test/*.test.js --no-timeouts"
   },
   "version": "1.9.2"
 }
