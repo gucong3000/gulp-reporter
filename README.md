@@ -91,13 +91,18 @@ gulp.src('test/fixtures/postcss/test.css')
 )
 ```
 
-### options.beep
+### reporter.author
+Type: `{name?: string, email?: string}`
 
-Type: `boolean`
+Default: Read from GIT pre-commit environment and fallbacks with GIT commad `git log --max-count=1 --no-merges`
 
-Default: `true`
+Demote each error that is not belong to specified author to a warning.
 
-Make your terminal beep if an error has been reported for any file.
+### reporter.expires
+
+Type: `string` for [time periods](https://www.npmjs.com/package/to-time#usage), `number` of unix timestamp, `Date`
+
+Demote each error that created before the specified time to a warning
 
 ### options.fail
 
@@ -117,20 +122,3 @@ gulp.src('test/fixtures/postcss/test.css')
 	})
 )
 ```
-
-## `reporter.filterByAuthor(options)`
-
-According to the author of GIT commit, downgraded each error to warning that is not commit by this author.
-If options are unset, It will lookup author info from environment or git log
-
-### options.name
-
-Type: `string`
-
-Default: `${GIT_AUTHOR_NAME}` || `git log --max-count=1 --no-merges --format=%aN`
-
-### options.email
-
-Type: `string`
-
-Default: `${GIT_AUTHOR_EMAIL}` || `git log --max-count=1 --no-merges --format=%aE`
