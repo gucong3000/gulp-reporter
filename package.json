@@ -10,6 +10,7 @@
     "goo.gl": "^0.1.4",
     "gulp-util": "^3.0.8",
     "lodash.get": "^4.4.2",
+    "log-symbols": "^1.0.2",
     "os-locale": "^2.0.0"
   },
   "description": "Error report localization for: CSSLint/EditorConfig/ESLint/HTMLHint/JSCS/JSHint/PostCSS/TSLint",
@@ -31,7 +32,7 @@
     "mocha": "^3.4.2",
     "nyc": "^11.0.3",
     "postcss": "^6.0.2",
-    "sinon": "^2.3.4",
+    "sinon": "^2.3.6",
     "stylelint": "^7.11.1",
     "stylelint-config-standard": "^16.0.0",
     "through2": "^2.0.3",
