@@ -1,6 +1,4 @@
 'use strict';
-const describe = require('mocha').describe;
-const it = require('mocha').it;
 const assert = require('assert');
 const vfs = require('vinyl-fs');
 const gutil = require('gulp-util');
@@ -17,18 +15,7 @@ describe('ESLint', () => {
 		})
 			.pipe(eslint())
 			.pipe(reporter({
-				filter: [
-					reporter.filterByAuthor({
-						email: 'qil@jumei.com'
-					}),
-					reporter.filterByAuthor({
-						name: '刘祺'
-					}),
-					error => {
-						error.toString = error.inspect;
-						return error;
-					}
-				]
+				author: 'qil@jumei.com',
 			})).on('error', ex => {
 				assert.equal(ex.plugin, 'gulp-reporter');
 				assert.equal(ex.message, 'Lint failed for: test/fixtures/eslint/invalid.js');
@@ -44,7 +31,7 @@ describe('ESLint', () => {
 		})
 			.pipe(eslint())
 			.pipe(reporter({
-				filter: null
+				author: null
 			})).on('error', done).on('data', file => {
 				assert.ok(file.report.ignore);
 				done();
@@ -57,7 +44,7 @@ describe('ESLint', () => {
 		})
 			.pipe(eslint())
 			.pipe(reporter({
-				filter: null
+				author: null
 			})).on('data', file => {
 				assert.ok(file.report.errors);
 				assert.ok(/sort\.js:1:1\)$/.test(file.report.errors[0].inspect()));
@@ -73,7 +60,6 @@ describe('ESLint', () => {
 			base: process.cwd(),
 		}).pipe(eslint())
 			.pipe(reporter({
-				filter: null
 			})).on('data', file => {
 				files.push(file);
 				assert.ok(file.report.errors || file.report.ignore);
@@ -85,19 +71,11 @@ describe('ESLint', () => {
 	});
 
 	it('not fail & console', done => {
-		let lastMsg;
 		return vfs.src('test/fixtures/eslint/*.js', {
 			base: process.cwd(),
 		}).pipe(eslint()).pipe(reporter({
 			fail: false,
-			filter: null,
-			console: msg => {
-				lastMsg = msg;
-			}
-		})).on('finish', () => {
-			assert.ok(/^Lint failed for:/.test(lastMsg));
-			done();
-		}).on('error', done);
+		})).on('finish', done).on('error', done);
 	});
 
 	it('not commit file', done => {
@@ -107,13 +85,11 @@ describe('ESLint', () => {
 		});
 		stream.pipe(reporter({
 			fail: false,
-			filter: null,
 			console: msg => {
 				message.push(msg);
 			}
 		})).on('finish', () => {
 			assert.ok(/\s+0+\s+\(Not Committed Yet <not.committed.yet> \d+\D\d+\D\d+.+?\)/.test(message[0]));
-			assert.ok(/^Lint failed for:/.test(message[message.length - 1]));
 			done();
 		}).on('error', done);
 
@@ -126,16 +102,18 @@ describe('ESLint', () => {
 	});
 
 	it('Syntax error', done => {
+		const message = [];
 		return vfs.src('test/fixtures/eslint/SyntaxError.js', {
 			base: process.cwd()
 		})
 			.pipe(eslint())
 			.pipe(reporter({
-				filter: function(error) {
-					assert.ok(/^Parsing error:/.test(error[0].message));
-					done();
+				console: msg => {
+					message.push(msg);
 				}
-			}));
+			})).on('error', () => {
+				assert.ok(/\bParsing error:/.test(message[0]));
+				done();
+			});
 	});
-
 });

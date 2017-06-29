@@ -1,6 +1,4 @@
 'use strict';
-const describe = require('mocha').describe;
-const it = require('mocha').it;
 const assert = require('assert');
 const gutil = require('gulp-util');
 const vfs = require('vinyl-fs');
@@ -16,7 +14,7 @@ describe('JSHint', () => {
 		})
 			.pipe(jshint())
 			.pipe(reporter({
-				filter: null
+				author: null
 			})).on('error', done).on('finish', () => {
 				assert.ok(/^test\/fixtures\/jshint\/invalid.js\n/.test(gutil.log.lastCall.args[0]));
 				assert.ok(/\s+\[\d+:\d+\]/.test(gutil.log.lastCall.args[0]));
