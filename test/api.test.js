@@ -59,7 +59,7 @@ describe('API', () => {
 		});
 		it('getEvnAuthor()', () => {
 			assert.deepEqual(gitAuthor(), {
-				timestamp: 1498558291,
+				time: 1498558291,
 				name: 'name.test',
 				email: 'test@test.com'
 			});
