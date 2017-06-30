@@ -101,6 +101,25 @@ describe('ESLint', () => {
 		stream.end();
 	});
 
+	it('warn', done => {
+		return vfs.src('test/fixtures/eslint/invalid.js', {
+			base: process.cwd()
+		})
+			.pipe(eslint({
+				rules: {
+					'strict': 'warn'
+				},
+			}))
+			.pipe(reporter({
+				author: null,
+			})).on('data', file => {
+				const errors = file.report.errors;
+				assert.equal(errors[errors.length - 1].severity, 'warn');
+			}).on('error', () => {
+				done();
+			});
+	});
+
 	it('Syntax error', done => {
 		const message = [];
 		return vfs.src('test/fixtures/eslint/SyntaxError.js', {
