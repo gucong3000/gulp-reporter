@@ -1,12 +1,10 @@
 'use strict';
 const assert = require('assert');
-const gutil = require('gulp-util');
 const vfs = require('vinyl-fs');
 const reporter = require('../');
 const postcss = require('gulp-postcss');
 const stylelint = require('stylelint');
-
-require('./sandbox');
+const sandbox = require('./sandbox');
 
 describe('PostCSS', function() {
 	it('not fail with only warning', done => {
@@ -21,8 +19,8 @@ describe('PostCSS', function() {
 				author: null
 			}))
 			.on('error', done).on('finish', () => {
-				assert.ok(/\s+\[\d+:\d+\]/.test(gutil.log.lastCall.args[0]));
-				assert.ok(gutil.log.lastCall.args[0].indexOf('Unexpected empty block (stylelint block-no-empty http') >= 0);
+				assert.ok(/\s+\[\d+:\d+\]/.test(sandbox.getLog()));
+				assert.ok(sandbox.getLog().indexOf('Unexpected empty block (stylelint block-no-empty http') >= 0);
 				done();
 			});
 	});
@@ -40,8 +38,8 @@ describe('PostCSS', function() {
 			}))
 			.on('error', ex => {
 				assert.equal(ex.message, 'Lint failed for: test/fixtures/postcss/invalid.css');
-				assert.ok(/\s+\[\d+:\d+\]/.test(gutil.log.lastCall.args[0]));
-				assert.ok(gutil.log.lastCall.args[0].indexOf('Unexpected vendor-prefix "-webkit-appearance" (stylelint property-no-vendor-prefix http') >= 0);
+				assert.ok(/\s+\[\d+:\d+\]/.test(sandbox.getLog()));
+				assert.ok(sandbox.getLog().indexOf('Unexpected vendor-prefix "-webkit-appearance" (stylelint property-no-vendor-prefix http') >= 0);
 				done();
 			});
 	});

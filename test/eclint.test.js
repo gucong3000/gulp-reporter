@@ -1,11 +1,9 @@
 'use strict';
 const assert = require('assert');
-const gutil = require('gulp-util');
 const vfs = require('vinyl-fs');
 const eclint = require('eclint');
 const reporter = require('../');
-
-require('./sandbox');
+const sandbox = require('./sandbox');
 
 describe('ECLint', () => {
 	it('console reporter', done => {
@@ -20,8 +18,9 @@ describe('ECLint', () => {
 				assert.equal(ex.plugin, 'gulp-reporter');
 				assert.equal(ex.message, 'Lint failed for: test/fixtures/eclint/invalid.js');
 
-				assert.ok(gutil.log.lastCall.args[0].indexOf('(EditorConfig charset http') >= 0);
-				assert.ok(gutil.log.lastCall.args[0].indexOf('(EditorConfig indent_style http') >= 0);
+				const log = sandbox.getLog();
+				assert.ok(log.indexOf('(EditorConfig charset http') >= 0);
+				assert.ok(log.indexOf('(EditorConfig indent_style http') >= 0);
 
 				done();
 			});

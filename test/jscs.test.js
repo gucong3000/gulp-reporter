@@ -1,11 +1,9 @@
 'use strict';
 const assert = require('assert');
-const gutil = require('gulp-util');
 const vfs = require('vinyl-fs');
 const jscs = require('gulp-jscs');
 const reporter = require('../');
-
-require('./sandbox');
+const sandbox = require('./sandbox');
 
 describe('JSCS', function() {
 	this.timeout(10000);
@@ -22,7 +20,7 @@ describe('JSCS', function() {
 				assert.equal(ex.plugin, 'gulp-reporter');
 				assert.equal(ex.message, 'Lint failed for: test/fixtures/jscs/invalid.js');
 			}).on('finish', () => {
-				const result = gutil.log.lastCall.args[0].split(/\s*\r?\n\s*/g);
+				const result = sandbox.getLog().split(/\s*\r?\n\s*/g);
 				assert.equal(result[0], 'test/fixtures/jscs/invalid.js');
 				assert.ok(/\[\d+:\d+\]/.test(result[1]));
 				assert.ok(/\bMultiple var declaration \(JSCS disallowMultipleVarDecl http/.test(result[1]));

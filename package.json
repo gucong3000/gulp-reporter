@@ -79,9 +79,9 @@
     "url": "git+https://github.com/gucong3000/gulp-reporter.git"
   },
   "scripts": {
+    "test_lang": "cross-env LANG=zh_CN npm run mocha -- --color && cross-env LANG=en_US npm run mocha -- --no-color",
     "coveralls": "coveralls < coverage/lcov.info",
     "mocha": "mocha test/*.test.js --no-timeouts",
-    "test_lang": "cross-env LANG=en_US npm run mocha && cross-env LANG=zh_CN npm run mocha",
     "pretest": "eslint lib test/*.test.js",
     "test": "nyc npm run test_lang"
   },

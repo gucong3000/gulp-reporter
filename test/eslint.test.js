@@ -5,8 +5,7 @@ const gutil = require('gulp-util');
 const eslint = require('gulp-eslint');
 const reporter = require('../');
 const Vinyl = require('vinyl');
-
-require('./sandbox');
+const sandbox = require('./sandbox');
 
 describe('ESLint', () => {
 	it('console reporter', done => {
@@ -19,7 +18,7 @@ describe('ESLint', () => {
 			})).on('error', ex => {
 				assert.equal(ex.plugin, 'gulp-reporter');
 				assert.equal(ex.message, 'Lint failed for: test/fixtures/eslint/invalid.js');
-				const result = gutil.log.lastCall.args[0].split(/\s*\r?\n\s*/g);
+				const result = sandbox.getLog().split(/\s*\r?\n\s*/g);
 				assert.equal(result[0], 'test/fixtures/eslint/invalid.js');
 				done();
 			});
@@ -86,7 +85,7 @@ describe('ESLint', () => {
 		stream.pipe(reporter({
 			fail: false,
 			console: msg => {
-				message.push(msg);
+				message.push(gutil.colors.stripColor(msg));
 			}
 		})).on('finish', () => {
 			assert.ok(/\s+0+\s+\(Not Committed Yet <not.committed.yet> \d+\D\d+\D\d+.+?\)/.test(message[0]));
