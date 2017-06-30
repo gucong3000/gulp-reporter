@@ -37,6 +37,13 @@ gulp.src('test/fixtures/eslint/invalid.js')
 ```js
 reporter(options)
 ```
+or
+
+```js
+reporter(file => {
+	return options
+})
+```
 
 ### options.ignore
 
@@ -70,26 +77,6 @@ Default: `true`
 
 Messages will not be sorted by severity/line/column, [or your function](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/sort).
 
-### options.filter
-
-Type: `Array`
-Default: `[reporter.filterByAuthor()]`
-
-Filter `Error` object by your callback functions. support Async function
-
-The default function will check the GIT author of the code that is in errors, and adjusts the error level to 'warn' if this is not related to the current author
-
-```js
-gulp.src('test/fixtures/postcss/test.css')
-	.pipe(postcss())
-	.pipe(reporter({
-		filter: async function (errs, file){
-			await readFile(file.path);
-			return errs.filter(err => err.plugin === 'stylelint');
-		}
-	})
-)
-```
 
 ### reporter.author
 Type: `{name?: string, email?: string}`
@@ -113,8 +100,8 @@ Stop a task/stream if an error has been reported for any file, but wait for all 
 You can use a function to determine stop or not to stop.
 
 ```js
-gulp.src('test/fixtures/postcss/test.css')
-	.pipe(postcss())
+gulp.src('src/test.css')
+	.pipe(postcss([stylelint]))
 	.pipe(reporter({
 		fail: function(err, file) {
 			return err.plugin === 'stylelint' && /^src\b/.test(file.relative);
