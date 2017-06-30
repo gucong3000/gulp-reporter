@@ -4,20 +4,32 @@
 		"stylelint-config-standard"
 	],
 	"rules": {
-		"at-rule-no-vendor-prefix": [
-			null
+		"indentation": [
+			"tab"
 		],
 		"media-feature-name-no-vendor-prefix": [
-			null
+			true,
+			{
+				"severity": "error"
+			}
 		],
 		"property-no-vendor-prefix": [
-			null
+			true,
+			{
+				"severity": "error"
+			}
 		],
 		"selector-no-vendor-prefix": [
-			null
+			true,
+			{
+				"severity": "error"
+			}
 		],
 		"value-no-vendor-prefix": [
-			null
+			true,
+			{
+				"severity": "error"
+			}
 		]
 	}
 }
