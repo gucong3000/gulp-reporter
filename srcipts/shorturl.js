@@ -3,11 +3,11 @@
 const stringify = require('json-stable-stringify');
 const readdir = require('util').promisify(require('fs').readdir);
 const shorturlCache = require('../lib/shorturl.json');
+const request = require('request-promise-native');
 const googl = require('goo.gl');
 const fs = require('fs');
 // Set a developer key (_required by Google_; see http://goo.gl/4DvFk for more info.)
 googl.setKey('AIzaSyACqNSi3cybDvDfWMaPyXZEzQ6IeaPehLE');
-
 
 function shortUrl(url) {
 	return googl.shorten(url).then(shortUrl => {
@@ -107,6 +107,18 @@ Promise.all([
 			});
 			fs.writeFile(require.resolve('../lib/shorturl.json'), json, 'utf8', () => {
 				console.log(json);
+			});
+			const shorturlcn = {};
+			Promise.all(Object.keys(shorturlCache).map( url => (
+				request(`http://api.t.sina.com.cn/short_url/shorten.json?source=3271760578&url_long=${url}`).then(json => {
+					shorturlcn[url] = JSON.parse(json)[0].url_short;
+				})
+			))).then(() => {
+				const json = stringify(shorturlcn, {
+					space: '\t'
+				});
+				fs.writeFile(require.resolve('../lib/shorturl_cn.json'), json, 'utf8', () => {
+				});
 			});
 		}
 	});
