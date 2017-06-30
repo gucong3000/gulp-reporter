@@ -1,12 +1,10 @@
 'use strict';
 const assert = require('assert');
-const gutil = require('gulp-util');
 const vfs = require('vinyl-fs');
 const gulpTslint = require('gulp-tslint');
 const tslint = require('tslint');
 const reporter = require('../');
-
-require('./sandbox');
+const sandbox = require('./sandbox');
 
 describe('TSLint', function() {
 	this.timeout(10000);
@@ -24,9 +22,10 @@ describe('TSLint', function() {
 			.on('error', ex => {
 				assert.equal(ex.plugin, 'gulp-reporter');
 				assert.equal(ex.message, 'Lint failed for: test/fixtures/tslint/invalid.ts');
-				assert.ok(/\s+\[\d+:\d+\]/.test(gutil.log.lastCall.args[0]));
-				assert.ok(gutil.log.lastCall.args[0].indexOf('missing whitespace (TSLint one-line http') >= 0);
-				assert.ok(gutil.log.lastCall.args[0].indexOf('missing whitespace (TSLint whitespace http') >= 0);
+				const log = sandbox.getLog();
+				assert.ok(/\s+\[\d+:\d+\]/.test(log));
+				assert.ok(log.indexOf('missing whitespace (TSLint one-line http') >= 0);
+				assert.ok(log.indexOf('missing whitespace (TSLint whitespace http') >= 0);
 				done();
 			});
 	});
