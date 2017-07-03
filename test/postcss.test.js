@@ -58,9 +58,9 @@ describe('PostCSS', function() {
 				author: null,
 			})).on('data', file => {
 				const contents = file.contents.toString();
-				assert.ok(/\btest\/fixtures\/postcss\/empty-block-with-disables.css\b/.test(contents));
+				assert.ok(/\bfile:\/\/\/.+\/test\/fixtures\/postcss\/empty-block-with-disables.css\b/.test(contents));
 				assert.ok(/\[\d+:\d+\]/.test(contents));
-				assert.ok(/\bUnexpected empty block \(stylelint block-no-empty\)/.test(contents));
+				assert.ok(/\bUnexpected empty block \(stylelint block-no-empty https:\/\/stylelint.io\/user-guide\/rules\/block-no-empty\/\)/.test(contents));
 				done();
 			});
 
