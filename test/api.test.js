@@ -16,7 +16,7 @@ describe('API', () => {
 
 	it('short-doc-url', () => {
 		return shortDocUrl([{
-			doc: 'http://163.com'
+			doc: 'https://palantir.github.io/tslint/rules/curly/'
 		}]).then(errors => {
 			assert.ok(/^https?:\/\/(goo\.gl|t\.cn)\//.test(errors[0].docShort));
 		});
