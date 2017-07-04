@@ -30,7 +30,6 @@ describe('TSLint', function() {
 			});
 	});
 	it('fail function', done => {
-		let error;
 		return vfs.src('test/fixtures/tslint/invalid.ts', {
 			base: process.cwd()
 		})
@@ -43,12 +42,9 @@ describe('TSLint', function() {
 					return false;
 				}
 			}))
-
-			.on('error', ex => {
-				error = error || ex;
-			}).on('finish', () => {
-				assert.ok(!error);
+			.on('finish', () => {
 				done();
-			});
+			})
+			.on('error', done);
 	});
 });

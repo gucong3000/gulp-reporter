@@ -62,10 +62,7 @@ describe('ESLint', () => {
 
 	it('multi file', done => {
 		const files  = [];
-		return vfs.src([
-			'test/fixtures/eslint/*.js',
-			'test/fixtures/eslint/*.*.js'
-		], {
+		return vfs.src('test/fixtures/eslint/*.js', {
 			base: process.cwd(),
 		}).pipe(eslint())
 			.pipe(reporter({
