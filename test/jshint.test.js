@@ -13,10 +13,11 @@ describe('JSHint', () => {
 			.pipe(jshint())
 			.pipe(reporter({
 				author: null
-			})).on('error', done).on('finish', () => {
-				assert.ok(/^test\/fixtures\/jshint\/invalid.js\n/.test(sandbox.getLog()));
-				assert.ok(/\s+\[\d+:\d+\]/.test(sandbox.getLog()));
-				assert.ok(/\(JSHint W033\)\n/.test(sandbox.getLog()));
+			})).on('error', () => {
+				const log = sandbox.getLog();
+				assert.ok(/^test\/fixtures\/jshint\/invalid.js$/m.test(log));
+				assert.ok(/\s+\[\d+:\d+\]/.test(log));
+				assert.ok(/\(JSHint W033\)$/m.test(log));
 				done();
 			});
 	});

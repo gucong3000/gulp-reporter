@@ -45,7 +45,7 @@ describe('PostCSS', function() {
 	});
 
 	it('browser reporter', done => {
-		return vfs.src('test/fixtures/postcss/empty-block-with-disables.css', {
+		return vfs.src('test/fixtures/postcss/invalid.css', {
 			base: process.cwd()
 		})
 
@@ -58,9 +58,9 @@ describe('PostCSS', function() {
 				author: null,
 			})).on('data', file => {
 				const contents = file.contents.toString();
-				assert.ok(/\W+test\W+fixtures\W+postcss\W+empty-block-with-disables\.css\b/i.test(contents));
+				assert.ok(/\W+test\W+fixtures\W+postcss\W+invalid\.css\b/i.test(contents));
 				assert.ok(/\[\d+:\d+\]/.test(contents));
-				assert.ok(/\bUnexpected empty block \(stylelint block-no-empty https:\/\/stylelint.io\/user-guide\/rules\/block-no-empty\/\)/.test(contents));
+				assert.ok(/\bUnexpected vendor-prefix/.test(contents));
 				done();
 			});
 
