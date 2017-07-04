@@ -28,6 +28,7 @@
     "gulp-jshint": "^2.0.4",
     "gulp-postcss": "^7.0.0",
     "gulp-tslint": "^8.1.1",
+    "jsdom": "^11.0.0",
     "jshint": "^2.9.4",
     "json-stable-stringify": "^1.0.1",
     "mocha": "^3.4.2",
@@ -72,6 +73,10 @@
     "reporter": [
       "lcov",
       "text-summary"
+    ],
+    "exclude": [
+      "lib/js-browser-reporter.js",
+      "test/**/*"
     ]
   },
   "repository": {

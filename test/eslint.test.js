@@ -6,6 +6,11 @@ const eslint = require('gulp-eslint');
 const reporter = require('../');
 const Vinyl = require('vinyl');
 const sandbox = require('./sandbox');
+const { Script } = require('vm');
+const {
+	JSDOM,
+	VirtualConsole,
+} = require('jsdom');
 
 describe('ESLint', () => {
 	it('console reporter', done => {
@@ -46,7 +51,9 @@ describe('ESLint', () => {
 				author: null
 			})).on('data', file => {
 				assert.ok(file.report.errors);
-				assert.ok(/sort\.js:1:1\)$/.test(file.report.errors[0].inspect()));
+				const error = file.report.errors[0].stack;
+				assert.ok(/\n\s+at\s+.+?sort\.js:1:1$/m.test(error));
+				assert.ok(/\n\s+at\s+https?:\/\/(?:\w+\.)?eslint.org\/docs\/rules\/strict$/m.test(error));
 			}).on('error', ex => {
 				assert.equal(ex.plugin, 'gulp-reporter');
 				done();
@@ -61,7 +68,7 @@ describe('ESLint', () => {
 			.pipe(reporter({
 			})).on('data', file => {
 				files.push(file);
-				assert.ok(file.report.errors || file.report.ignore);
+				assert.ok(file.report.ignore || file.report.errors.length);
 			}).on('error', ex => {
 				assert.equal(ex.plugin, 'gulp-reporter');
 				assert.ok(files.length >= 2);
@@ -117,6 +124,31 @@ describe('ESLint', () => {
 			}).on('error', () => {
 				done();
 			});
+	});
+
+	it('browser reporter', (done) => {
+		return vfs.src('test/fixtures/eslint/invalid.js', {
+			base: process.cwd()
+		})
+			.pipe(eslint())
+			.pipe(reporter({
+				browser: true,
+				author: null,
+				fail: false,
+			})).on('data', file => {
+				const virtualConsole = new VirtualConsole();
+				const dom = new JSDOM('', {
+					runScripts: 'dangerously',
+					virtualConsole: virtualConsole,
+				});
+				const script = new Script(file.contents.toString(), {
+					filename: file.path
+				});
+				virtualConsole.once('error', () => {
+					process.nextTick(done);
+				});
+				dom.runVMScript(script);
+			}).on('error', done);
 	});
 
 	it('Syntax error', done => {
