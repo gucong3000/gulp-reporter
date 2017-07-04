@@ -7,6 +7,8 @@ const vfs = require('vinyl-fs');
 const eslint = require('gulp-eslint');
 const reporter = require('../');
 const gutil = require('gulp-util');
+const through = require('through2');
+// const sandbox = require('./sandbox');
 
 require('./sandbox');
 
@@ -85,7 +87,7 @@ describe('API', () => {
 
 		stream.on('data', (file) => {
 			assert.ok(file.report);
-			assert.ifError(file.report.author);
+			assert.ifError(file.report.fail);
 			done();
 		});
 
@@ -94,8 +96,48 @@ describe('API', () => {
 		stream.write(new gutil.File({
 			cwd: '/',
 			path: '/testcase.js',
-			contents: new Buffer('')
+			contents: new Buffer('heheh')
 		}));
+	});
+
+	it('file not in git repo with error', done => {
+		return vfs.src('test/fixtures/eslint/invalid.js', {
+			base: process.cwd()
+		})
+			.pipe(eslint())
+			.pipe(through.obj((file, encoding, done) => {
+				file.path = '/invalid.js';
+				file.cwd = '/';
+				done(null, file);
+			}))
+			.pipe(reporter({
+				author: null,
+				sort: false,
+			})).on('error', ex => {
+				assert.equal(ex.plugin, 'gulp-reporter');
+				done();
+			});
+	});
+
+	describe('git-author', () => {
+		before(() => {
+			process.env.GIT_AUTHOR_DATE = '@1498558291 +0800';
+			process.env.GIT_AUTHOR_NAME = 'name.test';
+			process.env.GIT_AUTHOR_EMAIL = 'test@test.com';
+		});
+
+		after(() => {
+			delete process.env.GIT_AUTHOR_DATE;
+			delete process.env.GIT_AUTHOR_NAME;
+			delete process.env.GIT_AUTHOR_EMAIL;
+		});
+		it('getEvnAuthor()', () => {
+			assert.deepEqual(gitAuthor(), {
+				time: 1498558291,
+				name: 'name.test',
+				email: 'test@test.com'
+			});
+		});
 	});
 
 	it('`options` as callback', done => {
