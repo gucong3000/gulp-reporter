@@ -52,8 +52,8 @@ describe('ESLint', () => {
 			})).on('data', file => {
 				assert.ok(file.report.errors);
 				const error = file.report.errors[0].stack;
-				assert.ok(/\n\s+at\s+\(.+?sort\.js:1:1\)$/m.test(error));
-				assert.ok(/\n\s+at\s+\(https?:\/\/(?:\w+\.)?eslint.org\/docs\/rules\/strict\)$/m.test(error));
+				assert.ok(/\n\s+at\s+.+?sort\.js:1:1$/m.test(error));
+				assert.ok(/\n\s+at\s+https?:\/\/(?:\w+\.)?eslint.org\/docs\/rules\/strict$/m.test(error));
 			}).on('error', ex => {
 				assert.equal(ex.plugin, 'gulp-reporter');
 				done();
