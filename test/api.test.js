@@ -149,7 +149,7 @@ describe('API', () => {
 			return {
 				fail: false,
 			};
-		})).on('finish', done).on('error', done);
+		})).on('finish', done).on('error', done).resume();
 	});
 
 	it('`options.author` as string (name)', done => {
@@ -159,7 +159,7 @@ describe('API', () => {
 			return {
 				author: 'not exist',
 			};
-		})).on('finish', done).on('error', done);
+		})).on('finish', done).on('error', done).resume();
 	});
 
 	it('`options.author` as string (email)', done => {
@@ -167,7 +167,7 @@ describe('API', () => {
 			base: process.cwd(),
 		}).pipe(eslint()).pipe(reporter({
 			author: 'noexist@mail.com',
-		})).on('finish', done).on('error', done);
+		})).on('finish', done).on('error', done).resume();
 	});
 
 	it('`options.expires` as textual time periods', done => {
@@ -176,7 +176,7 @@ describe('API', () => {
 		}).pipe(eslint()).pipe(reporter({
 			author: null,
 			expires: '1d',
-		})).on('finish', done).on('error', done);
+		})).on('finish', done).on('error', done).resume();
 	});
 
 	it('`options.expires` as ISO 8601 Extended Format', done => {
@@ -185,7 +185,7 @@ describe('API', () => {
 		}).pipe(eslint()).pipe(reporter({
 			author: null,
 			expires: '2018-01-01T00:00:00.000Z',
-		})).on('finish', done).on('error', done);
+		})).on('finish', done).on('error', done).resume();
 	});
 
 	it('`options.expires` as number', done => {
@@ -197,7 +197,7 @@ describe('API', () => {
 		})).on('error', ex => {
 			assert.equal(ex.message, 'Lint failed for: test/fixtures/eslint/invalid.js');
 			done();
-		});
+		}).resume();
 	});
 
 	it('`options.expires` TypeError', done => {
@@ -209,7 +209,7 @@ describe('API', () => {
 		})).on('error', ex => {
 			assert.equal(ex.message, '`options.expires` must be `Number`, `Date` or `string`.');
 			done();
-		});
+		}).resume();
 	});
 
 	it('`options.expires` as number TypeError', done => {
@@ -221,7 +221,7 @@ describe('API', () => {
 		})).on('error', ex => {
 			assert.equal(ex.message, '`options.expires` must be greater than 0.');
 			done();
-		});
+		}).resume();
 	});
 
 	it('`options.expires` as invalid string TypeError', done => {
@@ -233,7 +233,7 @@ describe('API', () => {
 		})).on('error', ex => {
 			assert.equal(ex.message, '`options.expires` must be valid `Date`.');
 			done();
-		});
+		}).resume();
 	});
 
 	it('`options.author.email` as RegExp match nothing', done => {
@@ -243,7 +243,7 @@ describe('API', () => {
 			author: {
 				email: /^not_exist@mail.com$/
 			},
-		})).on('finish', done);
+		})).on('finish', done).resume();
 	});
 
 	it('`options.author.email` as RegExp match anything', done => {
@@ -256,7 +256,7 @@ describe('API', () => {
 		})).on('error', ex => {
 			assert.equal(ex.message, 'Lint failed for: test/fixtures/eslint/invalid.js');
 			done();
-		});
+		}).resume();
 	});
 
 	it('`options.author.name` as RegExp match nothing', done => {
@@ -266,7 +266,7 @@ describe('API', () => {
 			author: {
 				name: /^not_exist$/
 			},
-		})).on('finish', done);
+		})).on('finish', done).resume();
 	});
 
 
@@ -280,7 +280,7 @@ describe('API', () => {
 		})).on('error', ex => {
 			assert.equal(ex.message, 'Lint failed for: test/fixtures/eslint/invalid.js');
 			done();
-		});
+		}).resume();
 	});
 
 });
