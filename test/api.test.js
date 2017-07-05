@@ -142,69 +142,54 @@ describe('API', () => {
 		});
 	});
 
-	it('`options` as callback', done => {
+	it('`options` as callback', () => {
 		return vfs.src('test/fixtures/eslint/*.js', {
 			base: process.cwd(),
 		}).pipe(eslint()).pipe(reporter(() => {
 			return {
 				fail: false,
 			};
-		}))
-			.once('finish', done)
-			.once('error', done)
-			.resume();
+		}));
 	});
 
-	it('`options.author` as string (name)', done => {
+	it('`options.author` as string (name)', () => {
 		return vfs.src('test/fixtures/eslint/invalid.js', {
 			base: process.cwd(),
 		}).pipe(eslint()).pipe(reporter(() => {
 			return {
 				author: 'not exist',
 			};
-		}))
-			.once('finish', done)
-			.once('error', done)
-			.resume();
+		}));
 	});
 
-	it('`options.author` as string (email)', done => {
+	it('`options.author` as string (email)', () => {
 		return vfs.src('test/fixtures/eslint/invalid.js', {
 			base: process.cwd(),
 		}).pipe(eslint()).pipe(reporter({
 			author: 'noexist@mail.com',
-		}))
-			.once('finish', done)
-			.once('error', done)
-			.resume();
+		}));
 	});
 
-	it('`options.expires` as textual time periods', done => {
+	it('`options.expires` as textual time periods', () => {
 		return vfs.src('test/fixtures/eslint/invalid.js', {
 			base: process.cwd(),
 		}).pipe(eslint()).pipe(reporter({
 			author: null,
 			expires: '1d',
-		}))
-			.once('finish', done)
-			.once('error', done)
-			.resume();
+		}));
 	});
 
-	it('`options.expires` as ISO 8601 Extended Format', done => {
+	it('`options.expires` as ISO 8601 Extended Format', () => {
 		return vfs.src('test/fixtures/eslint/invalid.js', {
 			base: process.cwd(),
 		}).pipe(eslint()).pipe(reporter({
 			author: null,
 			expires: '2018-01-01T00:00:00.000Z',
-		}))
-			.once('finish', done)
-			.once('error', done)
-			.resume();
+		}));
 	});
 
 	it('`options.expires` as number', done => {
-		return vfs.src('test/fixtures/eslint/invalid.js', {
+		vfs.src('test/fixtures/eslint/invalid.js', {
 			base: process.cwd(),
 		}).pipe(eslint()).pipe(reporter({
 			author: null,
@@ -216,7 +201,7 @@ describe('API', () => {
 	});
 
 	it('`options.expires` TypeError', done => {
-		return vfs.src('test/fixtures/eslint/invalid.js', {
+		vfs.src('test/fixtures/eslint/invalid.js', {
 			base: process.cwd(),
 		}).pipe(eslint()).pipe(reporter({
 			author: null,
@@ -228,7 +213,7 @@ describe('API', () => {
 	});
 
 	it('`options.expires` as number TypeError', done => {
-		return vfs.src('test/fixtures/eslint/invalid.js', {
+		vfs.src('test/fixtures/eslint/invalid.js', {
 			base: process.cwd(),
 		}).pipe(eslint()).pipe(reporter({
 			author: null,
@@ -240,7 +225,7 @@ describe('API', () => {
 	});
 
 	it('`options.expires` as invalid string TypeError', done => {
-		return vfs.src('test/fixtures/eslint/invalid.js', {
+		vfs.src('test/fixtures/eslint/invalid.js', {
 			base: process.cwd(),
 		}).pipe(eslint()).pipe(reporter({
 			author: null,
@@ -251,18 +236,18 @@ describe('API', () => {
 		}).resume();
 	});
 
-	it('`options.author.email` as RegExp match nothing', done => {
+	it('`options.author.email` as RegExp match nothing', () => {
 		return vfs.src('test/fixtures/eslint/invalid.js', {
 			base: process.cwd(),
 		}).pipe(eslint()).pipe(reporter({
 			author: {
 				email: /^not_exist@mail.com$/
 			},
-		})).once('finish', done).resume();
+		}));
 	});
 
 	it('`options.author.email` as RegExp match anything', done => {
-		return vfs.src('test/fixtures/eslint/invalid.js', {
+		vfs.src('test/fixtures/eslint/invalid.js', {
 			base: process.cwd(),
 		}).pipe(eslint()).pipe(reporter({
 			author: {
@@ -274,19 +259,19 @@ describe('API', () => {
 		}).resume();
 	});
 
-	it('`options.author.name` as RegExp match nothing', done => {
+	it('`options.author.name` as RegExp match nothing', () => {
 		return vfs.src('test/fixtures/eslint/invalid.js', {
 			base: process.cwd(),
 		}).pipe(eslint()).pipe(reporter({
 			author: {
 				name: /^not_exist$/
 			},
-		})).once('finish', done).resume();
+		}));
 	});
 
 
 	it('`options.author.name` as RegExp match anything', done => {
-		return vfs.src('test/fixtures/eslint/invalid.js', {
+		vfs.src('test/fixtures/eslint/invalid.js', {
 			base: process.cwd(),
 		}).pipe(eslint()).pipe(reporter({
 			author: {
