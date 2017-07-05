@@ -93,13 +93,13 @@ describe('API', () => {
 			done();
 		});
 
-		stream.once('error', done);
-
 		stream.write(new gutil.File({
 			cwd: '/',
 			path: '/testcase.js',
 			contents: new Buffer('heheh')
 		}));
+
+		return stream;
 	});
 
 	it('file not in git repo with error', done => {
