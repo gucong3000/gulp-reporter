@@ -18,7 +18,9 @@ describe('API', () => {
 		return shortDocUrl([{
 			doc: 'http://163.com'
 		}]).then(errors => {
-			assert.ok(/^https?:\/\/(goo\.gl|t\.cn)\//.test(errors[0].docShort));
+			if (errors[0].docShort) {
+				assert.ok(/^https?:\/\/(goo\.gl|t\.cn)\//.test(errors[0].docShort));
+			}
 		});
 	});
 
