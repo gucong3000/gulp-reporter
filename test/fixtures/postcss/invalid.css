@@ -1,6 +1,7 @@
 b {
 	-webkit-appearance: none;
 }
-c:-ms-input-placeholder {
+
+input:-ms-input-placeholder {
 	color: #ccc;
 }
