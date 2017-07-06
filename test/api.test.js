@@ -1,5 +1,6 @@
 'use strict';
 const assert = require('assert');
+const addPostcssSource = require('../lib/add-postcss-source');
 const shortDocUrl = require('../lib/short-doc-url');
 const sortErrors = require('../lib/sort-errors');
 const gitAuthor = require('../lib/git-author');
@@ -8,7 +9,6 @@ const eslint = require('gulp-eslint');
 const reporter = require('../');
 const gutil = require('gulp-util');
 const through = require('through2');
-// const sandbox = require('./sandbox');
 
 require('./sandbox');
 
@@ -32,29 +32,111 @@ describe('API', () => {
 		});
 	});
 
-	it('sort-errors', () => {
-		const result = sortErrors([
-			{
-				severity: '!',
-			},
-			{
-				severity: 'info',
-			},
-			{
-			},
-			{
-				severity: 'warn',
-			},
-			{
-				severity: 'error',
-			}
-		]);
+	describe('sort-errors', () => {
+		it('sort by severity', () => {
+			const result = sortErrors([
+				{
+					severity: '!',
+				},
+				{
+					severity: 'info',
+				},
+				{
+				},
+				{
+					severity: 'warn',
+				},
+				{
+					severity: 'error',
+				}
+			]);
 
-		assert.ifError(result[0].severity);
-		assert.equal(result[1].severity, 'error');
-		assert.equal(result[2].severity, 'warn');
-		assert.equal(result[3].severity, 'info');
-		assert.equal(result[4].severity, '!');
+			assert.ifError(result[0].severity);
+			assert.equal(result[1].severity, 'error');
+			assert.equal(result[2].severity, 'warn');
+			assert.equal(result[3].severity, 'info');
+			assert.equal(result[4].severity, '!');
+		});
+
+		it('sort by fileName', () => {
+			const result = sortErrors([
+				{
+					fileName: 'ccc',
+				},
+				{
+					fileName: 'aaa',
+				},
+				{
+				},
+				{
+					fileName: 'bbb',
+				},
+				{
+					fileName: '!',
+				}
+			]);
+
+			assert.ifError(result[0].fileName);
+			assert.equal(result[1].fileName, '!');
+			assert.equal(result[2].fileName, 'aaa');
+			assert.equal(result[3].fileName, 'bbb');
+			assert.equal(result[4].fileName, 'ccc');
+		});
+
+		it('sort by pos', () => {
+			const result = sortErrors([
+				{
+					columnNumber: 3,
+					lineNumber: 8
+				},
+				{
+				},
+				{
+					columnNumber: 3,
+					lineNumber: 4
+				},
+				{
+					columnNumber: 6,
+					lineNumber: 4
+				},
+				{
+					columnNumber: 6,
+					lineNumber: 8
+				},
+			]);
+
+			assert.ifError(result[0].columnNumber);
+			assert.ifError(result[0].lineNumber);
+			assert.equal(result[1].lineNumber, 4);
+			assert.equal(result[1].columnNumber, 3);
+			assert.equal(result[2].lineNumber, 4);
+			assert.equal(result[2].columnNumber, 6);
+			assert.equal(result[3].lineNumber, 8);
+			assert.equal(result[3].columnNumber, 3);
+			assert.equal(result[4].lineNumber, 8);
+			assert.equal(result[4].columnNumber, 6);
+		});
+	});
+
+	describe('add-postcss-source', () => {
+		it('get source fail', () => {
+			const errors = ['testcase'];
+			assert.equal(addPostcssSource({}, errors), errors);
+		});
+		it('get error line fail', () => {
+			const errors = ['testcase'];
+			assert.deepEqual(addPostcssSource({
+				postcss : {
+					root: {
+						source: {
+							input: {
+								css: 'a{}'
+							}
+						}
+					}
+				}
+			}, errors), errors);
+		});
 	});
 
 	describe('git precommit env', () => {
