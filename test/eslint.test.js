@@ -20,12 +20,17 @@ describe('ESLint', () => {
 			.pipe(eslint())
 			.pipe(reporter({
 				author: 'qil@jumei.com',
-			})).on('error', ex => {
+			}))
+			.on('error', ex => {
+				console.error(ex);
 				assert.equal(ex.plugin, 'gulp-reporter');
 				assert.equal(ex.message, 'Lint failed for: test/fixtures/eslint/invalid.js');
 				const result = sandbox.getLog().split(/\s*\r?\n\s*/g);
 				assert.equal(result[0], 'test/fixtures/eslint/invalid.js');
 				done();
+			})
+			.on('finish', () => {
+				console.error(gutil.log.lastCall.args[0]);
 			});
 	});
 
@@ -36,7 +41,9 @@ describe('ESLint', () => {
 			.pipe(eslint())
 			.pipe(reporter({
 				author: null
-			})).on('error', done).on('data', file => {
+			}))
+			.on('error', done)
+			.on('data', file => {
 				assert.ok(file.report.ignore);
 				done();
 			});
@@ -49,12 +56,14 @@ describe('ESLint', () => {
 			.pipe(eslint())
 			.pipe(reporter({
 				author: null
-			})).on('data', file => {
+			}))
+			.on('data', file => {
 				assert.ok(file.report.errors);
 				const error = file.report.errors[0].stack;
 				assert.ok(/\n\s+at\s+.+?sort\.js:1:1$/m.test(error));
 				assert.ok(/\n\s+at\s+https?:\/\/(?:\w+\.)?eslint.org\/docs\/rules\/strict$/m.test(error));
-			}).on('error', ex => {
+			})
+			.on('error', ex => {
 				assert.equal(ex.plugin, 'gulp-reporter');
 				done();
 			});
@@ -64,12 +73,15 @@ describe('ESLint', () => {
 		const files  = [];
 		return vfs.src('test/fixtures/eslint/*.js', {
 			base: process.cwd(),
-		}).pipe(eslint())
+		})
+			.pipe(eslint())
 			.pipe(reporter({
-			})).on('data', file => {
+			}))
+			.on('data', file => {
 				files.push(file);
 				assert.ok(file.report.ignore || file.report.errors.length);
-			}).on('error', ex => {
+			})
+			.on('error', ex => {
 				assert.equal(ex.plugin, 'gulp-reporter');
 				assert.ok(files.length >= 2);
 				done();
@@ -79,9 +91,13 @@ describe('ESLint', () => {
 	it('not fail & console', done => {
 		return vfs.src('test/fixtures/eslint/*.js', {
 			base: process.cwd(),
-		}).pipe(eslint()).pipe(reporter({
-			fail: false,
-		})).on('finish', done).on('error', done);
+		})
+			.pipe(eslint())
+			.pipe(reporter({
+				fail: false,
+			}))
+			.on('finish', done)
+			.on('error', done);
 	});
 
 	it('not commit file', done => {
@@ -94,10 +110,12 @@ describe('ESLint', () => {
 			console: msg => {
 				message.push(gutil.colors.stripColor(msg));
 			}
-		})).on('finish', () => {
-			assert.ok(/\s+0+\s+\(Not Committed Yet <not.committed.yet> \d+\D\d+\D\d+.+?\)/.test(message[0]));
-			done();
-		}).on('error', done);
+		}))
+			.on('finish', () => {
+				assert.ok(/\s+0+\s+\(Not Committed Yet <not.committed.yet> \d+\D\d+\D\d+.+?\)/.test(message[0]));
+				done();
+			})
+			.on('error', done);
 
 		stream.write(new Vinyl({
 			base: process.cwd(),
@@ -118,10 +136,12 @@ describe('ESLint', () => {
 			}))
 			.pipe(reporter({
 				author: null,
-			})).on('data', file => {
+			}))
+			.on('data', file => {
 				const errors = file.report.errors;
 				assert.equal(errors[errors.length - 1].severity, 'warn');
-			}).on('error', () => {
+			})
+			.on('error', () => {
 				done();
 			});
 	});
@@ -135,7 +155,8 @@ describe('ESLint', () => {
 				browser: true,
 				author: null,
 				fail: false,
-			})).on('data', file => {
+			}))
+			.on('data', file => {
 				const virtualConsole = new VirtualConsole();
 				const dom = new JSDOM('', {
 					runScripts: 'dangerously',
@@ -148,7 +169,8 @@ describe('ESLint', () => {
 					process.nextTick(done);
 				});
 				dom.runVMScript(script);
-			}).on('error', done);
+			})
+			.on('error', done);
 	});
 
 	it('Syntax error', done => {
@@ -161,7 +183,8 @@ describe('ESLint', () => {
 				console: msg => {
 					message.push(msg);
 				}
-			})).on('error', () => {
+			}))
+			.on('error', () => {
 				assert.ok(/\bParsing error:/.test(message[0]));
 				done();
 			});
