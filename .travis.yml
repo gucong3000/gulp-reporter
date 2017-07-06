@@ -4,6 +4,8 @@ node_js:
   - "stable"
   - "7"
   - "6"
+test:
+  - "npm test || node_modules/.bin/mocha.cmd test/eslint.test.js"
 after_success:
   - "node srcipts/shorturl.js"
   - "npm run coveralls"
