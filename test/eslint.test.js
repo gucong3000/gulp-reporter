@@ -19,18 +19,14 @@ describe('ESLint', () => {
 		})
 			.pipe(eslint())
 			.pipe(reporter({
-				author: 'qil@jumei.com',
+				author: null,
 			}))
 			.on('error', ex => {
-				console.error(ex);
 				assert.equal(ex.plugin, 'gulp-reporter');
 				assert.equal(ex.message, 'Lint failed for: test/fixtures/eslint/invalid.js');
 				const result = sandbox.getLog().split(/\s*\r?\n\s*/g);
 				assert.equal(result[0], 'test/fixtures/eslint/invalid.js');
 				done();
-			})
-			.on('finish', () => {
-				console.error(gutil.log.lastCall.args[0]);
 			});
 	});
 
