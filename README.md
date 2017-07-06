@@ -37,6 +37,13 @@ gulp.src('test/fixtures/eslint/invalid.js')
 ```js
 reporter(options)
 ```
+or
+
+```js
+reporter(file => {
+	return options
+})
+```
 
 ### options.ignore
 
@@ -70,46 +77,33 @@ Default: `true`
 
 Messages will not be sorted by severity/line/column, [or your function](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/sort).
 
-### options.filter
 
-Type: `Array`
-Default: `[reporter.filterByAuthor()]`
+### reporter.author
+Type: `{name?: string|RegExp, email?: string|RegExp}`
 
-Filter `Error` object by your callback functions. support Async function
+Default: Read from GIT pre-commit environment and fallbacks with GIT commad `git log --max-count=1 --no-merges`
 
-The default function will check the GIT author of the code that is in errors, and adjusts the error level to 'warn' if this is not related to the current author
+Demote each error that is not belong to specified author to a warning.
 
-```js
-gulp.src('test/fixtures/postcss/test.css')
-	.pipe(postcss())
-	.pipe(reporter({
-		filter: async function (errs, file){
-			await readFile(file.path);
-			return errs.filter(err => err.plugin === 'stylelint');
-		}
-	})
-)
-```
+### reporter.expires
 
-### options.beep
+Type: `string` for [time periods](https://www.npmjs.com/package/to-time#usage), `number` of unix timestamp, `Date`
 
-Type: `boolean`
-
-Default: `true`
-
-Make your terminal beep if an error has been reported for any file.
+Demote each error that created before the specified time to a warning
 
 ### options.fail
 
 Type: `boolean|function`
+
+Default: `true`
 
 Stop a task/stream if an error has been reported for any file, but wait for all of them to be processed first.
 
 You can use a function to determine stop or not to stop.
 
 ```js
-gulp.src('test/fixtures/postcss/test.css')
-	.pipe(postcss())
+gulp.src('src/test.css')
+	.pipe(postcss([stylelint]))
 	.pipe(reporter({
 		fail: function(err, file) {
 			return err.plugin === 'stylelint' && /^src\b/.test(file.relative);
@@ -117,20 +111,3 @@ gulp.src('test/fixtures/postcss/test.css')
 	})
 )
 ```
-
-## `reporter.filterByAuthor(options)`
-
-According to the author of GIT commit, downgraded each error to warning that is not commit by this author.
-If options are unset, It will lookup author info from environment or git log
-
-### options.name
-
-Type: `string`
-
-Default: `${GIT_AUTHOR_NAME}` || `git log --max-count=1 --no-merges --format=%aN`
-
-### options.email
-
-Type: `string`
-
-Default: `${GIT_AUTHOR_EMAIL}` || `git log --max-count=1 --no-merges --format=%aE`

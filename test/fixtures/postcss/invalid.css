@@ -1,0 +1,7 @@
+b {
+	-webkit-appearance: none;
+}
+
+input:-ms-input-placeholder {
+	color: #ccc;
+}

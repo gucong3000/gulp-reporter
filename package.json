@@ -5,20 +5,23 @@
   },
   "dependencies": {
     "anymatch": "^1.3.0",
+    "buffered-spawn": "^3.3.2",
     "bufferstreams": "^1.1.1",
     "emphasize": "^1.4.0",
-    "goo.gl": "^0.1.4",
     "gulp-util": "^3.0.8",
     "lodash.get": "^4.4.2",
     "log-symbols": "^1.0.2",
-    "os-locale": "^2.0.0"
+    "os-locale": "^2.0.0",
+    "request-promise-native": "^1.0.4"
   },
   "description": "Error report localization for: CSSLint/EditorConfig/ESLint/HTMLHint/JSCS/JSHint/PostCSS/TSLint",
   "devDependencies": {
     "cover": "^0.2.9",
     "coveralls": "^2.13.1",
+    "cross-env": "^5.0.1",
     "eclint": "^2.2.0",
-    "eslint": "^4.0.0",
+    "eslint": "^4.1.1",
+    "goo.gl": "^0.1.4",
     "gulp-csslint": "^1.0.0",
     "gulp-eslint": "^4.0.0",
     "gulp-html-postcss": "github:gucong3000/gulp-postcss#fix_git_install",
@@ -26,19 +29,20 @@
     "gulp-jscs": "^4.0.0",
     "gulp-jshint": "^2.0.4",
     "gulp-tslint": "^8.1.1",
-    "jsdom": "^11.0.0",
-    "jshint": "^2.9.4",
+    "jsdom": "^11.1.0",
+    "jshint": "^2.9.5",
     "json-stable-stringify": "^1.0.1",
     "mocha": "^3.4.2",
     "nyc": "^11.0.3",
-    "postcss": "^6.0.2",
+    "postcss": "^6.0.6",
     "sinon": "^2.3.6",
-    "stylelint": "^7.11.1",
+    "stylelint": "^7.12.0",
     "stylelint-config-standard": "^16.0.0",
     "through2": "^2.0.3",
-    "tslint": "^5.4.3",
-    "typescript": "^2.3.4",
-    "vinyl": "^2.0.2",
+    "to-time": "^1.0.2",
+    "tslint": "^5.5.0",
+    "typescript": "^2.4.1",
+    "vinyl": "^2.1.0",
     "vinyl-fs": "^2.4.4"
   },
   "directories": {
@@ -67,19 +71,31 @@
   "main": "./lib/gulp-plugin.js",
   "name": "gulp-reporter",
   "nyc": {
+    "check-coverage": true,
+    "lines": 97,
+    "statements": 97,
+    "functions": 96,
+    "branches": 86,
+    "exclude": [
+      "lib/js-browser-reporter.js",
+      "test/**/*"
+    ],
     "reporter": [
       "lcov",
       "text-summary"
-    ]
+    ],
+    "cache": true
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gucong3000/gulp-reporter.git"
   },
   "scripts": {
-    "coveralls": "npm run test && coveralls < coverage/lcov.info",
+    "test_lang": "cross-env LANG=zh_CN npm run mocha -- --color && cross-env LANG=en_US npm run mocha -- --no-color",
+    "coveralls": "coveralls < coverage/lcov.info",
+    "mocha": "mocha test/*.test.js --no-timeouts",
     "pretest": "eslint lib test/*.test.js",
-    "test": "nyc mocha test/*.test.js --no-timeouts"
+    "test": "nyc npm run test_lang"
   },
   "version": "1.9.2"
 }

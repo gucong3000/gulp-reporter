@@ -1,14 +1,16 @@
 'use strict';
-const describe = require('mocha').describe;
-const it = require('mocha').it;
 const assert = require('assert');
 const vfs = require('vinyl-fs');
 const gutil = require('gulp-util');
 const eslint = require('gulp-eslint');
 const reporter = require('../');
 const Vinyl = require('vinyl');
-
-require('./sandbox');
+const sandbox = require('./sandbox');
+const { Script } = require('vm');
+const {
+	JSDOM,
+	VirtualConsole,
+} = require('jsdom');
 
 describe('ESLint', () => {
 	it('console reporter', done => {
@@ -17,22 +19,12 @@ describe('ESLint', () => {
 		})
 			.pipe(eslint())
 			.pipe(reporter({
-				filter: [
-					reporter.filterByAuthor({
-						email: 'qil@jumei.com'
-					}),
-					reporter.filterByAuthor({
-						name: '刘祺'
-					}),
-					error => {
-						error.toString = error.inspect;
-						return error;
-					}
-				]
-			})).on('error', ex => {
+				author: null,
+			}))
+			.on('error', ex => {
 				assert.equal(ex.plugin, 'gulp-reporter');
 				assert.equal(ex.message, 'Lint failed for: test/fixtures/eslint/invalid.js');
-				const result = gutil.log.lastCall.args[0].split(/\s*\r?\n\s*/g);
+				const result = sandbox.getLog().split(/\s*\r?\n\s*/g);
 				assert.equal(result[0], 'test/fixtures/eslint/invalid.js');
 				done();
 			});
@@ -44,8 +36,10 @@ describe('ESLint', () => {
 		})
 			.pipe(eslint())
 			.pipe(reporter({
-				filter: null
-			})).on('error', done).on('data', file => {
+				author: null
+			}))
+			.on('error', done)
+			.on('data', file => {
 				assert.ok(file.report.ignore);
 				done();
 			});
@@ -57,11 +51,15 @@ describe('ESLint', () => {
 		})
 			.pipe(eslint())
 			.pipe(reporter({
-				filter: null
-			})).on('data', file => {
+				author: null
+			}))
+			.on('data', file => {
 				assert.ok(file.report.errors);
-				assert.ok(/sort\.js:1:1\)$/.test(file.report.errors[0].inspect()));
-			}).on('error', ex => {
+				const error = file.report.errors[0].stack;
+				assert.ok(/\n\s+at\s+.+?sort\.js:1:1$/m.test(error));
+				assert.ok(/\n\s+at\s+https?:\/\/(?:\w+\.)?eslint.org\/docs\/rules\/strict$/m.test(error));
+			})
+			.on('error', ex => {
 				assert.equal(ex.plugin, 'gulp-reporter');
 				done();
 			});
@@ -71,13 +69,15 @@ describe('ESLint', () => {
 		const files  = [];
 		return vfs.src('test/fixtures/eslint/*.js', {
 			base: process.cwd(),
-		}).pipe(eslint())
+		})
+			.pipe(eslint())
 			.pipe(reporter({
-				filter: null
-			})).on('data', file => {
+			}))
+			.on('data', file => {
 				files.push(file);
-				assert.ok(file.report.errors || file.report.ignore);
-			}).on('error', ex => {
+				assert.ok(file.report.ignore || file.report.errors.length);
+			})
+			.on('error', ex => {
 				assert.equal(ex.plugin, 'gulp-reporter');
 				assert.ok(files.length >= 2);
 				done();
@@ -85,19 +85,15 @@ describe('ESLint', () => {
 	});
 
 	it('not fail & console', done => {
-		let lastMsg;
 		return vfs.src('test/fixtures/eslint/*.js', {
 			base: process.cwd(),
-		}).pipe(eslint()).pipe(reporter({
-			fail: false,
-			filter: null,
-			console: msg => {
-				lastMsg = msg;
-			}
-		})).on('finish', () => {
-			assert.ok(/^Lint failed for:/.test(lastMsg));
-			done();
-		}).on('error', done);
+		})
+			.pipe(eslint())
+			.pipe(reporter({
+				fail: false,
+			}))
+			.on('finish', done)
+			.on('error', done);
 	});
 
 	it('not commit file', done => {
@@ -107,15 +103,15 @@ describe('ESLint', () => {
 		});
 		stream.pipe(reporter({
 			fail: false,
-			filter: null,
 			console: msg => {
-				message.push(msg);
+				message.push(gutil.colors.stripColor(msg));
 			}
-		})).on('finish', () => {
-			assert.ok(/\s+0+\s+\(Not Committed Yet <not.committed.yet> \d+\D\d+\D\d+.+?\)/.test(message[0]));
-			assert.ok(/^Lint failed for:/.test(message[message.length - 1]));
-			done();
-		}).on('error', done);
+		}))
+			.on('finish', () => {
+				assert.ok(/\s+0+\s+\(Not Committed Yet <not.committed.yet> \d+\D\d+\D\d+.+?\)/.test(message[0]));
+				done();
+			})
+			.on('error', done);
 
 		stream.write(new Vinyl({
 			base: process.cwd(),
@@ -125,17 +121,68 @@ describe('ESLint', () => {
 		stream.end();
 	});
 
+	it('warn', done => {
+		return vfs.src('test/fixtures/eslint/invalid.js', {
+			base: process.cwd()
+		})
+			.pipe(eslint({
+				rules: {
+					'strict': 'warn'
+				},
+			}))
+			.pipe(reporter({
+				author: null,
+			}))
+			.on('data', file => {
+				const errors = file.report.errors;
+				assert.equal(errors[errors.length - 1].severity, 'warn');
+			})
+			.on('error', () => {
+				done();
+			});
+	});
+
+	it('browser reporter', (done) => {
+		return vfs.src('test/fixtures/eslint/invalid.js', {
+			base: process.cwd()
+		})
+			.pipe(eslint())
+			.pipe(reporter({
+				browser: true,
+				author: null,
+				fail: false,
+			}))
+			.on('data', file => {
+				const virtualConsole = new VirtualConsole();
+				const dom = new JSDOM('', {
+					runScripts: 'dangerously',
+					virtualConsole: virtualConsole,
+				});
+				const script = new Script(file.contents.toString(), {
+					filename: file.path
+				});
+				virtualConsole.once('error', () => {
+					process.nextTick(done);
+				});
+				dom.runVMScript(script);
+			})
+			.on('error', done);
+	});
+
 	it('Syntax error', done => {
+		const message = [];
 		return vfs.src('test/fixtures/eslint/SyntaxError.js', {
 			base: process.cwd()
 		})
 			.pipe(eslint())
 			.pipe(reporter({
-				filter: function(error) {
-					assert.ok(/^Parsing error:/.test(error[0].message));
-					done();
+				console: msg => {
+					message.push(msg);
 				}
-			}));
+			}))
+			.on('error', () => {
+				assert.ok(/\bParsing error:/.test(message[0]));
+				done();
+			});
 	});
-
 });
