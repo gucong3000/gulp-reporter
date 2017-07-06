@@ -92,6 +92,9 @@ describe('API', () => {
 				{
 				},
 				{
+					columnNumber: 2
+				},
+				{
 					columnNumber: 3,
 					lineNumber: 4
 				},
@@ -105,16 +108,18 @@ describe('API', () => {
 				},
 			]);
 
-			assert.ifError(result[0].columnNumber);
 			assert.ifError(result[0].lineNumber);
-			assert.equal(result[1].lineNumber, 4);
-			assert.equal(result[1].columnNumber, 3);
+			assert.ifError(result[0].columnNumber);
+			assert.ifError(result[1].lineNumber);
+			assert.equal(result[1].columnNumber, 2);
 			assert.equal(result[2].lineNumber, 4);
-			assert.equal(result[2].columnNumber, 6);
-			assert.equal(result[3].lineNumber, 8);
-			assert.equal(result[3].columnNumber, 3);
+			assert.equal(result[2].columnNumber, 3);
+			assert.equal(result[3].lineNumber, 4);
+			assert.equal(result[3].columnNumber, 6);
 			assert.equal(result[4].lineNumber, 8);
-			assert.equal(result[4].columnNumber, 6);
+			assert.equal(result[4].columnNumber, 3);
+			assert.equal(result[5].lineNumber, 8);
+			assert.equal(result[5].columnNumber, 6);
 		});
 	});
 
