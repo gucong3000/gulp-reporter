@@ -95,6 +95,8 @@ Demote each error that created before the specified time to a warning
 
 Type: `boolean|function`
 
+Default: `true`
+
 Stop a task/stream if an error has been reported for any file, but wait for all of them to be processed first.
 
 You can use a function to determine stop or not to stop.
