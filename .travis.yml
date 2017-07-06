@@ -4,7 +4,12 @@ node_js:
   - "stable"
   - "7"
   - "6"
-test:
+matrix:
+  fast_finish: true
+  allow_failures:
+    - env: LANG=zh_CN
+    - env: LANG=en_US
+script:
   - "npm test || node_modules/.bin/mocha.cmd test/eslint.test.js"
 after_success:
   - "node srcipts/shorturl.js"
