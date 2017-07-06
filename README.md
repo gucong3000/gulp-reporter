@@ -79,7 +79,7 @@ Messages will not be sorted by severity/line/column, [or your function](https://
 
 
 ### reporter.author
-Type: `{name?: string, email?: string}`
+Type: `{name?: string|RegExp, email?: string|RegExp}`
 
 Default: Read from GIT pre-commit environment and fallbacks with GIT commad `git log --max-count=1 --no-merges`
 
