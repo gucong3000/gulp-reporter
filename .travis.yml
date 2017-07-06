@@ -7,7 +7,8 @@ node_js:
 env:
   - LANG=zh_CN
   - LANG=en_US
+script:
+  - npm test || node_modules/.bin/mocha test/eslint.test.js && exit -1
 after_success:
-  - "node_modules/.bin/mocha test/eslint.test.js"
   - "node srcipts/shorturl.js"
   - "npm run coveralls"
