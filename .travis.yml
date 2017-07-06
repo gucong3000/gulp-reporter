@@ -4,13 +4,10 @@ node_js:
   - "stable"
   - "7"
   - "6"
-matrix:
-  fast_finish: true
-  allow_failures:
-    - env: LANG=zh_CN
-    - env: LANG=en_US
-script:
-  - "npm test || node_modules/.bin/mocha.cmd test/eslint.test.js"
+env:
+  - LANG=zh_CN
+  - LANG=en_US
 after_success:
+  - "node_modules/.bin/mocha test/eslint.test.js"
   - "node srcipts/shorturl.js"
   - "npm run coveralls"
