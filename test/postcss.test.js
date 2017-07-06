@@ -7,6 +7,22 @@ const stylelint = require('stylelint');
 const sandbox = require('./sandbox');
 
 describe('PostCSS', function() {
+
+	it('not fail when valid', done => {
+		return vfs.src('test/fixtures/postcss/valid.css', {
+			base: process.cwd()
+		})
+
+			.pipe(postcss([
+				stylelint,
+			]))
+			.pipe(reporter({
+				author: null
+			}))
+			.on('error', done)
+			.on('finish', done);
+	});
+
 	it('not fail with only warning', done => {
 		return vfs.src('test/fixtures/postcss/empty-block-with-disables.css', {
 			base: process.cwd()
@@ -18,9 +34,11 @@ describe('PostCSS', function() {
 			.pipe(reporter({
 				author: null
 			}))
-			.on('error', done).on('finish', () => {
-				assert.ok(/\s+\[\d+:\d+\]/.test(sandbox.getLog()));
-				assert.ok(sandbox.getLog().indexOf('Unexpected empty block (stylelint block-no-empty http') >= 0);
+			.on('error', done)
+			.on('finish', () => {
+				const log = sandbox.getLog();
+				assert.ok(/\s+\[\d+:\d+\]/.test(log));
+				assert.ok(log.indexOf('Unexpected empty block (stylelint block-no-empty http') >= 0);
 				done();
 			});
 	});
@@ -37,9 +55,22 @@ describe('PostCSS', function() {
 				author: null
 			}))
 			.on('error', ex => {
+				const reMessage = /^\[\d+:\d+\]\s+.+?\s+\(\w+\s+\w+(-\w+)*\s+https?:\/\/(goo\.gl|t\.cn)\/\w+\)$/;
+				const reBlame = /^\w+\s\(\S+.*?\s+<.+?>\s+\d+.+?\)$/;
+				const reSource = /^\d+|\s*.*?\S$/;
+
 				assert.equal(ex.message, 'Lint failed for: test/fixtures/postcss/invalid.css');
-				assert.ok(/\s+\[\d+:\d+\]/.test(sandbox.getLog()));
-				assert.ok(sandbox.getLog().indexOf('Unexpected vendor-prefix "-webkit-appearance" (stylelint property-no-vendor-prefix http') >= 0);
+				const log = sandbox.getLog().split(/\s*\r?\n\s*/g);
+				assert.equal(log[0], 'test/fixtures/postcss/invalid.css');
+				assert.ok(reMessage.test(log[1]));
+				assert.ok(reMessage.test(log[4]));
+
+				assert.ok(reSource.test(log[2]));
+				assert.ok(reSource.test(log[5]));
+
+				assert.ok(reBlame.test(log[3]));
+				assert.ok(reBlame.test(log[6]));
+
 				done();
 			});
 	});
