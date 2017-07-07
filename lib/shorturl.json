@@ -859,6 +859,7 @@
 	"https://palantir.github.io/tslint/rules/no-string-literal/": "https://goo.gl/vDEMgC",
 	"https://palantir.github.io/tslint/rules/no-string-throw/": "https://goo.gl/r155Pj",
 	"https://palantir.github.io/tslint/rules/no-switch-case-fall-through/": "https://goo.gl/1pK8Bc",
+	"https://palantir.github.io/tslint/rules/no-this-assignment/": "https://goo.gl/mnPdMH",
 	"https://palantir.github.io/tslint/rules/no-trailing-whitespace/": "https://goo.gl/YvyN98",
 	"https://palantir.github.io/tslint/rules/no-unbound-method/": "https://goo.gl/iyp8Zi",
 	"https://palantir.github.io/tslint/rules/no-unnecessary-callback-wrapper/": "https://goo.gl/fVUBYM",
