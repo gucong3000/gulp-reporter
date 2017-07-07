@@ -42,9 +42,7 @@ reporter(options)
 or
 
 ```js
-reporter(file => {
-	return options
-})
+reporter((file) => options)
 ```
 
 ### options.ignore
@@ -100,16 +98,3 @@ Type: `boolean|function`
 Default: `true`
 
 Stop a task/stream if an error has been reported for any file, but wait for all of them to be processed first.
-
-You can use a function to determine stop or not to stop.
-
-```js
-gulp.src('src/test.css')
-	.pipe(postcss([stylelint]))
-	.pipe(reporter({
-		fail: function(err, file) {
-			return err.plugin === 'stylelint' && /^src\b/.test(file.relative);
-		}
-	})
-)
-```
