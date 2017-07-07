@@ -5,5 +5,4 @@ node_js:
   - "7"
   - "6"
 after_success:
-  - "node srcipts/shorturl.js"
   - "npm run coveralls"
