@@ -1,7 +1,11 @@
 'use strict';
+const promisify = require('util').promisify;
+if (!promisify) {
+	process.exit(0);
+}
 // const { JSDOM } = require('jsdom');
 const stringify = require('json-stable-stringify');
-const readdir = require('util').promisify(require('fs').readdir);
+const readdir = promisify(require('fs').readdir);
 const shorturlCache = require('../lib/shorturl.json');
 const request = require('request-promise-native');
 const googl = require('goo.gl');
