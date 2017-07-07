@@ -24,7 +24,7 @@
     "goo.gl": "^0.1.4",
     "gulp-csslint": "^1.0.0",
     "gulp-eslint": "^4.0.0",
-    "gulp-html-postcss": "github:gucong3000/gulp-postcss",
+    "gulp-html-postcss": "github:StartPolymer/gulp-html-postcss",
     "gulp-htmlhint": "^0.3.1",
     "gulp-jscs": "^4.0.0",
     "gulp-jshint": "^2.0.4",
