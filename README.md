@@ -16,6 +16,8 @@ Error report localization for:
 [PostCSS](https://github.com/StartPolymer/gulp-html-postcss)
 [TSLint](https://github.com/panuhorsmalahti/gulp-tslint)
 
+Analyzing blame of the error, only fail for new error and error written by the current GIT user.
+
 ## Install
 
 ```bash
@@ -30,7 +32,7 @@ gulp.src('test/fixtures/eslint/invalid.js')
 	.pipe(reporter(options));
 ```
 
-![demo](demo.gif)
+![demo](demo.png)
 
 ## API
 
