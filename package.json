@@ -20,7 +20,7 @@
     "coveralls": "^2.13.1",
     "cross-env": "^5.0.1",
     "eclint": "^2.2.0",
-    "eslint": "^4.1.1",
+    "eslint": "^4.2.0",
     "goo.gl": "^0.1.4",
     "gulp-csslint": "^1.0.0",
     "gulp-eslint": "^4.0.0",
