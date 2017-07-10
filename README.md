@@ -75,7 +75,7 @@ Type: `boolean|function`
 
 Default: `true`
 
-Messages will not be sorted by fileName/severity/line/column, [or your function](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/sort#Parameters).
+Messages will be sorted by fileName/severity/line/column, [or your function](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/sort#Parameters).
 
 
 ### reporter.author
