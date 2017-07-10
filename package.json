@@ -12,11 +12,12 @@
     "lodash.get": "^4.4.2",
     "log-symbols": "^1.0.2",
     "os-locale": "^2.0.0",
-    "request-promise-native": "^1.0.4"
+    "request-promise-native": "^1.0.4",
+    "through2": "^2.0.3",
+    "to-time": "^1.0.2"
   },
   "description": "Error report localization for: CSSLint/EditorConfig/ESLint/HTMLHint/JSCS/JSHint/PostCSS/TSLint",
   "devDependencies": {
-    "cover": "^0.2.9",
     "coveralls": "^2.13.1",
     "cross-env": "^5.0.1",
     "eclint": "^2.2.0",
@@ -34,12 +35,9 @@
     "json-stable-stringify": "^1.0.1",
     "mocha": "^3.4.2",
     "nyc": "^11.0.3",
-    "postcss": "^6.0.6",
     "sinon": "^2.3.6",
     "stylelint": "^7.12.0",
     "stylelint-config-standard": "^16.0.0",
-    "through2": "^2.0.3",
-    "to-time": "^1.0.2",
     "tslint": "^5.5.0",
     "typescript": "^2.4.1",
     "vinyl": "^2.1.0",
