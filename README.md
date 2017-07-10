@@ -13,7 +13,7 @@ Error report localization for:
 [HTMLHint](https://github.com/bezoerb/gulp-htmlhint)
 [JSCS](https://github.com/jscs-dev/gulp-jscs)
 [JSHint](https://github.com/spalger/gulp-jshint)
-[PostCSS](https://github.com/postcss/gulp-postcss)
+[PostCSS](https://github.com/StartPolymer/gulp-html-postcss)
 [TSLint](https://github.com/panuhorsmalahti/gulp-tslint)
 
 Analyzing blame of the error, only fail for new error and error written by the current GIT user.
