@@ -51,7 +51,7 @@ Type: `Array|string|RegExp|function`
 
 Default: `/\Wmin\.\w+$/`
 
-Glob patterns for paths to ignore. String or array of strings.
+Glob patterns for paths to ignore. String or array of strings. See: https://github.com/es128/anymatch
 
 ### options.browser
 
@@ -75,7 +75,7 @@ Type: `boolean|function`
 
 Default: `true`
 
-Messages will not be sorted by severity/line/column, [or your function](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/sort).
+Messages will not be sorted by fileName/severity/line/column, [or your function](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/sort#Parameters).
 
 
 ### reporter.author
