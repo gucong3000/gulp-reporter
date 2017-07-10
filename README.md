@@ -78,14 +78,14 @@ Default: `true`
 Messages will be sorted by fileName/severity/line/column, [or your function](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/sort#Parameters).
 
 
-### reporter.author
+### options.author
 Type: `{name?: string|RegExp, email?: string|RegExp}`
 
 Default: Read from GIT pre-commit environment and fallbacks with GIT commad `git log --max-count=1 --no-merges`
 
 Demote each error that is not belong to specified author to a warning.
 
-### reporter.expires
+### options.expires
 
 Type: `string` for [time periods](https://www.npmjs.com/package/to-time#usage), `number` of unix timestamp, `Date`
 
