@@ -6,6 +6,8 @@ const eslint = require('gulp-eslint');
 const reporter = require('../');
 const Vinyl = require('vinyl');
 const sandbox = require('./sandbox');
+const path = require('path');
+
 const { Script } = require('vm');
 const {
 	JSDOM,
@@ -75,7 +77,11 @@ describe('ESLint', () => {
 			}))
 			.on('data', file => {
 				files.push(file);
-				assert.ok(file.report.ignore || file.report.errors.length);
+				if (/\.min\.\w+/.test(file.path)) {
+					assert.ifError(file.report.errors.length);
+				} else {
+					assert.ok(file.report.errors.length);
+				}
 			})
 			.on('error', ex => {
 				assert.equal(ex.plugin, 'gulp-reporter');
@@ -180,6 +186,12 @@ describe('ESLint', () => {
 					message.push(msg);
 				}
 			}))
+			.on('data', file => {
+				assert.equal(file.report.errors[0].inspect(), [
+					'ESLintError: Parsing error: Unexpected token (ESLint)',
+					'    at ' + path.resolve('test/fixtures/eslint/SyntaxError.js') + ':2:1'
+				].join('\n'));
+			})
 			.on('error', () => {
 				assert.ok(/\bParsing error:/.test(message[0]));
 				done();

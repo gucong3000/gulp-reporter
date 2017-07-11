@@ -89,7 +89,7 @@ Type: `number`
 
 Default: 512
 
-Demote each error in lines that length greater than this threshold.
+Hide each error in lines that length greater than this threshold.
 
 ### options.fail
 
