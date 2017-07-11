@@ -30,7 +30,7 @@ describe('ESLint', () => {
 			});
 	});
 
-	it('ignoreMatcher *.min.js', done => {
+	it('ignore *.min.js', done => {
 		return vfs.src('test/fixtures/eslint/invalid.min.js', {
 			base: process.cwd()
 		})
@@ -40,7 +40,7 @@ describe('ESLint', () => {
 			}))
 			.on('error', done)
 			.on('data', file => {
-				assert.ok(file.report.ignore);
+				assert.ifError(file.report.fail);
 				done();
 			});
 	});
