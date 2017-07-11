@@ -45,14 +45,6 @@ or
 reporter((file) => options)
 ```
 
-### options.ignore
-
-Type: `Array|string|RegExp|function`
-
-Default: `/\Wmin\.\w+$/`
-
-Glob patterns for paths to ignore. String or array of strings. See: https://github.com/es128/anymatch
-
 ### options.browser
 
 Type: `boolean`
@@ -90,6 +82,14 @@ Demote each error that is not belong to specified author to a warning.
 Type: `string` for [time periods](https://www.npmjs.com/package/to-time#usage), `number` of unix timestamp, `Date`
 
 Demote each error that created before the specified time to a warning
+
+### options.maxLineLength
+
+Type: `number`
+
+Default: 512
+
+Hide each error in lines that length greater than this threshold.
 
 ### options.fail
 
