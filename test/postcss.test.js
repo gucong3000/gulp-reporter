@@ -56,12 +56,11 @@ describe('PostCSS', function() {
 			}))
 			.on('error', ex => {
 				const reMessage = /^\[\d+:\d+\]\s+.+?\s+\(\w+\s+\w+(-\w+)*\s+https?:\/\/(goo\.gl|t\.cn)\/\w+\)$/;
-				const reBlame = /^\w+\s\(\S+.*?\s+<.+?>\s+\d+.+?\)$/;
+				const reBlame = /^\w+…?\s\(\S+.*?\s+<.+?>\s+\d+.+?\)$/;
 				const reSource = /^\d+|\s*.*?\S$/;
 
 				assert.equal(ex.message, 'Lint failed for: test/fixtures/postcss/invalid.css');
 				const log = sandbox.getLog().split(/\s*\r?\n\s*/g);
-				console.log(log.join('\n'));
 				assert.equal(log[0], 'test/fixtures/postcss/invalid.css');
 				assert.ok(reMessage.test(log[1]));
 				assert.ok(reMessage.test(log[4]));

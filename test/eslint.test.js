@@ -114,8 +114,7 @@ describe('ESLint', () => {
 			}
 		}))
 			.on('finish', () => {
-				console.log(message.join('\n'));
-				assert.ok(/^\s*0+\s+\(Not Committed Yet\s+<not.committed.yet>\s+\d+-\d+-\d+ \d+:\d+:\d+\)$/m.test(message[0]));
+				assert.ok(/^\s*0+…?\s+\(Not Committed Yet\s+<not.committed.yet>\s+\d+-\d+-\d+ \d+:\d+:\d+\)$/m.test(message[0]));
 				done();
 			})
 			.on('error', done);
