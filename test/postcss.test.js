@@ -61,6 +61,7 @@ describe('PostCSS', function() {
 
 				assert.equal(ex.message, 'Lint failed for: test/fixtures/postcss/invalid.css');
 				const log = sandbox.getLog().split(/\s*\r?\n\s*/g);
+				console.log(log.join('\n'));
 				assert.equal(log[0], 'test/fixtures/postcss/invalid.css');
 				assert.ok(reMessage.test(log[1]));
 				assert.ok(reMessage.test(log[4]));
