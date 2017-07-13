@@ -114,6 +114,7 @@ describe('ESLint', () => {
 			}
 		}))
 			.on('finish', () => {
+				console.log(message.join('\n'));
 				assert.ok(/\s+0+\s+\(Not Committed Yet <not.committed.yet> \d+\D\d+\D\d+.+?\)/.test(message[0]));
 				done();
 			})
