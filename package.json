@@ -10,10 +10,9 @@
     "emphasize": "^1.4.0",
     "gulp-util": "^3.0.8",
     "lodash.get": "^4.4.2",
-    "log-symbols": "^1.0.2",
     "os-locale": "^2.0.0",
-    "power-assert-util-string-width": "^1.1.1",
     "request-promise-native": "^1.0.4",
+    "string-width": "^2.1.0",
     "term-size": "^1.2.0",
     "through2": "^2.0.3",
     "to-time": "^1.0.2"
