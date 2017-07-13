@@ -71,8 +71,8 @@
   "name": "gulp-reporter",
   "nyc": {
     "check-coverage": true,
-    "lines": 97,
-    "statements": 97,
+    "lines": 96,
+    "statements": 96,
     "functions": 96,
     "branches": 86,
     "exclude": [
