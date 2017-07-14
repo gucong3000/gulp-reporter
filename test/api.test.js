@@ -4,11 +4,13 @@ const addPostcssSource = require('../lib/add-postcss-source');
 const shortDocUrl = require('../lib/short-doc-url');
 const sortErrors = require('../lib/sort-errors');
 const gitAuthor = require('../lib/git-author');
-const vfs = require('vinyl-fs');
-const eslint = require('gulp-eslint');
+const formater = require('../lib/formater');
 const reporter = require('../');
-const gutil = require('gulp-util');
+const eslint = require('gulp-eslint');
 const through = require('through2');
+const gutil = require('gulp-util');
+const vfs = require('vinyl-fs');
+const path = require('path');
 
 require('./sandbox');
 
@@ -184,6 +186,24 @@ describe('API', () => {
 					done();
 				});
 		});
+	});
+
+	it('error formater', () => {
+		const fileName = path.join(__dirname, 'fixtures/testcase');
+
+		assert.equal(gutil.colors.stripColor(formater({
+			cwd: __dirname,
+			path: fileName,
+			report: {
+				errors: [{
+					message: 'testcase message',
+					source: 'testcase source',
+					fileName,
+				}]
+			}
+		}, {
+			_termColumns: 60
+		})), 'fixtures/testcase\n    [01:01] ✔️ testcase message\n       01 | testcase source');
 	});
 
 	it('git-author error', () => {
