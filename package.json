@@ -71,10 +71,10 @@
   "name": "gulp-reporter",
   "nyc": {
     "check-coverage": true,
-    "lines": 96,
-    "statements": 96,
-    "functions": 96,
-    "branches": 86,
+    "lines": 95,
+    "statements": 95,
+    "functions": 95,
+    "branches": 85,
     "exclude": [
       "lib/js-browser-reporter.js",
       "test/**/*"
