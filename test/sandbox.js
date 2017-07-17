@@ -22,5 +22,5 @@ process.on('unhandledRejection', errorHandle);
 process.on('uncaughtException', errorHandle);
 
 exports.getLog = () => (
-	gutil.colors.stripColor(gutil.log.lastCall.args[0]).replace(/ +/g, ' ').replace(/\n \(/g, ' (')
+	gutil.colors.stripColor(gutil.log.lastCall.args[0]).replace(/\u001b]50;\w+=.+?\u0007/, '').replace(/ +/g, ' ').replace(/\n \(/g, ' (')
 );

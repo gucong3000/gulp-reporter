@@ -203,7 +203,7 @@ describe('API', () => {
 			}
 		}, {
 			_termColumns: 60
-		})), 'fixtures/testcase\n    [01:01] ✔️ testcase message\n       01 | testcase source');
+		})).replace(/\u001b]50;\w+=.+?\u0007/, ''), 'fixtures/testcase\n    [01:01] ✔️ testcase message\n       01 | testcase source');
 	});
 
 	it('git-author error', () => {
