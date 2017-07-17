@@ -12,10 +12,12 @@ describe('CSSLint', function() {
 			base: process.cwd(),
 			stripBOM: false,
 		})
-			.pipe(csslint())
+			.pipe(csslint({
+				'duplicate-properties': 2
+			}))
 			.pipe(reporter({
 				author: null
-			})).on('finish', () => {
+			})).on('error', () => {
 				const log = sandbox.getLog();
 				assert.ok(log.indexOf('test/fixtures/csslint/invalid.css') >= 0);
 				assert.ok(log.indexOf('(CSSLint order-alphabetical') >= 0);

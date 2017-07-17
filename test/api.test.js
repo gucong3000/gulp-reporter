@@ -167,6 +167,15 @@ describe('API', () => {
 			});
 		});
 
+		it('getEvnAuthor() fail', () => {
+			delete process.env.GIT_AUTHOR_NAME;
+			assert.notDeepEqual(gitAuthor(), {
+				time: 1498558291,
+				name: 'name.test',
+				email: 'test@test.com'
+			});
+		});
+
 		it('file not in git repo with error', done => {
 			return vfs.src('test/fixtures/eslint/invalid.js', {
 				base: process.cwd()
