@@ -98,3 +98,14 @@ Type: `boolean|function`
 Default: `true`
 
 Stop a task/stream if an error has been reported for any file, but wait for all of them to be processed first.
+
+## Related
+
+[eclint](https://github.com/jedmao/eclint)
+[gulp-csslint](https://github.com/lazd/gulp-csslint)
+[gulp-eslint](https://github.com/adametry/gulp-eslint)
+[gulp-html-postcss](https://github.com/StartPolymer/gulp-html-postcss)
+[gulp-htmlhint](https://github.com/bezoerb/gulp-htmlhint)
+[gulp-jscs](https://github.com/jscs-dev/gulp-jscs)
+[gulp-jshint](https://github.com/spalger/gulp-jshint)
+[gulp-tslint](https://github.com/panuhorsmalahti/gulp-tslint)
