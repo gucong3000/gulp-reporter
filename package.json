@@ -42,7 +42,7 @@
     "stylelint": "^8.0.0",
     "stylelint-config-standard": "^17.0.0",
     "tslint": "^5.5.0",
-    "typescript": "^2.4.1",
+    "typescript": "^2.4.2",
     "vinyl": "^2.1.0",
     "vinyl-fs": "^2.4.4"
   },
