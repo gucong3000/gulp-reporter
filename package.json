@@ -7,6 +7,7 @@
     "ansi-escapes": "^2.0.0",
     "buffered-spawn": "^3.3.2",
     "bufferstreams": "^1.1.1",
+    "chalk": "^2.0.1",
     "cli-truncate": "^1.0.0",
     "emphasize": "^1.5.0",
     "gulp-util": "^3.0.8",
@@ -94,7 +95,7 @@
     "test_lang": "cross-env LANG=zh_CN npm run mocha -- --color && cross-env LANG=en_US npm run mocha -- --no-color",
     "coveralls": "coveralls < coverage/lcov.info",
     "mocha": "mocha test/*.test.js --no-timeouts",
-    "pretest": "eslint lib test/*.test.js && node srcipts/shorturl",
+    "pretest": "eslint lib test/*.test.js && node scripts/shorturl",
     "test": "nyc npm run test_lang"
   },
   "version": "2.1.0"

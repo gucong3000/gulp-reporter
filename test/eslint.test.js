@@ -1,7 +1,7 @@
 'use strict';
 const assert = require('assert');
 const vfs = require('vinyl-fs');
-const gutil = require('gulp-util');
+const stripAnsi = require('strip-ansi');
 const eslint = require('gulp-eslint');
 const reporter = require('../');
 const Vinyl = require('vinyl');
@@ -110,7 +110,7 @@ describe('ESLint', () => {
 		stream.pipe(reporter({
 			fail: false,
 			console: msg => {
-				message.push(gutil.colors.stripColor(msg));
+				message.push(stripAnsi(msg));
 			}
 		}))
 			.on('finish', () => {
