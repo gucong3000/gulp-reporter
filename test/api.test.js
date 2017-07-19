@@ -6,6 +6,7 @@ const sortErrors = require('../lib/sort-errors');
 const gitAuthor = require('../lib/git-author');
 const formater = require('../lib/formater');
 const reporter = require('../');
+const stripAnsi = require('strip-ansi');
 const eslint = require('gulp-eslint');
 const through = require('through2');
 const gutil = require('gulp-util');
@@ -200,7 +201,7 @@ describe('API', () => {
 	it('error formater', () => {
 		const fileName = path.join(__dirname, 'fixtures/testcase');
 
-		assert.equal(gutil.colors.stripColor(formater({
+		assert.equal(stripAnsi(formater({
 			cwd: __dirname,
 			path: fileName,
 			report: {
@@ -212,7 +213,7 @@ describe('API', () => {
 			}
 		}, {
 			_termColumns: 60
-		})).replace(/\u001b]50;\w+=.+?\u0007/, ''), 'fixtures/testcase\n    [01:01] ✔️ testcase message\n       01 | testcase source');
+		}).replace(/\u001b]50;\w+=.+?\u0007/, '')), 'fixtures/testcase\n    [01:01] ✔️ testcase message\n       01 | testcase source');
 	});
 
 	it('git-author error', () => {

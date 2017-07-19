@@ -1,4 +1,5 @@
 'use strict';
+const stripAnsi = require('strip-ansi');
 const gutil = require('gulp-util');
 const sinon = require('sinon');
 const sandbox = sinon.sandbox.create();
@@ -22,5 +23,10 @@ process.on('unhandledRejection', errorHandle);
 process.on('uncaughtException', errorHandle);
 
 exports.getLog = () => (
-	gutil.colors.stripColor(gutil.log.lastCall.args[0]).replace(/\u001b]50;\w+=.+?\u0007/, '').replace(/ +/g, ' ').replace(/\n \(/g, ' (')
+	stripAnsi(
+		gutil.log.lastCall.args[0]
+			.replace(/\u001b]50;\w+=.+?\u0007/, '')
+	)
+		.replace(/\n +\(/g, ' (')
+		.replace(/ +/g, ' ')
 );
