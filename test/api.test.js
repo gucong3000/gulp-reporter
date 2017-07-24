@@ -3,6 +3,7 @@ const assert = require('assert');
 const addPostcssSource = require('../lib/add-postcss-source');
 const shortDocUrl = require('../lib/short-doc-url');
 const sortErrors = require('../lib/sort-errors');
+const getOptions = require('../lib/get-options');
 const gitAuthor = require('../lib/git-author');
 const formater = require('../lib/formater');
 const reporter = require('../');
@@ -244,6 +245,19 @@ describe('API', () => {
 				'    [01:01] ✔️ testcase message.',
 				'       01 | testcase source',
 			]);
+		});
+	});
+
+	describe('getOptions', () => {
+		it('get time fail', () => {
+			return getOptions({
+				expires: 1000,
+			})({
+				cwd: '/_/'
+			}).then(options => {
+				assert.ok(options);
+				assert.ok(options. _expiresTime > 0);
+			});
 		});
 	});
 
