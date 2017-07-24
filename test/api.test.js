@@ -198,30 +198,53 @@ describe('API', () => {
 		});
 	});
 
-	it('error formater', () => {
-		const fileName = path.join(__dirname, 'fixtures/testcase');
+	describe('error formater', () => {
+		it('break line', () => {
+			const fileName = path.join(__dirname, 'fixtures/testcase');
 
-		assert.deepEqual(stripAnsi(formater({
-			cwd: __dirname,
-			path: fileName,
-			report: {
-				errors: [{
-					plugin: 'testLinter',
-					rule: 'testRule',
-					doc: 'http://testLinter.com/testRule',
-					message: 'testcase message.',
-					source: 'testcase source',
-					fileName,
-				}]
-			}
-		}, {
-			_termColumns: 60
-		}).replace(/\u001b]50;\w+=.+?\u0007/, '')).split('\n'), [
-			'fixtures/testcase',
-			'    [01:01] ✔️ testcase message.',
-			'      (testLinter testRule http://testLinter.com/testRule)',
-			'       01 | testcase source',
-		]);
+			assert.deepEqual(stripAnsi(formater({
+				cwd: __dirname,
+				path: fileName,
+				report: {
+					errors: [{
+						plugin: 'testLinter',
+						rule: 'testRule',
+						doc: 'http://testLinter.com/testRule',
+						message: 'testcase message.',
+						source: 'testcase source',
+						fileName,
+					}]
+				}
+			}, {
+				_termColumns: 60
+			}).replace(/\u001b]50;\w+=.+?\u0007/, '')).split('\n'), [
+				'fixtures/testcase',
+				'    [01:01] ✔️ testcase message.',
+				'      (testLinter testRule http://testLinter.com/testRule)',
+				'       01 | testcase source',
+			]);
+		});
+		it('without plugin name', () => {
+			const fileName = path.join(__dirname, 'fixtures/testcase');
+
+			assert.deepEqual(stripAnsi(formater({
+				cwd: __dirname,
+				path: fileName,
+				report: {
+					errors: [{
+						message: 'testcase message.',
+						source: 'testcase source',
+						fileName,
+					}]
+				}
+			}, {
+				_termColumns: 60
+			}).replace(/\u001b]50;\w+=.+?\u0007/, '')).split('\n'), [
+				'fixtures/testcase',
+				'    [01:01] ✔️ testcase message.',
+				'       01 | testcase source',
+			]);
+		});
 	});
 
 	it('git-author error', () => {
