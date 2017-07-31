@@ -87,6 +87,17 @@ describe('API', () => {
 			assert.equal(result[4].fileName, 'ccc');
 		});
 
+		it('sort by demote', () => {
+			const result = sortErrors([
+				{
+					demote: true
+				},
+				{
+				},
+			]);
+			assert.ok(result[1].demote);
+		});
+
 		it('sort by pos', () => {
 			const result = sortErrors([
 				{
