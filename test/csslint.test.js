@@ -41,7 +41,7 @@ describe('CSSLint', function() {
 			})).on('data', file => {
 				const contents = file.contents.toString();
 				assert.ok(/\W+test\W+fixtures\W+csslint\W+invalid\.css\b/i.test(contents));
-				assert.ok(/\[\d+:\d+\]/.test(contents));
+				assert.ok(/\d+:\d+/.test(contents));
 				assert.ok(/\bCSSLint order-alphabetical\b/.test(contents));
 				done();
 			});

@@ -16,7 +16,7 @@ describe('JSHint', () => {
 			})).on('error', () => {
 				const log = sandbox.getLog();
 				assert.ok(/^test\/fixtures\/jshint\/invalid.js$/m.test(log));
-				assert.ok(/\s+\[\d+:\d+\]/.test(log));
+				assert.ok(/\s+\d+:\d+/.test(log));
 				assert.ok(/\(JSHint W033\)$/m.test(log));
 				done();
 			});
