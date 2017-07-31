@@ -221,7 +221,7 @@ describe('API', () => {
 				_termColumns: 60
 			}).replace(/\u001b]50;\w+=.+?\u0007/, '')).split('\n'), [
 				'fixtures/testcase',
-				'    01:01 ✅ testcase message.',
+				'    01:01 ✅️ testcase message.',
 				'      (testLinter testRule http://testLinter.com/testRule)',
 				'       01 | testcase source',
 			]);
@@ -244,7 +244,7 @@ describe('API', () => {
 				_termColumns: 60
 			}).replace(/\u001b]50;\w+=.+?\u0007/, '')).split('\n'), [
 				'fixtures/testcase',
-				'    01:01 ✅ testcase message.',
+				'    01:01 ✅️ testcase message.',
 				'       01 | testcase source',
 			]);
 		});
