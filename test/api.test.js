@@ -244,7 +244,7 @@ describe('API', () => {
 				_termColumns: 60
 			})), [
 				'fixtures/testcase',
-				'    01:01 ✅️ testcase message.',
+				'    01:01 \u{2714}\u{FE0F} testcase message.',
 				'      (testLinter testRule http://testLinter.com/testRule)',
 				'       01 | testcase source',
 			]);
@@ -267,18 +267,27 @@ describe('API', () => {
 				_termColumns: 60
 			})), [
 				'fixtures/testcase',
-				'    01:01 ✅️ testcase message.',
+				'    01:01 \u{2714}\u{FE0F} testcase message.',
 			]);
 		});
 
-		it('mock', () => {
+		it('mock Windows', () => {
+			function splitLog(log) {
+				return stripAnsi(log.replace(/\u001b]50;\w+=.+?\u0007/g, '')).split('\n');
+			}
 			const padStart = String.prototype.padStart;
+			const VSCODE_PID = process.env.VSCODE_PID;
+			const ConEmuPID = process.env.ConEmuPID;
+
 			if (padStart) {
 				delete String.prototype.padStart;
 			}
+			delete process.env.VSCODE_PID;
+			process.env.ConEmuPID = 'mock_pid';
 
 			const formater = proxyquire('../lib/formater', {
-				'is-ci': !process.env.CI
+				'is-ci': false,
+				'is-windows': () => true,
 			});
 
 			const fileName = path.join(__dirname, 'fixtures/testcase');
@@ -298,10 +307,55 @@ describe('API', () => {
 				_termColumns: 60
 			})), [
 				'fixtures/testcase',
-				'    01:01 ✅️ testcase message.',
+				'    01:01 \u{2714}\u{FE0F} testcase message.',
+			]);
+			delete process.env.ConEmuPID;
+			process.env.VSCODE_PID = 'mock_pid';
+			assert.deepEqual(splitLog(formater({
+				cwd: __dirname,
+				path: fileName,
+				report: {
+					errors: [{
+						message: 'testcase message.',
+						source: 'testcase source',
+						fileName,
+					}]
+				}
+			}, {
+				blame: false,
+				_termColumns: 60
+			})), [
+				'fixtures/testcase',
+				'    01:01 \u{2714}\u{FE0F}  testcase message.',
 			]);
 
-			String.prototype.padStart = padStart;
+			delete process.env.VSCODE_PID;
+			assert.deepEqual(splitLog(formater({
+				cwd: __dirname,
+				path: fileName,
+				report: {
+					errors: [{
+						message: 'testcase message.',
+						source: 'testcase source',
+						fileName,
+					}]
+				}
+			}, {
+				blame: false,
+				_termColumns: 60
+			})), [
+				'fixtures/testcase',
+				'    01:01 \u{2714} testcase message.',
+			]);
+			if (padStart) {
+				String.prototype.padStart = padStart;
+			}
+			if (VSCODE_PID) {
+				process.env.VSCODE_PID = VSCODE_PID;
+			}
+			if (ConEmuPID) {
+				process.env.ConEmuPID = ConEmuPID;
+			}
 		});
 	});
 

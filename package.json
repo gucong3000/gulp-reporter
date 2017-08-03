@@ -12,6 +12,7 @@
     "emphasize": "^1.5.0",
     "gulp-util": "^3.0.8",
     "is-ci": "^1.0.10",
+    "is-windows": "^1.0.1",
     "lodash.get": "^4.4.2",
     "os-locale": "^2.1.0",
     "request-promise-native": "^1.0.4",
