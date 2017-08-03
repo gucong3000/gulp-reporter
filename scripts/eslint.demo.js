@@ -9,6 +9,7 @@ vfs.src('test/fixtures/eslint/invalid.js', {
 })
 	.pipe(eslint())
 	.pipe(reporter({
+		// author: '1',
 		// blame: false,
 	})).on('error', error => {
 		process.exitCode = 1;
