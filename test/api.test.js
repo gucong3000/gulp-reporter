@@ -7,6 +7,7 @@ const getOptions = require('../lib/get-options');
 const gitAuthor = require('../lib/git-author');
 const formater = require('../lib/formater');
 const reporter = require('../');
+const proxyquire = require('proxyquire');
 const stripAnsi = require('strip-ansi');
 const eslint = require('gulp-eslint');
 const through = require('through2');
@@ -237,7 +238,7 @@ describe('API', () => {
 				'       01 | testcase source',
 			]);
 		});
-		it('without plugin name', () => {
+		it('simple', () => {
 			const fileName = path.join(__dirname, 'fixtures/testcase');
 
 			assert.deepEqual(stripAnsi(formater({
@@ -251,13 +252,46 @@ describe('API', () => {
 					}]
 				}
 			}, {
-				blame: true,
+				blame: false,
 				_termColumns: 60
 			}).replace(/\u001b]50;\w+=.+?\u0007/, '')).split('\n'), [
 				'fixtures/testcase',
 				'    01:01 ✅️ testcase message.',
-				'       01 | testcase source',
 			]);
+		});
+
+		it('mock', () => {
+			const padStart = String.prototype.padStart;
+			if (padStart) {
+				delete String.prototype.padStart;
+			}
+
+			const formater = proxyquire('../lib/formater', {
+				'is-ci': !process.env.CI
+			});
+
+			const fileName = path.join(__dirname, 'fixtures/testcase');
+
+			assert.deepEqual(stripAnsi(formater({
+				cwd: __dirname,
+				path: fileName,
+				report: {
+					errors: [{
+						message: 'testcase message.',
+						source: 'testcase source',
+						fileName,
+					}]
+				}
+			}, {
+				blame: false,
+				_termColumns: 60
+			}).replace(/\u001b]50;\w+=.+?\u0007/, '')).split('\n'), [
+				'fixtures/testcase',
+				'    01:01 ✅️ testcase message.',
+			]);
+
+			String.prototype.padStart = padStart;
+
 		});
 	});
 
