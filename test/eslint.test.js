@@ -109,7 +109,7 @@ describe('ESLint', () => {
 		});
 		stream.pipe(reporter({
 			fail: false,
-			console: msg => {
+			output: msg => {
 				message.push(stripAnsi(msg));
 			}
 		}))
@@ -155,7 +155,8 @@ describe('ESLint', () => {
 			.pipe(eslint())
 			.pipe(reporter({
 				browser: true,
-				author: null,
+				output: false,
+				blame: false,
 				fail: false,
 			}))
 			.on('data', file => {
@@ -182,7 +183,7 @@ describe('ESLint', () => {
 		})
 			.pipe(eslint())
 			.pipe(reporter({
-				console: msg => {
+				output: msg => {
 					message.push(msg);
 				}
 			}))
