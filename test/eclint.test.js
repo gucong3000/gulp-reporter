@@ -21,7 +21,29 @@ describe('ECLint', () => {
 				const log = sandbox.getLog();
 				assert.ok(log.indexOf('(EditorConfig charset http') >= 0);
 				assert.ok(log.indexOf('(EditorConfig indent_style http') >= 0);
+				assert.ok(/\bdone\(\)/.test(log));
+				assert.ok(/@/.test(log));
 
+				done();
+			});
+	});
+	it('console reporter without blame', done => {
+		return vfs.src('test/fixtures/eclint/invalid.js', {
+			base: process.cwd(),
+			stripBOM: false,
+		})
+			.pipe(eclint.check())
+			.pipe(reporter({
+				blame: false,
+			})).on('error', ex => {
+				assert.equal(ex.plugin, 'gulp-reporter');
+				assert.equal(ex.message, 'Lint failed for: test/fixtures/eclint/invalid.js');
+
+				const log = sandbox.getLog();
+				assert.ok(log.indexOf('(EditorConfig charset http') >= 0);
+				assert.ok(log.indexOf('(EditorConfig indent_style http') >= 0);
+				assert.ifError(/\bdone\(\)/.test(log));
+				assert.ifError(/@/.test(log));
 				done();
 			});
 	});
