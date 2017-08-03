@@ -3,10 +3,14 @@ const assert = require('assert');
 const vfs = require('vinyl-fs');
 const csslint = require('gulp-csslint');
 const reporter = require('../');
+const CSSLintError = require('../lib/csslint-error');
 const sandbox = require('./sandbox');
 
 describe('CSSLint', function() {
 	this.timeout(10000);
+	it('CSSLintError', () => {
+		new CSSLintError({});
+	});
 	it('console reporter', done => {
 		return vfs.src('test/fixtures/csslint/invalid.css', {
 			base: process.cwd(),
