@@ -7,6 +7,7 @@ const getOptions = require('../lib/get-options');
 const gitAuthor = require('../lib/git-author');
 const formater = require('../lib/formater');
 const reporter = require('../');
+const proxyquire = require('proxyquire');
 const stripAnsi = require('strip-ansi');
 const eslint = require('gulp-eslint');
 const through = require('through2');
@@ -85,6 +86,25 @@ describe('API', () => {
 			assert.equal(result[2].fileName, 'aaa');
 			assert.equal(result[3].fileName, 'bbb');
 			assert.equal(result[4].fileName, 'ccc');
+		});
+
+		it('sort by demote', () => {
+			const result = sortErrors([
+				{
+				},
+				{
+					demote: true
+				},
+				{
+				},
+				{
+					demote: true
+				},
+			]);
+			assert.ifError(result[0].demote);
+			assert.ifError(result[1].demote);
+			assert.ok(result[2].demote);
+			assert.ok(result[3].demote);
 		});
 
 		it('sort by pos', () => {
@@ -200,10 +220,13 @@ describe('API', () => {
 	});
 
 	describe('error formater', () => {
+		function splitLog(log) {
+			return stripAnsi(log.replace(/\u001b]50;\w+=.+?\u0007/g, '').replace(/([\u2000-\u3000])\ufe0f?\s+/g, '$1\u{fe0f} ')).split('\n');
+		}
 		it('break line', () => {
 			const fileName = path.join(__dirname, 'fixtures/testcase');
 
-			assert.deepEqual(stripAnsi(formater({
+			assert.deepEqual(splitLog(formater({
 				cwd: __dirname,
 				path: fileName,
 				report: {
@@ -217,18 +240,19 @@ describe('API', () => {
 					}]
 				}
 			}, {
+				blame: true,
 				_termColumns: 60
-			}).replace(/\u001b]50;\w+=.+?\u0007/, '')).split('\n'), [
+			})), [
 				'fixtures/testcase',
-				'    [01:01] ✔️ testcase message.',
+				'    01:01 \u{2714}\u{FE0F} testcase message.',
 				'      (testLinter testRule http://testLinter.com/testRule)',
 				'       01 | testcase source',
 			]);
 		});
-		it('without plugin name', () => {
+		it('simple', () => {
 			const fileName = path.join(__dirname, 'fixtures/testcase');
 
-			assert.deepEqual(stripAnsi(formater({
+			assert.deepEqual(splitLog(formater({
 				cwd: __dirname,
 				path: fileName,
 				report: {
@@ -239,24 +263,134 @@ describe('API', () => {
 					}]
 				}
 			}, {
+				blame: false,
 				_termColumns: 60
-			}).replace(/\u001b]50;\w+=.+?\u0007/, '')).split('\n'), [
+			})), [
 				'fixtures/testcase',
-				'    [01:01] ✔️ testcase message.',
-				'       01 | testcase source',
+				'    01:01 \u{2714}\u{FE0F} testcase message.',
 			]);
+		});
+
+		it('mock Windows', () => {
+			function splitLog(log) {
+				return stripAnsi(log.replace(/\u001b]50;\w+=.+?\u0007/g, '')).split('\n');
+			}
+			const padStart = String.prototype.padStart;
+			const VSCODE_PID = process.env.VSCODE_PID;
+			const ConEmuPID = process.env.ConEmuPID;
+
+			if (padStart) {
+				delete String.prototype.padStart;
+			}
+			delete process.env.VSCODE_PID;
+			process.env.ConEmuPID = 'mock_pid';
+
+			const formater = proxyquire('../lib/formater', {
+				'is-ci': false,
+				'is-windows': () => true,
+			});
+
+			const fileName = path.join(__dirname, 'fixtures/testcase');
+
+			assert.deepEqual(splitLog(formater({
+				cwd: __dirname,
+				path: fileName,
+				report: {
+					errors: [{
+						message: 'testcase message.',
+						source: 'testcase source',
+						fileName,
+					}]
+				}
+			}, {
+				blame: false,
+				_termColumns: 60
+			})), [
+				'fixtures/testcase',
+				'    01:01 \u{2714}\u{FE0F} testcase message.',
+			]);
+			delete process.env.ConEmuPID;
+			process.env.VSCODE_PID = 'mock_pid';
+			assert.deepEqual(splitLog(formater({
+				cwd: __dirname,
+				path: fileName,
+				report: {
+					errors: [{
+						message: 'testcase message.',
+						source: 'testcase source',
+						fileName,
+					}]
+				}
+			}, {
+				blame: false,
+				_termColumns: 60
+			})), [
+				'fixtures/testcase',
+				'    01:01 \u{2714}\u{FE0F}  testcase message.',
+			]);
+
+			delete process.env.VSCODE_PID;
+			assert.deepEqual(splitLog(formater({
+				cwd: __dirname,
+				path: fileName,
+				report: {
+					errors: [{
+						message: 'testcase message.',
+						source: 'testcase source',
+						fileName,
+					}]
+				}
+			}, {
+				blame: false,
+				_termColumns: 60
+			})), [
+				'fixtures/testcase',
+				'    01:01 \u{2714} testcase message.',
+			]);
+			if (padStart) {
+				String.prototype.padStart = padStart;
+			}
+			if (VSCODE_PID) {
+				process.env.VSCODE_PID = VSCODE_PID;
+			}
+			if (ConEmuPID) {
+				process.env.ConEmuPID = ConEmuPID;
+			}
 		});
 	});
 
 	describe('getOptions', () => {
-		it('get time fail', () => {
+		it('get options', () => {
 			return getOptions({
 				expires: 1000,
 			})({
 				cwd: '/_/'
 			}).then(options => {
 				assert.ok(options);
-				assert.ok(options. _expiresTime > 0);
+				assert.ok(options._expiresTime > 0);
+				assert.ok(options._termColumns > 0);
+			});
+		});
+		it('get options with blame', () => {
+			return getOptions({
+				blame: false,
+			})({
+				cwd: __dirname,
+			}).then(options => {
+				assert.ifError(options._expiresTime);
+				assert.ifError(options.author);
+			});
+		});
+		it('mock', () => {
+			const getOptions = proxyquire('../lib/get-options', {
+				'is-ci': !process.env.CI
+			});
+			return getOptions({
+				blame: false,
+			})({
+				cwd: __dirname,
+			}).then(options => {
+				assert.ok(options._termColumns > 0);
 			});
 		});
 	});

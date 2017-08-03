@@ -22,7 +22,7 @@ describe('JSCS', function() {
 			}).on('finish', () => {
 				const result = sandbox.getLog().split(/\s*\r?\n\s*/g);
 				assert.equal(result[0], 'test/fixtures/jscs/invalid.js');
-				assert.ok(/\[\d+:\d+\]/.test(result[1]));
+				assert.ok(/\d+:\d+/.test(result[1]));
 				assert.ok(/\bMultiple var declaration \(JSCS disallowMultipleVarDecl http/.test(result[1]));
 				done();
 			});

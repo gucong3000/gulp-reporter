@@ -99,6 +99,14 @@ Default: `true`
 
 Stop a task/stream if an error has been reported for any file, but wait for all of them to be processed first.
 
+### options.blame
+
+Type: `boolean`
+
+Default: `true`
+
+Enable or disable [git-blame](https://git-scm.com/docs/git-blame) related features (options.author, options.expires).
+
 ## Related
 
 - [eclint](https://github.com/jedmao/eclint)

@@ -37,7 +37,7 @@ describe('PostCSS', function() {
 			.on('error', done)
 			.on('finish', () => {
 				const log = sandbox.getLog();
-				assert.ok(/\s+\[\d+:\d+\]/.test(log));
+				assert.ok(/\s+\d+:\d+/.test(log));
 				assert.ok(log.indexOf('Unexpected empty block (stylelint block-no-empty http') >= 0);
 				done();
 			});
@@ -55,7 +55,7 @@ describe('PostCSS', function() {
 				author: null
 			}))
 			.on('error', ex => {
-				const reMessage = /^\[\d+:\d+\]\s+.+?\s+\(\w+\s+\w+(-\w+)*\s+https?:\/\/(goo\.gl|t\.cn)\/\w+\)$/;
+				const reMessage = /^\d+:\d+\s+.+?\s+\(\w+\s+\w+(-\w+)*\s+https?:\/\/(goo\.gl|t\.cn)\/\w+\)$/;
 				const reBlame = /^\w+…?\s\(\S+.*?\s+<.+?>\s+\d+.+?\)$/;
 				const reSource = /^\d+|\s*.*?\S$/;
 
@@ -90,7 +90,7 @@ describe('PostCSS', function() {
 			})).on('data', file => {
 				const contents = file.contents.toString();
 				assert.ok(/\W+test\W+fixtures\W+postcss\W+invalid\.css\b/i.test(contents));
-				assert.ok(/\[\d+:\d+\]/.test(contents));
+				assert.ok(/\d+:\d+/.test(contents));
 				assert.ok(/\bUnexpected vendor-prefix/.test(contents));
 				done();
 			});

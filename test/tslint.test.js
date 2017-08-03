@@ -23,7 +23,7 @@ describe('TSLint', function() {
 				assert.equal(ex.plugin, 'gulp-reporter');
 				assert.equal(ex.message, 'Lint failed for: test/fixtures/tslint/invalid.ts');
 				const log = sandbox.getLog();
-				assert.ok(/\s+\[\d+:\d+\]/.test(log));
+				assert.ok(/\s+\d+:\d+/.test(log));
 				assert.ok(log.indexOf('missing whitespace (TSLint one-line http') >= 0);
 				assert.ok(log.indexOf('missing whitespace (TSLint whitespace http') >= 0);
 				done();
