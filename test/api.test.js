@@ -91,12 +91,20 @@ describe('API', () => {
 		it('sort by demote', () => {
 			const result = sortErrors([
 				{
+				},
+				{
 					demote: true
 				},
 				{
 				},
+				{
+					demote: true
+				},
 			]);
-			assert.ok(result[1].demote);
+			assert.ifError(result[0].demote);
+			assert.ifError(result[1].demote);
+			assert.ok(result[2].demote);
+			assert.ok(result[3].demote);
 		});
 
 		it('sort by pos', () => {
@@ -296,14 +304,37 @@ describe('API', () => {
 	});
 
 	describe('getOptions', () => {
-		it('get time fail', () => {
+		it('get options', () => {
 			return getOptions({
 				expires: 1000,
 			})({
 				cwd: '/_/'
 			}).then(options => {
 				assert.ok(options);
-				assert.ok(options. _expiresTime > 0);
+				assert.ok(options._expiresTime > 0);
+				assert.ok(options._termColumns > 0);
+			});
+		});
+		it('get options with blame', () => {
+			return getOptions({
+				blame: false,
+			})({
+				cwd: __dirname,
+			}).then(options => {
+				assert.ifError(options._expiresTime);
+				assert.ifError(options.author);
+			});
+		});
+		it('mock', () => {
+			const getOptions = proxyquire('../lib/get-options', {
+				'is-ci': !process.env.CI
+			});
+			return getOptions({
+				blame: false,
+			})({
+				cwd: __dirname,
+			}).then(options => {
+				assert.ok(options._termColumns > 0);
 			});
 		});
 	});
