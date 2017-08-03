@@ -34,7 +34,7 @@
     "gulp-jscs": "^4.0.0",
     "gulp-jshint": "^2.0.4",
     "gulp-tslint": "^8.1.1",
-    "gulp-xo": "github:gucong3000/gulp-xo#api_compatible",
+    "gulp-xo": "github:sindresorhus/gulp-xo",
     "jsdom": "^11.1.0",
     "jshint": "^2.9.5",
     "json-stable-stringify": "^1.0.1",
