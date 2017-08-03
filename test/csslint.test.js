@@ -45,6 +45,7 @@ describe('CSSLint', function() {
 			.pipe(csslint())
 			.pipe(reporter({
 				browser: true,
+				output: false,
 				fail: false,
 				author: null,
 			})).on('data', file => {

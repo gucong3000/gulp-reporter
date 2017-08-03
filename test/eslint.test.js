@@ -33,16 +33,23 @@ describe('ESLint', () => {
 	});
 
 	it('ignore *.min.js', done => {
+		const reports = [];
 		return vfs.src('test/fixtures/eslint/invalid.min.js', {
 			base: process.cwd()
 		})
 			.pipe(eslint())
 			.pipe(reporter({
+				output: {
+					write: (report) => {
+						reports.push(report);
+					}
+				},
 				author: null
 			}))
 			.on('error', done)
 			.on('data', file => {
 				assert.ifError(file.report.fail);
+				assert.ifError(reports.length);
 				done();
 			});
 	});
@@ -109,7 +116,7 @@ describe('ESLint', () => {
 		});
 		stream.pipe(reporter({
 			fail: false,
-			console: msg => {
+			output: msg => {
 				message.push(stripAnsi(msg));
 			}
 		}))
@@ -155,7 +162,8 @@ describe('ESLint', () => {
 			.pipe(eslint())
 			.pipe(reporter({
 				browser: true,
-				author: null,
+				output: false,
+				blame: false,
 				fail: false,
 			}))
 			.on('data', file => {
@@ -182,7 +190,7 @@ describe('ESLint', () => {
 		})
 			.pipe(eslint())
 			.pipe(reporter({
-				console: msg => {
+				output: msg => {
 					message.push(msg);
 				}
 			}))

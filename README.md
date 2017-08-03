@@ -53,13 +53,13 @@ Default: `false`
 
 [Report error messages right in your browser.](http://postcss.github.io/postcss-browser-reporter/screenshot.png)
 
-### options.console
+### options.output
 
-Type: `boolean|function`
+Type: `boolean|function|WritableStream`
 
 Default: `true`
 
-Report error messages in [gutil.log()](https://github.com/gulpjs/gulp-util#logmsg) or your function
+Report error messages in [gutil.log()](https://github.com/gulpjs/gulp-util#logmsg) or your `function|WritableStream`
 
 ### options.sort
 
