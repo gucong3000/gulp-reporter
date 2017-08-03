@@ -117,3 +117,4 @@ Enable or disable [git-blame](https://git-scm.com/docs/git-blame) related featur
 - [gulp-jscs](https://github.com/jscs-dev/gulp-jscs)
 - [gulp-jshint](https://github.com/spalger/gulp-jshint)
 - [gulp-tslint](https://github.com/panuhorsmalahti/gulp-tslint)
+- [gulp-xo](https://github.com/sindresorhus/gulp-xo)
