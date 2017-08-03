@@ -33,16 +33,23 @@ describe('ESLint', () => {
 	});
 
 	it('ignore *.min.js', done => {
+		const reports = [];
 		return vfs.src('test/fixtures/eslint/invalid.min.js', {
 			base: process.cwd()
 		})
 			.pipe(eslint())
 			.pipe(reporter({
+				output: {
+					write: (report) => {
+						reports.push(report);
+					}
+				},
 				author: null
 			}))
 			.on('error', done)
 			.on('data', file => {
 				assert.ifError(file.report.fail);
+				assert.ifError(reports.length);
 				done();
 			});
 	});
