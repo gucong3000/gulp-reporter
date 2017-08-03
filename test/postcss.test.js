@@ -1,4 +1,5 @@
 'use strict';
+const proxyquire = require('proxyquire');
 const assert = require('assert');
 const vfs = require('vinyl-fs');
 const reporter = require('../');
@@ -7,6 +8,22 @@ const stylelint = require('stylelint');
 const sandbox = require('./sandbox');
 
 describe('PostCSS', function() {
+
+	it('PostCSSError', () => {
+		const PostCSSError = proxyquire('../lib/postcss-error', {
+			'./lint-error': proxyquire('../lib/lint-error', {
+				'./locale': 'zh_CN'
+			})
+		});
+		const error = new PostCSSError({
+			input: {
+				file: __filename
+			},
+			text: 'mock_message'
+		});
+		assert.equal(error.fileName, __filename);
+		assert.equal(error.severity, 'error');
+	});
 
 	it('not fail when valid', done => {
 		return vfs.src('test/fixtures/postcss/valid.css', {
