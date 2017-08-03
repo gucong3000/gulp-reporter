@@ -1,12 +1,21 @@
 'use strict';
+const proxyquire = require('proxyquire');
+const csslint = require('gulp-csslint');
 const assert = require('assert');
 const vfs = require('vinyl-fs');
-const csslint = require('gulp-csslint');
 const reporter = require('../');
 const sandbox = require('./sandbox');
 
 describe('CSSLint', function() {
 	this.timeout(10000);
+	it('CSSLintError', () => {
+		const CSSLintError = proxyquire('../lib/csslint-error', {
+			'./lint-error': proxyquire('../lib/lint-error', {
+				'./locale': 'zh_CN'
+			})
+		});
+		new CSSLintError({});
+	});
 	it('console reporter', done => {
 		return vfs.src('test/fixtures/csslint/invalid.css', {
 			base: process.cwd(),
