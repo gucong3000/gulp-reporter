@@ -2,6 +2,7 @@
 const assert = require('assert');
 const addPostcssSource = require('../lib/add-postcss-source');
 const shortDocUrl = require('../lib/short-doc-url');
+const demoteErrors = require('../lib/demote-errors');
 const sortErrors = require('../lib/sort-errors');
 const getOptions = require('../lib/get-options');
 const gitAuthor = require('../lib/git-author');
@@ -34,6 +35,15 @@ describe('API', () => {
 			doc: '$#@&*!'
 		}]).then(errors => {
 			assert.ifError(errors[0].docShort);
+		});
+	});
+
+
+	describe('demote-errors', () => {
+		it('bad options', () => {
+			demoteErrors([{}], {
+				author: true,
+			});
 		});
 	});
 
