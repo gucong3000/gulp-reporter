@@ -26,6 +26,7 @@ exports.getLog = () => (
 	stripAnsi(
 		gutil.log.lastCall.args[0]
 			.replace(/\u001b]50;\w+=.+?\u0007/, '')
+			.replace(/([\u2000-\u3000])\ufe0f?\s+/g, '$1\u{fe0f} ')
 	)
 		.replace(/\n +\(/g, ' (')
 		.replace(/ +/g, ' ')

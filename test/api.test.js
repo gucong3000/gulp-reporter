@@ -220,10 +220,13 @@ describe('API', () => {
 	});
 
 	describe('error formater', () => {
+		function splitLog(log) {
+			return stripAnsi(log.replace(/\u001b]50;\w+=.+?\u0007/g, '').replace(/([\u2000-\u3000])\ufe0f?\s+/g, '$1\u{fe0f} ')).split('\n');
+		}
 		it('break line', () => {
 			const fileName = path.join(__dirname, 'fixtures/testcase');
 
-			assert.deepEqual(stripAnsi(formater({
+			assert.deepEqual(splitLog(formater({
 				cwd: __dirname,
 				path: fileName,
 				report: {
@@ -239,7 +242,7 @@ describe('API', () => {
 			}, {
 				blame: true,
 				_termColumns: 60
-			}).replace(/\u001b]50;\w+=.+?\u0007/, '')).split('\n'), [
+			})), [
 				'fixtures/testcase',
 				'    01:01 ✅️ testcase message.',
 				'      (testLinter testRule http://testLinter.com/testRule)',
@@ -249,7 +252,7 @@ describe('API', () => {
 		it('simple', () => {
 			const fileName = path.join(__dirname, 'fixtures/testcase');
 
-			assert.deepEqual(stripAnsi(formater({
+			assert.deepEqual(splitLog(formater({
 				cwd: __dirname,
 				path: fileName,
 				report: {
@@ -262,7 +265,7 @@ describe('API', () => {
 			}, {
 				blame: false,
 				_termColumns: 60
-			}).replace(/\u001b]50;\w+=.+?\u0007/, '')).split('\n'), [
+			})), [
 				'fixtures/testcase',
 				'    01:01 ✅️ testcase message.',
 			]);
@@ -280,7 +283,7 @@ describe('API', () => {
 
 			const fileName = path.join(__dirname, 'fixtures/testcase');
 
-			assert.deepEqual(stripAnsi(formater({
+			assert.deepEqual(splitLog(formater({
 				cwd: __dirname,
 				path: fileName,
 				report: {
@@ -293,13 +296,12 @@ describe('API', () => {
 			}, {
 				blame: false,
 				_termColumns: 60
-			}).replace(/\u001b]50;\w+=.+?\u0007/, '')).split('\n'), [
+			})), [
 				'fixtures/testcase',
 				'    01:01 ✅️ testcase message.',
 			]);
 
 			String.prototype.padStart = padStart;
-
 		});
 	});
 
