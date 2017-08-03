@@ -109,3 +109,4 @@ Stop a task/stream if an error has been reported for any file, but wait for all 
 - [gulp-jscs](https://github.com/jscs-dev/gulp-jscs)
 - [gulp-jshint](https://github.com/spalger/gulp-jshint)
 - [gulp-tslint](https://github.com/panuhorsmalahti/gulp-tslint)
+- [gulp-xo](https://github.com/sindresorhus/gulp-xo)
