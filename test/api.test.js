@@ -6,7 +6,7 @@ const demoteErrors = require('../lib/demote-errors');
 const sortErrors = require('../lib/sort-errors');
 const getOptions = require('../lib/get-options');
 const gitAuthor = require('../lib/git-author');
-const formater = require('../lib/formater');
+const formatter = require('../lib/formatter');
 const reporter = require('../');
 const proxyquire = require('proxyquire');
 const stripAnsi = require('strip-ansi');
@@ -229,14 +229,14 @@ describe('API', () => {
 		});
 	});
 
-	describe('error formater', () => {
+	describe('error formatter', () => {
 		function splitLog(log) {
 			return stripAnsi(log.replace(/\u001b]50;\w+=.+?\u0007/g, '').replace(/([\u2000-\u3000])\ufe0f?\s+/g, '$1\u{fe0f} ')).split('\n');
 		}
 		it('break line', () => {
 			const fileName = path.join(__dirname, 'fixtures/testcase');
 
-			assert.deepEqual(splitLog(formater({
+			assert.deepEqual(splitLog(formatter({
 				cwd: __dirname,
 				path: fileName,
 				report: {
@@ -262,7 +262,7 @@ describe('API', () => {
 		it('simple', () => {
 			const fileName = path.join(__dirname, 'fixtures/testcase');
 
-			assert.deepEqual(splitLog(formater({
+			assert.deepEqual(splitLog(formatter({
 				cwd: __dirname,
 				path: fileName,
 				report: {
@@ -295,14 +295,14 @@ describe('API', () => {
 			delete process.env.VSCODE_PID;
 			process.env.ConEmuPID = 'mock_pid';
 
-			const formater = proxyquire('../lib/formater', {
+			const formatter = proxyquire('../lib/formatter', {
 				'is-ci': false,
 				'is-windows': () => true,
 			});
 
 			const fileName = path.join(__dirname, 'fixtures/testcase');
 
-			assert.deepEqual(splitLog(formater({
+			assert.deepEqual(splitLog(formatter({
 				cwd: __dirname,
 				path: fileName,
 				report: {
@@ -321,7 +321,7 @@ describe('API', () => {
 			]);
 			delete process.env.ConEmuPID;
 			process.env.VSCODE_PID = 'mock_pid';
-			assert.deepEqual(splitLog(formater({
+			assert.deepEqual(splitLog(formatter({
 				cwd: __dirname,
 				path: fileName,
 				report: {
@@ -340,7 +340,7 @@ describe('API', () => {
 			]);
 
 			delete process.env.VSCODE_PID;
-			assert.deepEqual(splitLog(formater({
+			assert.deepEqual(splitLog(formatter({
 				cwd: __dirname,
 				path: fileName,
 				report: {
