@@ -1,12 +1,13 @@
 'use strict';
-const assert = require('assert');
-const vfs = require('vinyl-fs');
+const proxyquire = require('proxyquire');
 const stripAnsi = require('strip-ansi');
 const eslint = require('gulp-eslint');
-const reporter = require('../');
+const assert = require('assert');
+const vfs = require('vinyl-fs');
 const Vinyl = require('vinyl');
-const sandbox = require('./sandbox');
 const path = require('path');
+const sandbox = require('./sandbox');
+const reporter = require('../');
 
 const { Script } = require('vm');
 const {
@@ -15,6 +16,26 @@ const {
 } = require('jsdom');
 
 describe('ESLint', () => {
+	it('ESLintError, en_US', () => {
+		const ESLintError = proxyquire('../lib/eslint-error', {
+			'./locale': 'en_US'
+		});
+		const error = new ESLintError({
+			ruleId: 'indent',
+		});
+		assert.equal(error.doc, 'http://eslint.org/docs/rules/indent');
+	});
+
+	it('ESLintError, zh_CN', () => {
+		const ESLintError = proxyquire('../lib/eslint-error', {
+			'./locale': 'zh_CN'
+		});
+		const error = new ESLintError({
+			ruleId: 'indent',
+		});
+		assert.equal(error.doc, 'http://cn.eslint.org/docs/rules/indent');
+	});
+
 	it('console reporter', done => {
 		return vfs.src('test/fixtures/eslint/invalid.js', {
 			base: process.cwd()
