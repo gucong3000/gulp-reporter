@@ -1,6 +1,7 @@
 'use strict';
 const assert = require('assert');
 const addPostcssSource = require('../lib/add-postcss-source');
+const browserReporter = require('../lib/browser-reporter');
 const shortDocUrl = require('../lib/short-doc-url');
 const demoteErrors = require('../lib/demote-errors');
 const sortErrors = require('../lib/sort-errors');
@@ -387,6 +388,40 @@ describe('API', () => {
 			if (ConEmuPID) {
 				process.env.ConEmuPID = ConEmuPID;
 			}
+		});
+	});
+
+	describe('browser-reporter', () => {
+		it('file is null', () => {
+			const file = new gutil.File({
+				cwd: '/',
+				path: '/testcase.js',
+			});
+			browserReporter(file, []);
+		});
+		it('file without error (Buffer)', () => {
+			const contents = new Buffer('testcase_contents');
+			const file = new gutil.File({
+				cwd: '/',
+				path: '/testcase.js',
+				contents: contents
+			});
+			browserReporter(file, []);
+			assert.equal(file.contents. contents);
+		});
+		it('file without error (streams)', done => {
+			const contents = through();
+			const file = new gutil.File({
+				cwd: '/',
+				path: '/testcase.js',
+				contents: contents,
+			});
+			browserReporter(file, []);
+			file.contents.on('data', contents => {
+				assert.equal(contents.toString(), 'testcase_contents');
+				done();
+			});
+			contents.end(new Buffer('testcase_contents'));
 		});
 	});
 
