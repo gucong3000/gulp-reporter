@@ -38,6 +38,27 @@ describe('API', () => {
 		});
 	});
 
+	it('short-doc-url (en_US)', () => {
+		const shortDocUrl = proxyquire('../lib/short-doc-url', {
+			'./locale': 'en_US'
+		});
+		return shortDocUrl([{
+			doc: 'https://stylelint.io/user-guide/rules/indentation/'
+		}]).then(errors => {
+			assert.equal(errors[0].docShort, 'https://goo.gl/NVQ9aa');
+		});
+	});
+
+	it('short-doc-url (zh_CN)', () => {
+		const shortDocUrl = proxyquire('../lib/short-doc-url', {
+			'./locale': 'zh_CN'
+		});
+		return shortDocUrl([{
+			doc: 'https://stylelint.io/user-guide/rules/indentation/'
+		}]).then(errors => {
+			assert.equal(errors[0].docShort, 'http://t.cn/Ro8Mjw5');
+		});
+	});
 
 	describe('demote-errors', () => {
 		it('bad options', () => {
