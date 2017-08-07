@@ -16,6 +16,7 @@ const through = require('through2');
 const gutil = require('gulp-util');
 const vfs = require('vinyl-fs');
 const path = require('path');
+const isCI = require('is-ci');
 
 require('./sandbox');
 
@@ -25,7 +26,7 @@ describe('API', () => {
 		return shortDocUrl([{
 			doc: 'http://163.com'
 		}]).then(errors => {
-			if (errors[0].docShort) {
+			if (!isCI || errors[0].docShort) {
 				assert.ok(/^https?:\/\/(goo\.gl|t\.cn)\//.test(errors[0].docShort));
 			}
 		});

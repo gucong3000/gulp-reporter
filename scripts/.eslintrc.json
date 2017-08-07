@@ -1,14 +1,11 @@
 {
 	"root": true,
-	"env": {
-		"mocha": true
-	},
 	"extends": [
 		"../.eslintrc.json"
 	],
 	"rules": {
 		"no-console": [
-			"warn"
+			"off"
 		]
 	}
 }

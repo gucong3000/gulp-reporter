@@ -7,15 +7,15 @@
     "ansi-escapes": "^2.0.0",
     "buffered-spawn": "^3.3.2",
     "bufferstreams": "^1.1.1",
-    "chalk": "^2.0.1",
+    "chalk": "^2.1.0",
     "cli-truncate": "^1.1.0",
     "emphasize": "^1.5.0",
+    "got": "^7.1.0",
     "gulp-util": "^3.0.8",
     "is-ci": "^1.0.10",
     "is-windows": "^1.0.1",
     "lodash.get": "^4.4.2",
     "os-locale": "^2.1.0",
-    "request-promise-native": "^1.0.4",
     "string-width": "^2.1.1",
     "term-size": "^1.2.0",
     "through2": "^2.0.3",
@@ -24,9 +24,9 @@
   "description": "Error report localization for: CSSLint/EditorConfig/ESLint/HTMLHint/JSCS/JSHint/PostCSS/TSLint",
   "devDependencies": {
     "coveralls": "^2.13.1",
-    "cross-env": "^5.0.3",
+    "cross-env": "^5.0.4",
     "eclint": "^2.3.0",
-    "eslint": "^4.3.0",
+    "eslint": "^4.4.0",
     "goo.gl": "^0.1.4",
     "gulp-csslint": "^1.0.0",
     "gulp-eslint": "^4.0.0",
@@ -99,8 +99,8 @@
     "test_lang": "cross-env LC_ALL=zh_CN npm run mocha -- --color && cross-env LC_ALL=en_US npm run mocha -- --no-color",
     "coveralls": "coveralls < coverage/lcov.info",
     "mocha": "mocha test/*.test.js --no-timeouts",
-    "pretest": "eslint lib test/*.test.js && node scripts/shorturl",
+    "pretest": "eslint scripts lib test/*.test.js && node scripts/shorturl",
     "test": "nyc npm run test_lang"
   },
-  "version": "2.2.0"
+  "version": "2.2.1"
 }

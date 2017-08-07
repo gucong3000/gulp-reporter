@@ -7,7 +7,7 @@ if (!promisify) {
 const stringify = require('json-stable-stringify');
 const readdir = promisify(require('fs').readdir);
 const shorturlCache = require('../lib/shorturl.json');
-const request = require('request-promise-native');
+const got = require('got');
 const googl = require('goo.gl');
 const fs = require('fs');
 // Set a developer key (_required by Google_; see http://goo.gl/4DvFk for more info.)
@@ -120,8 +120,10 @@ Promise.all([
 			});
 			const shorturlcn = {};
 			Promise.all(Object.keys(shorturlCache).map( url => (
-				request(`http://api.t.sina.com.cn/short_url/shorten.json?source=3271760578&url_long=${url}`).then(json => {
-					shorturlcn[url] = JSON.parse(json)[0].url_short;
+				got(`http://api.t.sina.com.cn/short_url/shorten.json?source=3271760578&url_long=${url}`, {
+					json: true,
+				}).then(result => {
+					shorturlcn[url] = result.body[0].url_short;
 				})
 			))).then(() => {
 				const json = stringify(shorturlcn, {
