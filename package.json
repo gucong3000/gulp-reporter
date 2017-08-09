@@ -21,7 +21,7 @@
     "through2": "^2.0.3",
     "to-time": "^1.0.2"
   },
-  "description": "Error report localization for: CSSLint/EditorConfig/ESLint/HTMLHint/JSCS/JSHint/PostCSS/TSLint",
+  "description": "Error report localization for: CSSLint/EditorConfig/ESLint/HTMLHint/JSCS/JSHint/PostCSS/Standard/TSLint/XO",
   "devDependencies": {
     "coveralls": "^2.13.1",
     "cross-env": "^5.0.5",
@@ -68,7 +68,9 @@
     "JSCS",
     "JSHint",
     "PostCSS",
+    "Standard",
     "TSLint",
+    "XO",
     "git",
     "blame",
     "author"
@@ -103,5 +105,5 @@
     "pretest": "eslint scripts lib test/*.test.js && node scripts/shorturl",
     "test": "nyc npm run test_lang"
   },
-  "version": "2.2.1"
+  "version": "2.2.2"
 }

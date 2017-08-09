@@ -14,7 +14,9 @@ Error report localization for:
 [JSCS](https://github.com/jscs-dev/gulp-jscs)
 [JSHint](https://github.com/spalger/gulp-jshint)
 [PostCSS](https://github.com/StartPolymer/gulp-html-postcss)
+[Standard](https://github.com/emgeee/gulp-standard)
 [TSLint](https://github.com/panuhorsmalahti/gulp-tslint)
+[XO](https://github.com/sindresorhus/gulp-xo)
 
 Analyzing blame of the error, only fail for new error and error written by the current GIT user.
 
@@ -116,5 +118,6 @@ Enable or disable [git-blame](https://git-scm.com/docs/git-blame) related featur
 - [gulp-htmlhint](https://github.com/bezoerb/gulp-htmlhint)
 - [gulp-jscs](https://github.com/jscs-dev/gulp-jscs)
 - [gulp-jshint](https://github.com/spalger/gulp-jshint)
+- [gulp-standard](https://github.com/emgeee/gulp-standard)
 - [gulp-tslint](https://github.com/panuhorsmalahti/gulp-tslint)
 - [gulp-xo](https://github.com/sindresorhus/gulp-xo)
