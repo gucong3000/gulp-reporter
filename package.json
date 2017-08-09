@@ -34,6 +34,7 @@
     "gulp-htmlhint": "^0.3.1",
     "gulp-jscs": "^4.0.0",
     "gulp-jshint": "^2.0.4",
+    "gulp-standard": "^10.0.0",
     "gulp-tslint": "^8.1.2",
     "gulp-xo": "github:sindresorhus/gulp-xo",
     "jsdom": "^11.1.0",
