@@ -113,6 +113,14 @@ Default: `true`
 
 Enable or disable [git-blame](https://git-scm.com/docs/git-blame) related features (options.author, options.expires).
 
+## language localization support for HTMLHint JSHint EditorConfig:
+
+- en
+- zh_CN
+- zh_TW
+
+> POSIX systems: The returned locale refers to the [`LC_MESSAGE`](http://www.gnu.org/software/libc/manual/html_node/Locale-Categories.html#Locale-Categories) category, suitable for selecting the language used in the user interface for message translation.
+
 ## Related
 
 - [eclint](https://github.com/jedmao/eclint)
