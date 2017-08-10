@@ -6,7 +6,7 @@ gulp-reporter
 [![AppVeyor](https://img.shields.io/appveyor/ci/gucong3000/gulp-reporter.svg?&label=Windows)](https://ci.appveyor.com/project/gucong3000/gulp-reporter)
 [![Coverage Status](https://img.shields.io/coveralls/gucong3000/gulp-reporter.svg)](https://coveralls.io/r/gucong3000/gulp-reporter)
 
-Error report localization for:
+Error report for:
 [CSSLint](https://github.com/lazd/gulp-csslint)
 [EditorConfig](https://github.com/jedmao/eclint)
 [ESLint](https://github.com/adametry/gulp-eslint)
@@ -18,7 +18,7 @@ Error report localization for:
 [TSLint](https://github.com/panuhorsmalahti/gulp-tslint)
 [XO](https://github.com/sindresorhus/gulp-xo)
 
-Analyzing blame of the error, only fail for new error and error written by the current GIT user.
+Analyzing blame of the error, only fail for errors that belong to current GIT user.
 
 ## Install
 
@@ -77,13 +77,17 @@ Type: `{name?: string|RegExp, email?: string|RegExp}`
 
 Default: Read from GIT pre-commit environment and fallbacks with GIT commad `git log --max-count=1 --no-merges`
 
-Demote each error that is not belong to specified author to a warning.
+Do not fail for errors that not belong to specified author.
+
+> Do not work when `options.blame` set to `false`
 
 ### options.expires
 
 Type: `string` for [time periods](https://www.npmjs.com/package/to-time#usage), `number` of unix timestamp, `Date`
 
-Demote each error that created before the specified time to a warning
+Do not fail for old errors that create early specified time.
+
+> Do not work when `options.blame` set to `false`
 
 ### options.maxLineLength
 
