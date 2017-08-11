@@ -21,7 +21,7 @@
     "through2": "^2.0.3",
     "to-time": "^1.0.2"
   },
-  "description": "Error report localization for: CSSLint/EditorConfig/ESLint/HTMLHint/JSCS/JSHint/PostCSS/Standard/TSLint/XO",
+  "description": "Error report for: CSSLint/EditorConfig/ESLint/HTMLHint/JSCS/JSHint/PostCSS/Standard/TSLint/XO",
   "devDependencies": {
     "coveralls": "^2.13.1",
     "cross-env": "^5.0.5",
