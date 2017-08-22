@@ -23,7 +23,7 @@ Analyzing blame of the error, only fail for errors that belong to current GIT us
 ## Install
 
 ```bash
-npm install gulp-eslint
+npm install gulp-reporter
 ```
 
 ## Usage
