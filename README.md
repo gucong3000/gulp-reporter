@@ -97,6 +97,28 @@ Default: 512
 
 Hide each error in lines that length greater than this threshold.
 
+### options.mapper
+
+Type: `function|null`
+
+Default: `null`
+
+Convert errors.
+
+```
+reporter({
+	mapper: file => {
+		const path = file.path;
+		return error => {
+			// Do not report unrelated errors.
+ 			if (error.fileName === path) {
+				return error
+			}
+		}
+	}
+})
+```
+
 ### options.fail
 
 Type: `boolean|function`
