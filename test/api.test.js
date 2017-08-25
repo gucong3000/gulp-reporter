@@ -671,4 +671,36 @@ describe('API', () => {
 			});
 	});
 
+	it('`options.maxLineLength` as null', done => {
+		return vfs.src('test/fixtures/eslint/invalid.min.js', {
+			base: process.cwd(),
+		})
+			.pipe(eslint())
+			.pipe(reporter({
+				blame: false,
+				maxLineLength: null,
+			}))
+			.on('error', ex => {
+				assert.equal(ex.message, 'Lint failed for: test/fixtures/eslint/invalid.min.js');
+				done();
+			});
+	});
+
+	it('`options.mapper` as null', done => {
+		return vfs.src('test/fixtures/eslint/invalid.js', {
+			base: process.cwd(),
+		})
+			.pipe(eslint())
+			.pipe(reporter({
+				mapper:() => (
+					() => {}
+				),
+			}))
+			.on('error', done)
+			.on('data', file => {
+				assert.ifError(file.report.fail);
+				done();
+			});
+	});
+
 });

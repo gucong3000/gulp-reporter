@@ -105,5 +105,5 @@
     "pretest": "eslint scripts lib test/*.test.js && node scripts/shorturl",
     "test": "nyc npm run test_lang"
   },
-  "version": "2.2.2"
+  "version": "2.3.0"
 }
