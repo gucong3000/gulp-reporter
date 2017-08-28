@@ -8,11 +8,12 @@
     "buffered-spawn": "^3.3.2",
     "bufferstreams": "^1.1.1",
     "chalk": "^2.1.0",
+    "ci-info": "^1.0.0",
     "cli-truncate": "^1.1.0",
     "emphasize": "^1.5.0",
+    "fs-extra": "^4.0.1",
     "got": "^7.1.0",
     "gulp-util": "^3.0.8",
-    "is-ci": "^1.0.10",
     "is-windows": "^1.0.1",
     "lodash.get": "^4.4.2",
     "os-locale": "^2.1.0",
@@ -86,6 +87,7 @@
     "branches": 85,
     "exclude": [
       "lib/js-browser-reporter.js",
+      "lib/ci-reporter.js",
       "test/**/*"
     ],
     "reporter": [

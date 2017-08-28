@@ -1,12 +1,8 @@
 'use strict';
-const promisify = require('util').promisify;
-if (!promisify) {
-	process.exit(0);
-}
+
 // const { JSDOM } = require('jsdom');
 const stringify = require('json-stable-stringify');
-const fs = require('fs');
-const readdir = promisify(fs.readdir);
+const fs = require('fs-extra');
 const shorturlCache = require('../lib/shorturl.json');
 const got = require('got');
 const googl = require('goo.gl');
@@ -58,7 +54,7 @@ Promise.all([
 	)),
 
 	// JSCS
-	readdir('node_modules/jscs/lib/rules').then(files => (
+	fs.readdir('node_modules/jscs/lib/rules').then(files => (
 		files.filter(file => /\.js$/.test(file)).map(rule => (
 			rule.replace(/\.\w+$/, '').replace(/-[\w]/g, char => char[1].toUpperCase())
 		)).map(rule => (
@@ -70,7 +66,7 @@ Promise.all([
 	require('csslint').CSSLint.getRules().map(rule => rule.url).filter(Boolean),
 
 	// TSLint
-	readdir('node_modules/tslint/lib/rules').then(files => (
+	fs.readdir('node_modules/tslint/lib/rules').then(files => (
 		files.filter(file => /Rule\.js$/.test(file)).map(rule => (
 			rule.replace(/Rule\.\w+$/, '').replace(/[A-Z]/g, char => '-' + char.toLowerCase())
 		)).map(rule => (
@@ -111,12 +107,11 @@ Promise.all([
 		});
 	})).then(() => {
 		if (hasChange) {
-			const writeFile = promisify(fs.writeFile);
 			process.exitCode = -1;
 			const json = stringify(shorturlCache, {
 				space: '\t'
 			});
-			const writeFilePromise = writeFile(require.resolve('../lib/shorturl.json'), json, 'utf8');
+			const writeFilePromise = fs.writeFile(require.resolve('../lib/shorturl.json'), json, 'utf8');
 			const shorturlcn = {};
 			Promise.all(Object.keys(shorturlCache).map( url => (
 				got(`http://api.t.sina.com.cn/short_url/shorten.json?source=3271760578&url_long=${url}`, {
@@ -128,7 +123,7 @@ Promise.all([
 				const json = stringify(shorturlcn, {
 					space: '\t'
 				});
-				return writeFile(require.resolve('../lib/shorturl_cn.json'), json, 'utf8');
+				return fs.writeFile(require.resolve('../lib/shorturl_cn.json'), json, 'utf8');
 			}).then(() => writeFilePromise).then(() => {
 				require('child_process').spawn(
 					'git',
