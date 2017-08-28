@@ -110,7 +110,6 @@ Promise.all([
 			}
 		});
 	})).then(() => {
-		hasChange = true;
 		if (hasChange) {
 			const writeFile = promisify(fs.writeFile);
 			process.exitCode = -1;
