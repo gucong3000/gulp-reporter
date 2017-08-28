@@ -854,6 +854,7 @@
 	"https://palantir.github.io/tslint/rules/no-null-keyword/": "https://goo.gl/bEmx46",
 	"https://palantir.github.io/tslint/rules/no-object-literal-type-assertion/": "https://goo.gl/tizhkF",
 	"https://palantir.github.io/tslint/rules/no-parameter-properties/": "https://goo.gl/GVks1s",
+	"https://palantir.github.io/tslint/rules/no-parameter-reassignment/": "https://goo.gl/kHurgB",
 	"https://palantir.github.io/tslint/rules/no-reference-import/": "https://goo.gl/x94XSN",
 	"https://palantir.github.io/tslint/rules/no-reference/": "https://goo.gl/SgqfVf",
 	"https://palantir.github.io/tslint/rules/no-require-imports/": "https://goo.gl/dSRK6C",

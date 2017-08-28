@@ -5,11 +5,11 @@ if (!promisify) {
 }
 // const { JSDOM } = require('jsdom');
 const stringify = require('json-stable-stringify');
-const readdir = promisify(require('fs').readdir);
+const fs = require('fs');
+const readdir = promisify(fs.readdir);
 const shorturlCache = require('../lib/shorturl.json');
 const got = require('got');
 const googl = require('goo.gl');
-const fs = require('fs');
 // Set a developer key (_required by Google_; see http://goo.gl/4DvFk for more info.)
 googl.setKey('AIzaSyACqNSi3cybDvDfWMaPyXZEzQ6IeaPehLE');
 
@@ -29,7 +29,7 @@ function shortUrl(url) {
 // 	}, console.error);
 // }
 
-let log = false;
+let hasChange = false;
 
 const eslintRules = Object.keys(require('eslint/lib/load-rules')());
 
@@ -105,19 +105,19 @@ Promise.all([
 		}
 		return shortUrl(url).then(shortUrl => {
 			if (shortUrl) {
-				log = true;
+				hasChange = true;
 				shorturlCache[url] = shortUrl;
 			}
 		});
 	})).then(() => {
-		if (log) {
+		hasChange = true;
+		if (hasChange) {
+			const writeFile = promisify(fs.writeFile);
 			process.exitCode = -1;
 			const json = stringify(shorturlCache, {
 				space: '\t'
 			});
-			fs.writeFile(require.resolve('../lib/shorturl.json'), json, 'utf8', () => {
-				console.log(json);
-			});
+			const writeFilePromise = writeFile(require.resolve('../lib/shorturl.json'), json, 'utf8');
 			const shorturlcn = {};
 			Promise.all(Object.keys(shorturlCache).map( url => (
 				got(`http://api.t.sina.com.cn/short_url/shorten.json?source=3271760578&url_long=${url}`, {
@@ -129,9 +129,25 @@ Promise.all([
 				const json = stringify(shorturlcn, {
 					space: '\t'
 				});
-				fs.writeFile(require.resolve('../lib/shorturl_cn.json'), json, 'utf8', () => {
-				});
+				return writeFile(require.resolve('../lib/shorturl_cn.json'), json, 'utf8');
+			}).then(() => writeFilePromise).then(() => {
+				require('child_process').spawn(
+					'git',
+					[
+						'--no-pager',
+						'diff',
+						'--',
+						'lib/*.json'
+					],
+					{
+						stdio: 'inherit'
+					}
+				);
 			});
 		}
 	});
+});
+process.on('unhandledRejection', error => {
+	console.error(error);
+	process.exit(1);
 });
