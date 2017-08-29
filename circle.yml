@@ -1,0 +1,7 @@
+machine:
+  node:
+    version: stable
+
+test:
+  post:
+    - npm run report-coverage
