@@ -103,7 +103,6 @@
     "test_lang": "cross-env LC_ALL=zh_CN npm run mocha -- --color && cross-env LC_ALL=en_US npm run mocha -- --no-color",
     "report-coverage": "codecov",
     "mocha": "mocha test/*.test.js --no-timeouts",
-    "pretest": "eslint scripts lib test/*.test.js && node scripts/shorturl",
     "test": "nyc npm run test_lang"
   },
   "version": "2.3.0"
