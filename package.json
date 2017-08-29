@@ -24,7 +24,7 @@
   },
   "description": "Error report for: CSSLint/EditorConfig/ESLint/HTMLHint/JSCS/JSHint/PostCSS/Standard/TSLint/XO",
   "devDependencies": {
-    "coveralls": "^2.13.1",
+    "codecov": "^2.3.0",
     "cross-env": "^5.0.5",
     "eclint": "^2.4.3",
     "eslint": "^4.5.0",
@@ -102,7 +102,7 @@
   },
   "scripts": {
     "test_lang": "cross-env LC_ALL=zh_CN npm run mocha -- --color && cross-env LC_ALL=en_US npm run mocha -- --no-color",
-    "coveralls": "coveralls < coverage/lcov.info",
+    "report-coverage": "codecov",
     "mocha": "mocha test/*.test.js --no-timeouts",
     "pretest": "eslint scripts lib test/*.test.js && node scripts/shorturl",
     "test": "nyc npm run test_lang"
