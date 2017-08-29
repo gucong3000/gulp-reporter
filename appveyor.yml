@@ -1,3 +1,6 @@
+skip_branch_with_pr: true
+max_jobs: 80
+
 # Test against this version of Node.js
 environment:
   matrix:
