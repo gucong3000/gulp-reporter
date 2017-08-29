@@ -87,7 +87,6 @@
     "branches": 85,
     "exclude": [
       "lib/js-browser-reporter.js",
-      "lib/ci-reporter.js",
       "test/**/*"
     ],
     "reporter": [
