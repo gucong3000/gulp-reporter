@@ -16,7 +16,7 @@ const through = require('through2');
 const gutil = require('gulp-util');
 const vfs = require('vinyl-fs');
 const path = require('path');
-const isCI = require('is-ci');
+const isCI = require('ci-info').isCI;
 
 require('./sandbox');
 
@@ -319,7 +319,9 @@ describe('API', () => {
 			process.env.ConEmuPID = 'mock_pid';
 
 			const formatter = proxyquire('../lib/formatter', {
-				'is-ci': false,
+				'ci-info': {
+					isCI: false
+				},
 				'is-windows': () => true,
 			});
 
@@ -450,7 +452,9 @@ describe('API', () => {
 		});
 		it('mock', () => {
 			const getOptions = proxyquire('../lib/get-options', {
-				'is-ci': !process.env.CI
+				'ci-info': {
+					isCI: !process.env.CI
+				},
 			});
 			return getOptions({
 				blame: false,
@@ -702,5 +706,35 @@ describe('API', () => {
 				done();
 			});
 	});
+
+	it('ci-reporter isCI: false', () => {
+		const ciReporter = proxyquire('../lib/ci-reporter', {
+			'ci-info': {
+				isCI: false
+			},
+		});
+
+		return ciReporter();
+	});
+
+	it('ci-reporter jenkins', () => {
+		const ciReporter = proxyquire('../lib/ci-reporter', {
+			'ci-info': {
+				name: 'jenkins',
+				jenkins: true,
+				isCI: true,
+			},
+		});
+
+		return ciReporter([{
+			report: {
+				errors: [
+					new Error('_'),
+				]
+			}
+		}]);
+	});
+
+
 
 });
