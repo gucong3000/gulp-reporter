@@ -8,6 +8,7 @@
     "buffered-spawn": "^3.3.2",
     "bufferstreams": "^1.1.1",
     "chalk": "^2.1.0",
+    "checkstyle-formatter": "^1.0.0",
     "ci-info": "^1.0.0",
     "cli-truncate": "^1.1.0",
     "emphasize": "^1.5.0",
@@ -25,7 +26,6 @@
   },
   "description": "Error report for: CSSLint/EditorConfig/ESLint/HTMLHint/JSCS/JSHint/PostCSS/Standard/TSLint/XO",
   "devDependencies": {
-    "checkstyle-formatter": "^1.0.0",
     "codecov": "^2.3.0",
     "cross-env": "^5.0.5",
     "eclint": "^2.4.3",
