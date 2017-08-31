@@ -25,6 +25,7 @@
   },
   "description": "Error report for: CSSLint/EditorConfig/ESLint/HTMLHint/JSCS/JSHint/PostCSS/Standard/TSLint/XO",
   "devDependencies": {
+    "checkstyle-formatter": "^1.0.0",
     "codecov": "^2.3.0",
     "cross-env": "^5.0.5",
     "eclint": "^2.4.3",
