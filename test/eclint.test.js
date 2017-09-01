@@ -13,6 +13,7 @@ describe('ECLint', () => {
 		})
 			.pipe(eclint.check())
 			.pipe(reporter({
+				output: true,
 				author: null,
 			})).on('error', ex => {
 				assert.equal(ex.plugin, 'gulp-reporter');
@@ -34,6 +35,7 @@ describe('ECLint', () => {
 		})
 			.pipe(eclint.check())
 			.pipe(reporter({
+				output: true,
 				blame: false,
 			})).on('error', ex => {
 				assert.equal(ex.plugin, 'gulp-reporter');

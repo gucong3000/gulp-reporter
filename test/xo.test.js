@@ -12,7 +12,8 @@ describe('XO', () => {
 		})
 			.pipe(xo())
 			.pipe(reporter({
-				author: null,
+				output: true,
+				blame: false,
 			}))
 			.on('error', ex => {
 				assert.equal(ex.plugin, 'gulp-reporter');

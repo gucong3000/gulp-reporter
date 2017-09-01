@@ -25,7 +25,8 @@ describe('CSSLint', function() {
 				'duplicate-properties': 2
 			}))
 			.pipe(reporter({
-				author: null
+				output: true,
+				blame: false,
 			})).on('error', ex => {
 				assert.equal(ex.plugin, 'gulp-reporter');
 				assert.equal(ex.message, 'Lint failed for: test/fixtures/csslint/invalid.css');

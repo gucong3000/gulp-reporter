@@ -16,7 +16,8 @@ describe('TSLint', function() {
 				program: tslint.Linter.createProgram('test/fixtures/tslint/tslint.json')
 			}))
 			.pipe(reporter({
-				author: null
+				output: true,
+				blame: false,
 			}))
 
 			.on('error', ex => {
