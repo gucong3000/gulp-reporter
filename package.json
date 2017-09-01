@@ -8,7 +8,7 @@
     "buffered-spawn": "^3.3.2",
     "bufferstreams": "^1.1.1",
     "chalk": "^2.1.0",
-    "checkstyle-formatter": "^1.0.0",
+    "checkstyle-formatter": "github:gucong3000/checkstyle-formatter#prop_source",
     "ci-info": "^1.0.0",
     "cli-truncate": "^1.1.0",
     "emphasize": "^1.5.0",
