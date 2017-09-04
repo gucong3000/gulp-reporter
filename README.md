@@ -59,7 +59,7 @@ Default: `false`
 
 Type: `boolean|function|WritableStream`
 
-Default: `true`
+Default: `true` and `false` for AppVeyor, CircleCI, GitLab CI
 
 Report error messages in [gutil.log()](https://github.com/gulpjs/gulp-util#logmsg) or your `function|WritableStream`
 
@@ -135,13 +135,23 @@ Default: `true`
 
 Enable or disable [git-blame](https://git-scm.com/docs/git-blame) related features (options.author, options.expires).
 
-## language localization support for HTMLHint JSHint EditorConfig:
+## Language localization support for HTMLHint JSHint EditorConfig:
 
 - en
 - zh_CN
 - zh_TW
 
 > POSIX systems: The returned locale refers to the [`LC_MESSAGE`](http://www.gnu.org/software/libc/manual/html_node/Locale-Categories.html#Locale-Categories) category, suitable for selecting the language used in the user interface for message translation.
+
+## Special output format
+
+- AppVeyor
+	> Output as compilation message use [Build Worker API](https://www.appveyor.com/docs/build-worker-api/#add-compilation-message)
+- CircleCI
+	> Output as junit format to [the `$CIRCLE_TEST_REPORTS` directory](https://circleci.com/docs/1.0/test-metadata/
+).
+- GitLab CI
+	> Output for [Checkstyle Plugin](https://wiki.jenkins.io/display/JENKINS/Checkstyle+Plugin), in directory defined by `$CI_REPORTS`
 
 ## Related
 

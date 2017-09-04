@@ -13,6 +13,9 @@ trim_trailing_whitespace = true
 [*.{cmd,bat}]
 end_of_line = crlf
 
+[README.md]
+tab_width = 2
+
 [{package.json,.travis.yml,appveyor.yml}]
 indent_style = space
 indent_size = 2
