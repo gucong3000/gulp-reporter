@@ -12,6 +12,7 @@
 .vscode
 appveyor.yml
 coverage
+lint-reports
 gulpfile.js
 lib-cov
 logs

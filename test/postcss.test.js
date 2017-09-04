@@ -49,7 +49,8 @@ describe('PostCSS', function() {
 				stylelint,
 			]))
 			.pipe(reporter({
-				author: null
+				output: true,
+				blame: false,
 			}))
 			.on('error', done)
 			.on('finish', () => {
@@ -69,6 +70,7 @@ describe('PostCSS', function() {
 				stylelint,
 			]))
 			.pipe(reporter({
+				output: true,
 				author: null
 			}))
 			.on('error', ex => {

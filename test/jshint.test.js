@@ -32,7 +32,8 @@ describe('JSHint', () => {
 		})
 			.pipe(jshint())
 			.pipe(reporter({
-				author: null
+				output: true,
+				blame: false,
 			})).on('error', () => {
 				const log = sandbox.getLog();
 				assert.ok(/^test\/fixtures\/jshint\/invalid.js$/m.test(log));
