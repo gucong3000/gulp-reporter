@@ -30,6 +30,7 @@
     "eclint": "^2.4.3",
     "eslint": "^4.6.1",
     "goo.gl": "^0.1.4",
+    "greenkeeper-lockfile": "^1.8.1",
     "gulp-csslint": "^1.0.0",
     "gulp-eslint": "^4.0.0",
     "gulp-html-postcss": "^7.0.1",
@@ -99,7 +100,8 @@
     "test_lang": "cross-env LC_ALL=zh_CN npm run mocha -- --color && cross-env LC_ALL=en_US npm run mocha -- --no-color",
     "report-coverage": "codecov",
     "mocha": "mocha test/*.test.js --no-timeouts",
-    "pretest": "eslint scripts lib test/*.test.js && node scripts/shorturl",
+    "pretest": "eslint scripts lib test/*.test.js && npm run shorturl",
+    "shorturl": "node scripts/shorturl || (git add lib/shorturl*.json>/dev/null || true)",
     "test": "nyc npm run test_lang"
   },
   "version": "2.3.0"
