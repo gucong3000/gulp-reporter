@@ -28,7 +28,7 @@
     "codecov": "^2.3.0",
     "cross-env": "^5.0.5",
     "eclint": "^2.4.3",
-    "eslint": "^4.5.0",
+    "eslint": "^4.6.1",
     "goo.gl": "^0.1.4",
     "gulp-csslint": "^1.0.0",
     "gulp-eslint": "^4.0.0",
