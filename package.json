@@ -4,7 +4,7 @@
     "url": "https://github.com/gucong3000/gulp-reporter/issues"
   },
   "dependencies": {
-    "ansi-escapes": "^2.0.0",
+    "ansi-escapes": "^3.0.0",
     "buffered-spawn": "^3.3.2",
     "bufferstreams": "^1.1.1",
     "chalk": "^2.1.0",
