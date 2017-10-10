@@ -44,7 +44,7 @@
     "jsdom": "^11.2.0",
     "jshint": "^2.9.5",
     "json-stable-stringify": "^1.0.1",
-    "mocha": "^3.5.0",
+    "mocha": "^4.0.1",
     "nyc": "^11.1.0",
     "proxyquire": "^1.8.0",
     "sinon": "^4.0.0",
