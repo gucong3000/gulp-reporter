@@ -5,6 +5,6 @@ node_js:
   - 7
   - 6
 
-after_script: greenkeeper-lockfile-upload
-after_success:
+after_script:
+  - greenkeeper-lockfile-upload
   - npm run report-coverage

@@ -4,4 +4,5 @@ machine:
 
 test:
   post:
+    - mv -- lib/*.json $CIRCLE_ARTIFACTS/
     - npm run report-coverage
