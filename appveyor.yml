@@ -19,9 +19,9 @@ install:
 # to run your custom scripts instead of automatic tests
 test_script:
   - npm test
-  - 7z a shorturl.zip lib/*.json
-  - appveyor PushArtifact shorturl.zip
 
 # to run your custom scripts instead of provider deployments
 after_test:
   - npm run report-coverage
+  - 7z a shorturl.zip lib/*.json
+  - appveyor PushArtifact shorturl.zip
