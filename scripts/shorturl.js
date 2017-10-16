@@ -3,19 +3,23 @@
 // const { JSDOM } = require('jsdom');
 const stringify = require('json-stable-stringify');
 const fs = require('fs-extra');
-const shorturlCache = require('../lib/shorturl.json');
 const got = require('got');
 const googl = require('goo.gl');
 // Set a developer key (_required by Google_; see http://goo.gl/4DvFk for more info.)
 googl.setKey('AIzaSyACqNSi3cybDvDfWMaPyXZEzQ6IeaPehLE');
 
 function shortUrl(url) {
-	return googl.shorten(url).then(shortUrl => {
-		return shortUrl;
-	}).catch(() => {
-		return;
+	return googl.shorten(url);
+}
+
+function shortUrlCn(url) {
+	return got(`http://api.t.sina.com.cn/short_url/shorten.json?source=3271760578&url_long=${url}`, {
+		json: true,
+	}).then(result => {
+		return result.body[0].url_short;
 	});
 }
+
 
 // function get(url, selector) {
 // 	return JSDOM.fromURL(url, {
@@ -25,14 +29,46 @@ function shortUrl(url) {
 // 	}, console.error);
 // }
 
-let hasChange = false;
+function updateFile(file, urls, shortUrlFn) {
+	file = require.resolve(file);
+	let hasChange = false;
+	return fs.readJSON(file).then(shorturlCache => (
+		// Object.keys(shorturlCache).forEach(url => {
+		// 	if (/^http:\/\/(cn.)eslint/i.test(url)) {
+		// 		// console.log(url);
+		// 		delete shorturlCache[url];
+		// 		urls.push('https' + url.slice(4));
+		// 		hasChange = true;
+		// 	}
+		// }),
+		Promise.all(urls.map(url => (
+			shorturlCache[url] || shortUrlFn(url).then(shortUrl => {
+				if (shortUrl) {
+					hasChange = true;
+					shorturlCache[url] = shortUrl;
+				}
+			}).catch(console.error)
+		))).then(() => (
+			hasChange && fs.writeFile(
+				file,
+				stringify(
+					shorturlCache,
+					{
+						space: '\t'
+					}
+				),
+				'utf8'
+			)
+		)).then(() => hasChange)
+	));
+}
 
 const eslintRules = Object.keys(require('eslint/lib/load-rules')());
 
 Promise.all([
 	// get('https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties', '.markdown-body h3 a[href^="#"]'),
-	// get('http://cn.eslint.org/docs/rules/', '.rule-list a[href]'),
-	// get('http://eslint.org/docs/rules/', '.rule-list a[href]'),
+	// get('https://cn.eslint.org/docs/rules/', '.rule-list a[href]'),
+	// get('https://eslint.org/docs/rules/', '.rule-list a[href]'),
 	// get('https://stylelint.io/user-guide/rules/', 'h1 ~ ul a[href$="/"]'),
 	// get('https://palantir.github.io/tslint/rules/', '.rules-list a[href]').then(urls => (
 	// 	urls.map(url => (
@@ -45,12 +81,12 @@ Promise.all([
 
 	// ESLint (zh-CN)
 	eslintRules.map(rule => (
-		`http://cn.eslint.org/docs/rules/${ rule }`
+		`https://cn.eslint.org/docs/rules/${ rule }`
 	)),
 
 	// ESLint
 	eslintRules.map(rule => (
-		`http://eslint.org/docs/rules/${ rule }`
+		`https://eslint.org/docs/rules/${ rule }`
 	)),
 
 	// JSCS
@@ -86,61 +122,36 @@ Promise.all([
 ]).then(urls => {
 	urls = [].concat.apply([], urls).filter(Boolean).map(url => url.toLowerCase());
 
-	// fs.writeFile('new.log', stringify(urls, {
-	// 	space: '\t'
-	// }), 'utf8', () => {
-	// });
-	// fs.writeFile('old.log', stringify(Object.keys(shorturlCache), {
-	// 	space: '\t'
-	// }), 'utf8', () => {
-	// });
-
-	Promise.all(urls.map(url => {
-		if (shorturlCache[url]) {
-			return;
-		}
-		return shortUrl(url).then(shortUrl => {
-			if (shortUrl) {
-				hasChange = true;
-				shorturlCache[url] = shortUrl;
+	return Promise.all([
+		updateFile(
+			'../lib/shorturl.json',
+			urls,
+			shortUrl,
+		),
+		updateFile(
+			'../lib/shorturl_cn.json',
+			urls,
+			shortUrlCn,
+		),
+	]);
+}).then(hasChange => {
+	if (hasChange.some(Boolean)) {
+		require('child_process').spawn(
+			'git',
+			[
+				'--no-pager',
+				'diff',
+				'--',
+				'lib/*.json'
+			],
+			{
+				stdio: 'inherit'
 			}
-		});
-	})).then(() => {
-		if (hasChange) {
-			process.exitCode = -1;
-			const json = stringify(shorturlCache, {
-				space: '\t'
-			});
-			const writeFilePromise = fs.writeFile(require.resolve('../lib/shorturl.json'), json, 'utf8');
-			const shorturlcn = {};
-			Promise.all(Object.keys(shorturlCache).map( url => (
-				got(`http://api.t.sina.com.cn/short_url/shorten.json?source=3271760578&url_long=${url}`, {
-					json: true,
-				}).then(result => {
-					shorturlcn[url] = result.body[0].url_short;
-				})
-			))).then(() => {
-				const json = stringify(shorturlcn, {
-					space: '\t'
-				});
-				return fs.writeFile(require.resolve('../lib/shorturl_cn.json'), json, 'utf8');
-			}).then(() => writeFilePromise).then(() => {
-				require('child_process').spawn(
-					'git',
-					[
-						'--no-pager',
-						'diff',
-						'--',
-						'lib/*.json'
-					],
-					{
-						stdio: 'inherit'
-					}
-				);
-			});
-		}
-	});
+		);
+		process.exitCode = 1;
+	}
 });
+
 process.on('unhandledRejection', error => {
 	console.error(error);
 	process.exit(1);

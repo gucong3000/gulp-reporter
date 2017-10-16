@@ -26,10 +26,10 @@
   },
   "description": "Error report for: CSSLint/EditorConfig/ESLint/HTMLHint/JSCS/JSHint/PostCSS/Standard/TSLint/XO",
   "devDependencies": {
-    "codecov": "^2.3.0",
+    "codecov": "^2.3.1",
     "cross-env": "^5.0.5",
     "eclint": "^2.4.3",
-    "eslint": "^4.8.0",
+    "eslint": "^4.9.0",
     "goo.gl": "^0.1.4",
     "greenkeeper-lockfile": "^1.9.0",
     "gulp-csslint": "^1.0.0",

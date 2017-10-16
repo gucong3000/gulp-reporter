@@ -23,7 +23,7 @@ describe('ESLint', () => {
 		const error = new ESLintError({
 			ruleId: 'indent',
 		});
-		assert.equal(error.doc, 'http://eslint.org/docs/rules/indent');
+		assert.equal(error.doc, 'https://eslint.org/docs/rules/indent');
 	});
 
 	it('ESLintError, zh_CN', () => {
@@ -33,7 +33,7 @@ describe('ESLint', () => {
 		const error = new ESLintError({
 			ruleId: 'indent',
 		});
-		assert.equal(error.doc, 'http://cn.eslint.org/docs/rules/indent');
+		assert.equal(error.doc, 'https://cn.eslint.org/docs/rules/indent');
 	});
 
 	it('console reporter', done => {
