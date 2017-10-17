@@ -1,3 +1,6 @@
+# Created by https://www.gitignore.io/api/node,sonarqube,visualstudiocode
+
+### Node ###
 # Logs
 logs
 *.log
@@ -16,7 +19,6 @@ lib-cov
 
 # Coverage directory used by tools like istanbul
 coverage
-lint-reports
 
 # nyc test coverage
 .nyc_output
@@ -58,4 +60,27 @@ typings/
 # dotenv environment variables file
 .env
 
-.vscode/
+
+### SonarQube ###
+# SonarQube ignore files.
+#
+# https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner
+# Sonar Scanner working directories
+.sonar/
+.scannerwork/
+
+# http://www.sonarlint.org/commandline/
+# SonarLint working directories, configuration files (including credentials)
+.sonarlint/
+
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history
+
+# End of https://www.gitignore.io/api/node,sonarqube,visualstudiocode
+
+lint-reports
