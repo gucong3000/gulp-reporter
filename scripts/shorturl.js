@@ -126,12 +126,12 @@ Promise.all([
 		updateFile(
 			'../lib/shorturl.json',
 			urls,
-			shortUrl,
+			shortUrl
 		),
 		updateFile(
 			'../lib/shorturl_cn.json',
 			urls,
-			shortUrlCn,
+			shortUrlCn
 		),
 	]);
 }).then(hasChange => {
