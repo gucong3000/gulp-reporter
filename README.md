@@ -150,7 +150,7 @@ Enable or disable [git-blame](https://git-scm.com/docs/git-blame) related featur
 - CircleCI
 	> Output as junit format to [the `$CIRCLE_TEST_REPORTS` directory](https://circleci.com/docs/1.0/test-metadata/
 ).
-- GitLab CI
+- Jenkins
 	> Output for [Checkstyle Plugin](https://wiki.jenkins.io/display/JENKINS/Checkstyle+Plugin), in directory defined by `$CI_REPORTS`
 
 ## Related
