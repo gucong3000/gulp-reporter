@@ -105,5 +105,5 @@
     "shorturl": "node scripts/shorturl || git add lib/shorturl*.json",
     "test": "nyc npm run test_lang"
   },
-  "version": "2.4.0"
+  "version": "2.4.1"
 }

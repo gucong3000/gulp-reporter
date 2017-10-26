@@ -59,7 +59,7 @@ Default: `false`
 
 Type: `boolean|function|WritableStream`
 
-Default: `true` and `false` for AppVeyor, CircleCI, GitLab CI
+Default: `true` and `false` for [Special output format](#special-output-format)
 
 Report error messages in [gutil.log()](https://github.com/gulpjs/gulp-util#logmsg) or your `function|WritableStream`
 
