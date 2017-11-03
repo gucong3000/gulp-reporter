@@ -47,7 +47,7 @@
     "mocha": "^4.0.1",
     "nyc": "^11.2.1",
     "proxyquire": "^1.8.0",
-    "sinon": "^4.1.0",
+    "sinon": "^4.1.1",
     "stylelint": "^8.2.0",
     "stylelint-config-standard": "^17.0.0",
     "tslint": "^5.8.0",
