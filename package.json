@@ -27,9 +27,10 @@
   "description": "Error report for: CSSLint/EditorConfig/ESLint/HTMLHint/JSCS/JSHint/PostCSS/Standard/TSLint/XO",
   "devDependencies": {
     "codecov": "^3.0.0",
-    "cross-env": "^5.1.0",
+    "cross-env": "^5.1.1",
+    "csslint": "^1.0.5",
     "eclint": "^2.4.3",
-    "eslint": "^4.9.0",
+    "eslint": "^4.10.0",
     "goo.gl": "^0.1.4",
     "greenkeeper-lockfile": "^1.12.0",
     "gulp-csslint": "^1.0.0",
@@ -45,13 +46,14 @@
     "jshint": "^2.9.5",
     "json-stable-stringify": "^1.0.1",
     "mocha": "^4.0.1",
-    "nyc": "^11.2.1",
+    "nyc": "^11.3.0",
     "proxyquire": "^1.8.0",
     "sinon": "^4.1.1",
+    "strip-ansi": "^4.0.0",
     "stylelint": "^8.2.0",
     "stylelint-config-standard": "^17.0.0",
     "tslint": "^5.8.0",
-    "typescript": "^2.5.3",
+    "typescript": "^2.6.1",
     "vinyl": "^2.1.0",
     "vinyl-fs": "^2.4.4"
   },
@@ -100,10 +102,10 @@
   "scripts": {
     "test_lang": "cross-env LC_ALL=zh_CN npm run mocha -- --color && cross-env LC_ALL=en_US npm run mocha -- --no-color",
     "report-coverage": "codecov",
-    "mocha": "mocha test/*.test.js --no-timeouts",
-    "pretest": "eslint scripts lib test/*.test.js && npm run shorturl",
+    "mocha": "mocha \"test/*.test.js\" --no-timeouts",
+    "pretest": "eslint scripts lib \"test/*.js\" && npm run shorturl",
     "shorturl": "node scripts/shorturl || git add lib/shorturl*.json",
     "test": "nyc npm run test_lang"
   },
-  "version": "2.4.1"
+  "version": "2.4.2"
 }
