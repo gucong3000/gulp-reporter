@@ -1,6 +1,6 @@
 'use strict';
 
-// const { JSDOM } = require('jsdom');
+const JSDOM = require('jsdom').JSDOM;
 const stringify = require('json-stable-stringify');
 const fs = require('fs-extra');
 const got = require('got');
@@ -21,13 +21,13 @@ function shortUrlCn(url) {
 }
 
 
-// function get(url, selector) {
-// 	return JSDOM.fromURL(url, {
-// 		referrer: url
-// 	}).then(dom => {
-// 		return Array.from(dom.window.document.querySelectorAll(selector)).map(a => a.href);
-// 	}, console.error);
-// }
+function get(url, selector) {
+	return JSDOM.fromURL(url, {
+		referrer: url
+	}).then(dom => {
+		return Array.from(dom.window.document.querySelectorAll(selector)).map(a => a.href);
+	}, console.error);
+}
 
 function updateFile(file, urls, shortUrlFn) {
 	file = require.resolve(file);
@@ -66,18 +66,18 @@ function updateFile(file, urls, shortUrlFn) {
 const eslintRules = Object.keys(require('eslint/lib/load-rules')());
 
 Promise.all([
-	// get('https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties', '.markdown-body h3 a[href^="#"]'),
-	// get('https://cn.eslint.org/docs/rules/', '.rule-list a[href]'),
-	// get('https://eslint.org/docs/rules/', '.rule-list a[href]'),
-	// get('https://stylelint.io/user-guide/rules/', 'h1 ~ ul a[href$="/"]'),
-	// get('https://palantir.github.io/tslint/rules/', '.rules-list a[href]').then(urls => (
-	// 	urls.map(url => (
-	// 		url.replace(/\/*$/, '/')
-	// 	))
-	// )),
-	// get('https://github.com/yaniswang/HTMLHint/wiki/Rules', '.markdown-body ul a[href*="HTMLHint"]'),
-	// get('https://github.com/CSSLint/csslint/wiki/Rules', '.markdown-body ul a[href^="/CSSLint"]'),
-	// get('http://jscs.info/rules', '.rule-list a[href]'),
+	get('https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties', '.markdown-body h3 a[href^="#"]'),
+	get('https://cn.eslint.org/docs/rules/', '.rule-list a[href]'),
+	get('https://eslint.org/docs/rules/', '.rule-list a[href]'),
+	get('https://stylelint.io/user-guide/rules/', 'h1 ~ ul a[href$="/"]'),
+	get('https://palantir.github.io/tslint/rules/', '.rules-list a[href]').then(urls => (
+		urls.map(url => (
+			url.replace(/\/*$/, '/')
+		))
+	)),
+	get('https://github.com/yaniswang/HTMLHint/wiki/Rules', '.markdown-body ul a[href*="HTMLHint"]'),
+	get('https://github.com/CSSLint/csslint/wiki/Rules', '.markdown-body ul a[href^="/CSSLint"]'),
+	get('http://jscs.info/rules', '.rule-list a[href]'),
 
 	// ESLint (zh-CN)
 	eslintRules.map(rule => (
