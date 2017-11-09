@@ -16,6 +16,7 @@
     "got": "^7.1.0",
     "gulp-util": "^3.0.8",
     "is-windows": "^1.0.1",
+    "js-yaml": "^3.10.0",
     "junit-report-builder": "^1.2.0",
     "lodash.get": "^4.4.2",
     "os-locale": "^2.1.0",
