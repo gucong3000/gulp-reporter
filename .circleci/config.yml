@@ -20,6 +20,7 @@ jobs:
       - run:
           name: code-coverage
           command: 'npm run report-coverage'
+          when: always
       - store_artifacts:
           path: coverage
           prefix: coverage
