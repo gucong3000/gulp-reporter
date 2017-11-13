@@ -148,8 +148,7 @@ Enable or disable [git-blame](https://git-scm.com/docs/git-blame) related featur
 - AppVeyor
 	> Output as compilation message use [Build Worker API](https://www.appveyor.com/docs/build-worker-api/#add-compilation-message)
 - CircleCI
-	> Output as junit format to [the `$CIRCLE_TEST_REPORTS` directory](https://circleci.com/docs/1.0/test-metadata/
-).
+	> Output as junit format to directory that defined in [`$CIRCLE_TEST_REPORTS` ](https://circleci.com/docs/1.0/test-metadata/) or [`store_test_results`](https://circleci.com/docs/2.0/collect-test-data/).
 - Jenkins
 	> Output for [Checkstyle Plugin](https://wiki.jenkins.io/display/JENKINS/Checkstyle+Plugin), in directory defined by `$CI_REPORTS`
 

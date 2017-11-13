@@ -706,35 +706,4 @@ describe('API', () => {
 				done();
 			});
 	});
-
-	it('ci-reporter isCI: false', () => {
-		const ciReporter = proxyquire('../lib/ci-reporter', {
-			'ci-info': {
-				isCI: false
-			},
-		});
-
-		return ciReporter();
-	});
-
-	it('ci-reporter jenkins', () => {
-		const ciReporter = proxyquire('../lib/ci-reporter', {
-			'ci-info': {
-				name: 'jenkins',
-				jenkins: true,
-				isCI: true,
-			},
-		});
-
-		return ciReporter([{
-			report: {
-				errors: [
-					new Error('_'),
-				]
-			}
-		}]);
-	});
-
-
-
 });
