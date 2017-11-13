@@ -43,7 +43,10 @@ describe('CI', function() {
 		};
 		const ciReporter = proxyquire('../lib/ci-reporter', {
 			'ci-info': {
-				isCI: false
+				isCI: false,
+				CIRCLE: false,
+				APPVEYOR: false,
+				JENKINS: false,
 			},
 		});
 
@@ -64,6 +67,8 @@ describe('CI', function() {
 				name: 'CircleCI',
 				CIRCLE: true,
 				isCI: true,
+				APPVEYOR: false,
+				JENKINS: false,
 			}
 		})([{
 			report: {
@@ -90,6 +95,8 @@ describe('CI', function() {
 				name: 'Jenkins',
 				JENKINS: true,
 				isCI: true,
+				CIRCLE: false,
+				APPVEYOR: false,
 			},
 			'./has-checkstyle': true
 		})([{
