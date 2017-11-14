@@ -39,7 +39,7 @@ describe('CI', function() {
 
 	it('is not CI', () => {
 		process.env = {
-			CI_REPORTS: tempDir
+			CI_REPORTS: tempDir,
 		};
 		const ciReporter = proxyquire('../lib/ci-reporter', {
 			'ci-info': {
@@ -69,13 +69,13 @@ describe('CI', function() {
 				isCI: true,
 				APPVEYOR: false,
 				JENKINS: false,
-			}
+			},
 		})([{
 			report: {
 				errors: [
 					new Error('_'),
-				]
-			}
+				],
+			},
 		}]).then(() => (
 			getResult('lint-result.xml')
 		)).then(results => {
@@ -98,13 +98,13 @@ describe('CI', function() {
 				CIRCLE: false,
 				APPVEYOR: false,
 			},
-			'./has-checkstyle': true
+			'./has-checkstyle': true,
 		})([{
 			report: {
 				errors: [
 					new Error('_'),
-				]
-			}
+				],
+			},
 		}]).then(() => (
 			getResult('checkstyle-result.xml')
 		)).then(results => {

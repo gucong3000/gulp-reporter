@@ -18,7 +18,7 @@ const {
 describe('ESLint', () => {
 	it('ESLintError, en_US', () => {
 		const ESLintError = proxyquire('../lib/eslint-error', {
-			'./locale': 'en_US'
+			'./locale': 'en_US',
 		});
 		const error = new ESLintError({
 			ruleId: 'indent',
@@ -28,7 +28,7 @@ describe('ESLint', () => {
 
 	it('ESLintError, zh_CN', () => {
 		const ESLintError = proxyquire('../lib/eslint-error', {
-			'./locale': 'zh_CN'
+			'./locale': 'zh_CN',
 		});
 		const error = new ESLintError({
 			ruleId: 'indent',
@@ -38,7 +38,7 @@ describe('ESLint', () => {
 
 	it('console reporter', done => {
 		return vfs.src('test/fixtures/eslint/invalid.js', {
-			base: process.cwd()
+			base: process.cwd(),
 		})
 			.pipe(eslint())
 			.pipe(reporter({
@@ -57,16 +57,16 @@ describe('ESLint', () => {
 	it('ignore *.min.js', done => {
 		const reports = [];
 		return vfs.src('test/fixtures/eslint/invalid.min.js', {
-			base: process.cwd()
+			base: process.cwd(),
 		})
 			.pipe(eslint())
 			.pipe(reporter({
 				output: {
 					write: (report) => {
 						reports.push(report);
-					}
+					},
 				},
-				author: null
+				author: null,
 			}))
 			.on('error', done)
 			.on('data', file => {
@@ -78,11 +78,11 @@ describe('ESLint', () => {
 
 	it('sort errors', done => {
 		return vfs.src('test/fixtures/eslint/sort.js', {
-			base: process.cwd()
+			base: process.cwd(),
 		})
 			.pipe(eslint())
 			.pipe(reporter({
-				author: null
+				author: null,
 			}))
 			.on('data', file => {
 				assert.ok(file.report.errors);
@@ -134,13 +134,13 @@ describe('ESLint', () => {
 	it('not commit file', done => {
 		const message = [];
 		const stream = eslint({
-			fix: true
+			fix: true,
 		});
 		stream.pipe(reporter({
 			fail: false,
 			output: msg => {
 				message.push(stripAnsi(msg));
-			}
+			},
 		}))
 			.on('finish', () => {
 				assert.ok(/^\s*0+…?\s+\(Not Committed Yet\s+<not.committed.yet>\s+\d+-\d+-\d+ \d+:\d+:\d+\)$/m.test(message[0]));
@@ -151,18 +151,18 @@ describe('ESLint', () => {
 		stream.write(new Vinyl({
 			base: process.cwd(),
 			path: __filename,
-			contents: new Buffer('"use strict";\nalert(console > 1);')
+			contents: new Buffer('"use strict";\nalert(console > 1);'),
 		}));
 		stream.end();
 	});
 
 	it('warn', done => {
 		return vfs.src('test/fixtures/eslint/invalid.js', {
-			base: process.cwd()
+			base: process.cwd(),
 		})
 			.pipe(eslint({
 				rules: {
-					'strict': 'warn'
+					'strict': 'warn',
 				},
 			}))
 			.pipe(reporter({
@@ -179,7 +179,7 @@ describe('ESLint', () => {
 
 	it('browser reporter', (done) => {
 		return vfs.src('test/fixtures/eslint/invalid.js', {
-			base: process.cwd()
+			base: process.cwd(),
 		})
 			.pipe(eslint())
 			.pipe(reporter({
@@ -195,7 +195,7 @@ describe('ESLint', () => {
 					virtualConsole: virtualConsole,
 				});
 				const script = new Script(file.contents.toString(), {
-					filename: file.path
+					filename: file.path,
 				});
 				virtualConsole.once('error', () => {
 					process.nextTick(done);
@@ -208,18 +208,18 @@ describe('ESLint', () => {
 	it('Syntax error', done => {
 		const message = [];
 		return vfs.src('test/fixtures/eslint/SyntaxError.js', {
-			base: process.cwd()
+			base: process.cwd(),
 		})
 			.pipe(eslint())
 			.pipe(reporter({
 				output: msg => {
 					message.push(msg);
-				}
+				},
 			}))
 			.on('data', file => {
 				assert.equal(file.report.errors[0].inspect(), [
 					'ESLintError: Parsing error: Unexpected token (ESLint)',
-					'    at ' + path.resolve('test/fixtures/eslint/SyntaxError.js') + ':2:1'
+					'    at ' + path.resolve('test/fixtures/eslint/SyntaxError.js') + ':2:1',
 				].join('\n'));
 			})
 			.on('error', () => {

@@ -10,10 +10,10 @@ describe('TSLint', function() {
 	this.timeout(10000);
 	it('console reporter', done => {
 		return vfs.src('test/fixtures/tslint/invalid.ts', {
-			base: process.cwd()
+			base: process.cwd(),
 		})
 			.pipe(gulpTslint({
-				program: tslint.Linter.createProgram('test/fixtures/tslint/tslint.json')
+				program: tslint.Linter.createProgram('test/fixtures/tslint/tslint.json'),
 			}))
 			.pipe(reporter({
 				output: true,
@@ -32,16 +32,16 @@ describe('TSLint', function() {
 	});
 	it('fail function', done => {
 		return vfs.src('test/fixtures/tslint/invalid.ts', {
-			base: process.cwd()
+			base: process.cwd(),
 		})
 			.pipe(gulpTslint({
-				program: tslint.Linter.createProgram('test/fixtures/tslint/tslint.json')
+				program: tslint.Linter.createProgram('test/fixtures/tslint/tslint.json'),
 			}))
 			.pipe(reporter({
 				author: null,
 				fail: () => {
 					return false;
-				}
+				},
 			}))
 			.on('finish', () => {
 				done();

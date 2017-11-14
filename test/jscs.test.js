@@ -15,10 +15,10 @@ describe('JSCS', function() {
 	this.timeout(10000);
 	it('console reporter', done => {
 		return vfs.src('test/fixtures/jscs/invalid.js', {
-			base: process.cwd()
+			base: process.cwd(),
 		})
 			.pipe(jscs({
-				configPath: 'test/fixtures/jscs/.jscsrc'
+				configPath: 'test/fixtures/jscs/.jscsrc',
 			}))
 			.pipe(reporter({
 				output: true,
@@ -36,10 +36,10 @@ describe('JSCS', function() {
 	});
 	it('browser reporter', done => {
 		return vfs.src('test/fixtures/jscs/invalid.js', {
-			base: process.cwd()
+			base: process.cwd(),
 		})
 			.pipe(jscs({
-				configPath: 'test/fixtures/jscs/.jscsrc'
+				configPath: 'test/fixtures/jscs/.jscsrc',
 			}))
 			.pipe(reporter({
 				browser: true,
@@ -54,7 +54,7 @@ describe('JSCS', function() {
 					virtualConsole: virtualConsole,
 				});
 				const script = new Script(file.contents.toString(), {
-					filename: file.path
+					filename: file.path,
 				});
 				virtualConsole.once('error', () => {
 					process.nextTick(done);
