@@ -5,7 +5,7 @@ const reporter = require('../');
 const path = require('path');
 
 vfs.src('test/fixtures/eslint/invalid.js', {
-	cwd: path.join(__dirname, '..')
+	cwd: path.join(__dirname, '..'),
 })
 	.pipe(eslint())
 	.pipe(reporter({

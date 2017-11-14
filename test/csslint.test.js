@@ -11,8 +11,8 @@ describe('CSSLint', function() {
 	it('CSSLintError', () => {
 		const CSSLintError = proxyquire('../lib/csslint-error', {
 			'./lint-error': proxyquire('../lib/lint-error', {
-				'./locale': 'zh_CN'
-			})
+				'./locale': 'zh_CN',
+			}),
 		});
 		new CSSLintError({});
 	});
@@ -22,7 +22,7 @@ describe('CSSLint', function() {
 			stripBOM: false,
 		})
 			.pipe(csslint({
-				'duplicate-properties': 2
+				'duplicate-properties': 2,
 			}))
 			.pipe(reporter({
 				output: true,

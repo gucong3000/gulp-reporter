@@ -11,7 +11,7 @@ describe('HTMLHint', () => {
 
 	it('console reporter', (done) => {
 		return vfs.src('test/fixtures/htmlhint/invalid.html', {
-			base: process.cwd()
+			base: process.cwd(),
 		})
 			.pipe(htmlhint())
 			.pipe(reporter({

@@ -8,7 +8,7 @@ const sandbox = require('./sandbox');
 describe('XO', () => {
 	it('console reporter', done => {
 		return vfs.src('invalid.js', {
-			cwd: 'test/fixtures/xo/'
+			cwd: 'test/fixtures/xo/',
 		})
 			.pipe(xo())
 			.pipe(reporter({

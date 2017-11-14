@@ -24,7 +24,7 @@ describe('API', () => {
 
 	it('short-doc-url', () => {
 		return shortDocUrl([{
-			doc: 'http://163.com'
+			doc: 'http://163.com',
 		}]).then(errors => {
 			if (!isCI || errors[0].docShort) {
 				assert.ok(/^https?:\/\/(goo\.gl|t\.cn)\//.test(errors[0].docShort));
@@ -34,7 +34,7 @@ describe('API', () => {
 
 	it('short-doc-url error', () => {
 		return shortDocUrl([{
-			doc: '$#@&*!'
+			doc: '$#@&*!',
 		}]).then(errors => {
 			assert.ifError(errors[0].docShort);
 		});
@@ -42,10 +42,10 @@ describe('API', () => {
 
 	it('short-doc-url (en_US)', () => {
 		const shortDocUrl = proxyquire('../lib/short-doc-url', {
-			'./locale': 'en_US'
+			'./locale': 'en_US',
 		});
 		return shortDocUrl([{
-			doc: 'https://stylelint.io/user-guide/rules/indentation/'
+			doc: 'https://stylelint.io/user-guide/rules/indentation/',
 		}]).then(errors => {
 			assert.equal(errors[0].docShort, 'https://goo.gl/NVQ9aa');
 		});
@@ -53,10 +53,10 @@ describe('API', () => {
 
 	it('short-doc-url (zh_CN)', () => {
 		const shortDocUrl = proxyquire('../lib/short-doc-url', {
-			'./locale': 'zh_CN'
+			'./locale': 'zh_CN',
 		});
 		return shortDocUrl([{
-			doc: 'https://stylelint.io/user-guide/rules/indentation/'
+			doc: 'https://stylelint.io/user-guide/rules/indentation/',
 		}]).then(errors => {
 			assert.equal(errors[0].docShort, 'http://t.cn/Ro8Mjw5');
 		});
@@ -86,7 +86,7 @@ describe('API', () => {
 				},
 				{
 					severity: 'error',
-				}
+				},
 			]);
 
 			assert.ifError(result[0].severity);
@@ -111,7 +111,7 @@ describe('API', () => {
 				},
 				{
 					fileName: '!',
-				}
+				},
 			]);
 
 			assert.ifError(result[0].fileName);
@@ -126,12 +126,12 @@ describe('API', () => {
 				{
 				},
 				{
-					demote: true
+					demote: true,
 				},
 				{
 				},
 				{
-					demote: true
+					demote: true,
 				},
 			]);
 			assert.ifError(result[0].demote);
@@ -144,24 +144,24 @@ describe('API', () => {
 			const result = sortErrors([
 				{
 					columnNumber: 3,
-					lineNumber: 8
+					lineNumber: 8,
 				},
 				{
 				},
 				{
-					columnNumber: 2
+					columnNumber: 2,
 				},
 				{
 					columnNumber: 3,
-					lineNumber: 4
+					lineNumber: 4,
 				},
 				{
 					columnNumber: 6,
-					lineNumber: 4
+					lineNumber: 4,
 				},
 				{
 					columnNumber: 6,
-					lineNumber: 8
+					lineNumber: 8,
 				},
 			]);
 
@@ -192,11 +192,11 @@ describe('API', () => {
 					root: {
 						source: {
 							input: {
-								css: 'a{}'
-							}
-						}
-					}
-				}
+								css: 'a{}',
+							},
+						},
+					},
+				},
 			}, errors), errors);
 		});
 	});
@@ -218,7 +218,7 @@ describe('API', () => {
 			assert.deepEqual(gitAuthor(), {
 				time: 1498558291,
 				name: 'name.test',
-				email: 'test@test.com'
+				email: 'test@test.com',
 			});
 		});
 
@@ -227,13 +227,13 @@ describe('API', () => {
 			assert.notDeepEqual(gitAuthor(), {
 				time: 1498558291,
 				name: 'name.test',
-				email: 'test@test.com'
+				email: 'test@test.com',
 			});
 		});
 
 		it('file not in git repo with error', done => {
 			return vfs.src('test/fixtures/eslint/invalid.js', {
-				base: process.cwd()
+				base: process.cwd(),
 			})
 				.pipe(eslint())
 				.pipe(through.obj((file, encoding, done) => {
@@ -270,11 +270,11 @@ describe('API', () => {
 						message: 'testcase message.',
 						source: 'testcase source',
 						fileName,
-					}]
-				}
+					}],
+				},
 			}, {
 				blame: true,
-				_termColumns: 60
+				_termColumns: 60,
 			})), [
 				'fixtures/testcase',
 				'    01:01 \u{2714}\u{FE0F} testcase message.',
@@ -293,11 +293,11 @@ describe('API', () => {
 						message: 'testcase message.',
 						source: 'testcase source',
 						fileName,
-					}]
-				}
+					}],
+				},
 			}, {
 				blame: false,
-				_termColumns: 60
+				_termColumns: 60,
 			})), [
 				'fixtures/testcase',
 				'    01:01 \u{2714}\u{FE0F} testcase message.',
@@ -320,7 +320,7 @@ describe('API', () => {
 
 			const formatter = proxyquire('../lib/formatter', {
 				'ci-info': {
-					isCI: false
+					isCI: false,
 				},
 				'is-windows': () => true,
 			});
@@ -335,11 +335,11 @@ describe('API', () => {
 						message: 'testcase message.',
 						source: 'testcase source',
 						fileName,
-					}]
-				}
+					}],
+				},
 			}, {
 				blame: false,
-				_termColumns: 60
+				_termColumns: 60,
 			})), [
 				'fixtures/testcase',
 				'    01:01 \u{2714}\u{FE0F} testcase message.',
@@ -354,11 +354,11 @@ describe('API', () => {
 						message: 'testcase message.',
 						source: 'testcase source',
 						fileName,
-					}]
-				}
+					}],
+				},
 			}, {
 				blame: false,
-				_termColumns: 60
+				_termColumns: 60,
 			})), [
 				'fixtures/testcase',
 				'    01:01 \u{2714}\u{FE0F}  testcase message.',
@@ -373,11 +373,11 @@ describe('API', () => {
 						message: 'testcase message.',
 						source: 'testcase source',
 						fileName,
-					}]
-				}
+					}],
+				},
 			}, {
 				blame: false,
-				_termColumns: 60
+				_termColumns: 60,
 			})), [
 				'fixtures/testcase',
 				'    01:01 \u{2714} testcase message.',
@@ -407,7 +407,7 @@ describe('API', () => {
 			const file = new gutil.File({
 				cwd: '/',
 				path: '/testcase.js',
-				contents: contents
+				contents: contents,
 			});
 			browserReporter(file, []);
 			assert.equal(file.contents. contents);
@@ -433,7 +433,7 @@ describe('API', () => {
 			return getOptions({
 				expires: 1000,
 			})({
-				cwd: '/_/'
+				cwd: '/_/',
 			}).then(options => {
 				assert.ok(options);
 				assert.ok(options._expiresTime > 0);
@@ -453,7 +453,7 @@ describe('API', () => {
 		it('mock', () => {
 			const getOptions = proxyquire('../lib/get-options', {
 				'ci-info': {
-					isCI: !process.env.CI
+					isCI: !process.env.CI,
 				},
 			});
 			return getOptions({
@@ -486,7 +486,7 @@ describe('API', () => {
 		stream.write(new gutil.File({
 			cwd: '/',
 			path: '/testcase.js',
-			contents: new Buffer('heheh')
+			contents: new Buffer('heheh'),
 		}));
 	});
 
@@ -623,7 +623,7 @@ describe('API', () => {
 			.pipe(eslint())
 			.pipe(reporter({
 				author: {
-					email: /^not_exist@mail.com$/
+					email: /^not_exist@mail.com$/,
 				},
 			}))
 			.on('finish', done);
@@ -636,7 +636,7 @@ describe('API', () => {
 			.pipe(eslint())
 			.pipe(reporter({
 				author: {
-					email: /.+/
+					email: /.+/,
 				},
 			}))
 			.on('error', ex => {
@@ -652,7 +652,7 @@ describe('API', () => {
 			.pipe(eslint())
 			.pipe(reporter({
 				author: {
-					name: /^not_exist$/
+					name: /^not_exist$/,
 				},
 			}))
 			.on('finish', done);
@@ -666,7 +666,7 @@ describe('API', () => {
 			.pipe(eslint())
 			.pipe(reporter({
 				author: {
-					name: /.+/
+					name: /.+/,
 				},
 			}))
 			.on('error', ex => {

@@ -12,14 +12,14 @@ describe('PostCSS', function() {
 	it('PostCSSError', () => {
 		const PostCSSError = proxyquire('../lib/postcss-error', {
 			'./lint-error': proxyquire('../lib/lint-error', {
-				'./locale': 'zh_CN'
-			})
+				'./locale': 'zh_CN',
+			}),
 		});
 		const error = new PostCSSError({
 			input: {
-				file: __filename
+				file: __filename,
 			},
-			text: 'mock_message'
+			text: 'mock_message',
 		});
 		assert.equal(error.fileName, __filename);
 		assert.equal(error.severity, 'error');
@@ -27,14 +27,14 @@ describe('PostCSS', function() {
 
 	it('not fail when valid', done => {
 		return vfs.src('test/fixtures/postcss/valid.css', {
-			base: process.cwd()
+			base: process.cwd(),
 		})
 
 			.pipe(postcss([
 				stylelint,
 			]))
 			.pipe(reporter({
-				author: null
+				author: null,
 			}))
 			.on('error', done)
 			.on('finish', done);
@@ -42,7 +42,7 @@ describe('PostCSS', function() {
 
 	it('not fail with only warning', done => {
 		return vfs.src('test/fixtures/postcss/empty-block-with-disables.css', {
-			base: process.cwd()
+			base: process.cwd(),
 		})
 
 			.pipe(postcss([
@@ -63,7 +63,7 @@ describe('PostCSS', function() {
 
 	it('console reporter', done => {
 		return vfs.src('test/fixtures/postcss/invalid.css', {
-			base: process.cwd()
+			base: process.cwd(),
 		})
 
 			.pipe(postcss([
@@ -71,7 +71,7 @@ describe('PostCSS', function() {
 			]))
 			.pipe(reporter({
 				output: true,
-				author: null
+				author: null,
 			}))
 			.on('error', ex => {
 				const reMessage = /^\d+:\d+\s+.+?\s+\(\w+\s+\w+(-\w+)*\s+https?:\/\/(goo\.gl|t\.cn)\/\w+\)$/;
@@ -96,7 +96,7 @@ describe('PostCSS', function() {
 
 	it('browser reporter', done => {
 		return vfs.src('test/fixtures/postcss/invalid.css', {
-			base: process.cwd()
+			base: process.cwd(),
 		})
 
 			.pipe(postcss([

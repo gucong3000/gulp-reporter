@@ -10,8 +10,8 @@ describe('JSHint', () => {
 	it('JSHintError', () => {
 		const JSHintError = proxyquire('../lib/jshint-error', {
 			'./lint-error': proxyquire('../lib/lint-error', {
-				'./locale': 'zh_CN'
-			})
+				'./locale': 'zh_CN',
+			}),
 		});
 		const error = new JSHintError({
 			message: 'tesecase',
@@ -28,7 +28,7 @@ describe('JSHint', () => {
 
 	it('console reporter', done => {
 		return vfs.src('test/fixtures/jshint/invalid.js', {
-			base: process.cwd()
+			base: process.cwd(),
 		})
 			.pipe(jshint())
 			.pipe(reporter({

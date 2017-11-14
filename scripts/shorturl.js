@@ -23,7 +23,7 @@ function shortUrlCn(url) {
 
 function get(url, selector) {
 	return JSDOM.fromURL(url, {
-		referrer: url
+		referrer: url,
 	}).then(dom => {
 		return Array.from(dom.window.document.querySelectorAll(selector)).map(a => a.href);
 	}, console.error);
@@ -54,7 +54,7 @@ function updateFile(file, urls, shortUrlFn) {
 				stringify(
 					shorturlCache,
 					{
-						space: '\t'
+						space: '\t',
 					}
 				),
 				'utf8'
@@ -142,10 +142,10 @@ Promise.all([
 				'--no-pager',
 				'diff',
 				'--',
-				'lib/*.json'
+				'lib/*.json',
 			],
 			{
-				stdio: 'inherit'
+				stdio: 'inherit',
 			}
 		);
 		process.exitCode = 1;
