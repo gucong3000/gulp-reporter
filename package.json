@@ -31,7 +31,7 @@
     "cross-env": "^5.1.1",
     "csslint": "^1.0.5",
     "eclint": "^2.5.0",
-    "eslint": "^4.11.0",
+    "eslint": "^4.12.0",
     "goo.gl": "^0.1.4",
     "greenkeeper-lockfile": "^1.12.0",
     "gulp-csslint": "^1.0.0",
