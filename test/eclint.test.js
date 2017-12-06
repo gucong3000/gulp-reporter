@@ -9,7 +9,7 @@ describe('ECLint', () => {
 	it('console reporter', done => {
 		return vfs.src('test/fixtures/eclint/invalid.js', {
 			base: process.cwd(),
-			stripBOM: false,
+			removeBOM: false,
 		})
 			.pipe(eclint.check())
 			.pipe(reporter({
@@ -31,7 +31,7 @@ describe('ECLint', () => {
 	it('console reporter without blame', done => {
 		return vfs.src('test/fixtures/eclint/invalid.js', {
 			base: process.cwd(),
-			stripBOM: false,
+			removeBOM: false,
 		})
 			.pipe(eclint.check())
 			.pipe(reporter({
