@@ -19,7 +19,7 @@ describe('CSSLint', function() {
 	it('console reporter', done => {
 		return vfs.src('test/fixtures/csslint/invalid.css', {
 			base: process.cwd(),
-			stripBOM: false,
+			removeBOM: false,
 		})
 			.pipe(csslint({
 				'duplicate-properties': 2,
@@ -41,7 +41,7 @@ describe('CSSLint', function() {
 	it('browser reporter', done => {
 		return vfs.src('test/fixtures/csslint/invalid.css', {
 			base: process.cwd(),
-			stripBOM: false,
+			removeBOM: false,
 		})
 			.pipe(csslint())
 			.pipe(reporter({
