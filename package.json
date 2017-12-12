@@ -12,7 +12,7 @@
     "ci-info": "^1.1.2",
     "cli-truncate": "^1.1.0",
     "emphasize": "^1.5.0",
-    "fs-extra": "^4.0.3",
+    "fs-extra": "^5.0.0",
     "got": "^8.0.1",
     "gulp-util": "^3.0.8",
     "is-windows": "^1.0.1",
