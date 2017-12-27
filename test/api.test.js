@@ -40,7 +40,7 @@ describe('API', () => {
 		});
 	});
 
-	it('short-doc-url (en_US)', () => {
+	it('short-doc-url (default)', () => {
 		const shortDocUrl = proxyquire('../lib/short-doc-url', {
 			'./locale': 'en_US',
 		});
@@ -51,13 +51,16 @@ describe('API', () => {
 		});
 	});
 
-	it('short-doc-url (zh_CN)', () => {
+	it('short-doc-url (in GWF)', () => {
+		const getTimezoneOffset = Date.prototype.getTimezoneOffset;
 		const shortDocUrl = proxyquire('../lib/short-doc-url', {
 			'./locale': 'zh_CN',
 		});
+		Date.prototype.getTimezoneOffset = () => (-480);
 		return shortDocUrl([{
 			doc: 'https://stylelint.io/user-guide/rules/indentation/',
 		}]).then(errors => {
+			Date.prototype.getTimezoneOffset = getTimezoneOffset;
 			assert.equal(errors[0].docShort, 'http://t.cn/Ro8Mjw5');
 		});
 	});
