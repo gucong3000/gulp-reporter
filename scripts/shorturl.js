@@ -29,7 +29,10 @@ function get (url, selector) {
 		referrer: url,
 	}).then(dom => {
 		return Array.from(dom.window.document.querySelectorAll(selector)).map(a => a.href);
-	}, console.error);
+	}).then(error => {
+		console.error(error);
+		return [];
+	});
 }
 
 function updateFile (file, urls, shortUrlFn) {

@@ -9,7 +9,9 @@ jobs:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
           name: install-npm-wee
-          command: npm install
+          command: |
+            npx npm-check-updates -a;
+            npm install;
       - save_cache:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
@@ -27,8 +29,9 @@ jobs:
       - run:
           name: Creating Artifacts
           command: |
-            mkdir /tmp/json_artifacts;
-            cp lib/*.json /tmp/json_artifacts/;
+            mkdir -p /tmp/json_artifacts/lib;
+            cp package.json /tmp/json_artifacts/
+            cp lib/*.json /tmp/json_artifacts/lib;
           when: always
       - store_artifacts:
           path: /tmp/json_artifacts
