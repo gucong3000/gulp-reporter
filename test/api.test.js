@@ -16,7 +16,6 @@ const through = require('through2');
 const gutil = require('gulp-util');
 const vfs = require('vinyl-fs');
 const path = require('path');
-const isCI = require('ci-info').isCI;
 
 require('./sandbox');
 
@@ -25,7 +24,13 @@ describe('API', () => {
 		return shortDocUrl([{
 			doc: 'http://163.com',
 		}]).then(errors => {
-			if (!isCI || errors[0].docShort) {
+			if (!errors[0].docShort) {
+				return;
+			}
+			const locale = require('../lib/locale');
+			if (locale !== 'zh_CN') {
+				assert.ok(/^https?:\/\/goo\.gl\//.test(errors[0].docShort));
+			} else {
 				assert.ok(/^https?:\/\/(goo\.gl|t\.cn)\//.test(errors[0].docShort));
 			}
 		});
