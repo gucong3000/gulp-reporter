@@ -1,10 +1,11 @@
 'use strict';
-
+// process.env.HTTP_PROXY=http://127.0.0.1:1080/
 const JSDOM = require('jsdom').JSDOM;
 const stringify = require('json-stable-stringify');
 const fs = require('fs-extra');
 const got = require('got');
 const googl = require('goo.gl');
+const isCI = require('ci-info').isCI;
 // Set a developer key (_required by Google_; see http://goo.gl/4DvFk for more info.)
 googl.setKey('AIzaSyACqNSi3cybDvDfWMaPyXZEzQ6IeaPehLE');
 
@@ -21,6 +22,9 @@ function shortUrlCn (url) {
 }
 
 function get (url, selector) {
+	if (!isCI) {
+		return Promise.resolve([]);
+	}
 	return JSDOM.fromURL(url, {
 		referrer: url,
 	}).then(dom => {
@@ -40,14 +44,15 @@ function updateFile (file, urls, shortUrlFn) {
 		// 		hasChange = true;
 		// 	}
 		// }),
-		Promise.all(urls.map(url => (
-			shorturlCache[url] || shortUrlFn(url).then(shortUrl => {
+		Promise.all(urls.map(url => {
+			const urlLowerCase = url.toLowerCase();
+			return shorturlCache[urlLowerCase] || shortUrlFn(url).then(shortUrl => {
 				if (shortUrl) {
 					hasChange = true;
-					shorturlCache[url] = shortUrl;
+					shorturlCache[urlLowerCase] = shortUrl;
 				}
-			}).catch(console.error)
-		))).then(() => (
+			}).catch(console.error);
+		})).then(() => (
 			hasChange && fs.writeFile(
 				file,
 				stringify(
@@ -62,7 +67,17 @@ function updateFile (file, urls, shortUrlFn) {
 	));
 }
 
-const eslintRules = Object.keys(require('eslint/lib/load-rules')());
+const eslintRules = Object.keys(
+	require('eslint/lib/load-rules')()
+).map(
+	rule => rule.toLowerCase()
+);
+
+const EslintPluginDocBaseUrl = {
+	import: rule => `https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/${rule}.md#readme`,
+	node: rule => `https://github.com/mysticatea/eslint-plugin-node/blob/HEAD/docs/rules/${rule}.md#readme`,
+	promise: rule => `https://www.npmjs.com/package/eslint-plugin-promise#${rule}`,
+};
 
 Promise.all([
 	get('https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties', '.markdown-body h3 a[href^="#"]'),
@@ -87,6 +102,32 @@ Promise.all([
 	eslintRules.map(rule => (
 		`https://eslint.org/docs/rules/${rule}`
 	)),
+
+	// eslint-plugin-standard
+	'https://www.npmjs.com/package/eslint-plugin-standard#rules-explanations',
+
+	// eslint-plugin-compat
+	[
+		'serviceworker',
+		'intersectionobserver',
+		'webassembly',
+		'paymentrequest',
+		'serviceworker',
+		'fetch',
+		'promise',
+	].map(s => 'https://www.caniuse.com/#search=' + s),
+
+	// ESLint plugins
+	fs.readJSON('package.json').then(
+		pkg => Object.keys(pkg.devDependencies).filter(
+			pkgName => /^eslint-plugin-/.test(pkgName)
+		).map(pkgName => {
+			const baseUrl = EslintPluginDocBaseUrl[pkgName.slice(14)];
+			if (baseUrl) {
+				return Object.keys(require(pkgName).rules).map(baseUrl);
+			}
+		})
+	),
 
 	// JSCS
 	fs.readdir('node_modules/jscs/lib/rules').then(files => (
@@ -119,7 +160,11 @@ Promise.all([
 		`https://github.com/yaniswang/HTMLHint/wiki/${rule}`
 	)),
 ]).then(urls => {
-	urls = [].concat.apply([], urls).filter(Boolean).map(url => url.toLowerCase());
+	do {
+		urls = [].concat.apply([], urls);
+	} while (urls.some(Array.isArray));
+
+	urls = urls.filter(Boolean);
 
 	return Promise.all([
 		updateFile(

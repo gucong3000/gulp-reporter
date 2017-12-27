@@ -23,6 +23,15 @@ jobs:
           when: always
       - store_artifacts:
           path: coverage
-          prefix: coverage
+          destination: coverage reports
+      - run:
+          name: Creating Artifacts
+          command: |
+            mkdir /tmp/json_artifacts;
+            cp lib/*.json /tmp/json_artifacts/;
+          when: always
+      - store_artifacts:
+          path: /tmp/json_artifacts
+          destination: short url
       - store_test_results:
           path: ~/lint-reports

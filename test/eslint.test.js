@@ -227,4 +227,35 @@ describe('ESLint', () => {
 				done();
 			});
 	});
+	it('eslint-config-standard', done => {
+		return vfs.src('test/fixtures/eslint/standard.js', {
+			base: process.cwd(),
+		})
+			.pipe(eslint({
+				configFile: path.resolve('test/fixtures/eslint/standard.json'),
+			}))
+			.pipe(reporter({
+				output: false,
+				blame: false,
+			}))
+			.on('data', file => {
+				try {
+					file.report.errors.forEach(error => {
+						if (/^(.+?)\//.test(error.rule)) {
+							if (RegExp.$1 === 'compat') {
+								assert.ok(error.doc.startsWith('https://www.caniuse.com/#search='));
+								assert.ok(/search=[a-z]+$/.test(error.doc));
+							} else {
+								const packageName = 'eslint-plugin-' + RegExp.$1;
+								assert.ok(error.doc.indexOf(packageName) > 1);
+							}
+						}
+					});
+				} catch (ex) {
+					done(ex);
+					return;
+				}
+				done();
+			});
+	});
 });

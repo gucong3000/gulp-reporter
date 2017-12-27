@@ -1,0 +1,20 @@
+{
+	"root": true,
+	"env": {
+	"browser": true
+	},
+	"extends": [
+		"standard"
+	],
+	"plugins": ["compat"],
+	"rules": {
+		"compat/compat": [
+			"error"
+		]
+	},
+	"settings": {
+		"browsers": [
+			"ie 8"
+		]
+	}
+}
