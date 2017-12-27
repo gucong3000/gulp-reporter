@@ -21,7 +21,6 @@ const isCI = require('ci-info').isCI;
 require('./sandbox');
 
 describe('API', () => {
-
 	it('short-doc-url', () => {
 		return shortDocUrl([{
 			doc: 'http://163.com',
@@ -191,7 +190,7 @@ describe('API', () => {
 		it('get error line fail', () => {
 			const errors = ['testcase'];
 			assert.deepEqual(addPostcssSource({
-				postcss : {
+				postcss: {
 					root: {
 						source: {
 							input: {
@@ -256,7 +255,7 @@ describe('API', () => {
 	});
 
 	describe('error formatter', () => {
-		function splitLog(log) {
+		function splitLog (log) {
 			return stripAnsi(log.replace(/\u001b]50;\w+=.+?\u0007/g, '').replace(/([\u2000-\u3000])\ufe0f?\s+/g, '$1\u{fe0f} ')).split('\n');
 		}
 		it('break line', () => {
@@ -308,7 +307,7 @@ describe('API', () => {
 		});
 
 		it('mock Windows', () => {
-			function splitLog(log) {
+			function splitLog (log) {
 				return stripAnsi(log.replace(/\u001b]50;\w+=.+?\u0007/g, '')).split('\n');
 			}
 			const padStart = String.prototype.padStart;
@@ -386,6 +385,7 @@ describe('API', () => {
 				'    01:01 \u{2714} testcase message.',
 			]);
 			if (padStart) {
+				/* eslint no-extend-native: "off"*/
 				String.prototype.padStart = padStart;
 			}
 			if (VSCODE_PID) {
@@ -406,14 +406,14 @@ describe('API', () => {
 			browserReporter(file, []);
 		});
 		it('file without error (Buffer)', () => {
-			const contents = new Buffer('testcase_contents');
+			const contents = Buffer.from('testcase_contents');
 			const file = new gutil.File({
 				cwd: '/',
 				path: '/testcase.js',
 				contents: contents,
 			});
 			browserReporter(file, []);
-			assert.equal(file.contents. contents);
+			assert.equal(file.contents.contents);
 		});
 		it('file without error (streams)', done => {
 			const contents = through();
@@ -427,7 +427,7 @@ describe('API', () => {
 				assert.equal(contents.toString(), 'testcase_contents');
 				done();
 			});
-			contents.end(new Buffer('testcase_contents'));
+			contents.end(Buffer.from('testcase_contents'));
 		});
 	});
 
@@ -489,7 +489,7 @@ describe('API', () => {
 		stream.write(new gutil.File({
 			cwd: '/',
 			path: '/testcase.js',
-			contents: new Buffer('heheh'),
+			contents: Buffer.from('heheh'),
 		}));
 	});
 
@@ -661,7 +661,6 @@ describe('API', () => {
 			.on('finish', done);
 	});
 
-
 	it('`options.author.name` as RegExp match anything', done => {
 		return vfs.src('test/fixtures/eslint/invalid.js', {
 			base: process.cwd(),
@@ -699,9 +698,9 @@ describe('API', () => {
 		})
 			.pipe(eslint())
 			.pipe(reporter({
-				mapper:() => (
+				mapper: () =>
 					() => {}
-				),
+				,
 			}))
 			.on('error', done)
 			.on('data', file => {

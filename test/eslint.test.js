@@ -97,7 +97,7 @@ describe('ESLint', () => {
 	});
 
 	it('multi file', done => {
-		const files  = [];
+		const files = [];
 		return vfs.src('test/fixtures/eslint/*.js', {
 			base: process.cwd(),
 		})
@@ -151,7 +151,7 @@ describe('ESLint', () => {
 		stream.write(new Vinyl({
 			base: process.cwd(),
 			path: __filename,
-			contents: new Buffer('"use strict";\nalert(console > 1);'),
+			contents: Buffer.from('"use strict";\nalert(console > 1);'),
 		}));
 		stream.end();
 	});

@@ -8,11 +8,11 @@ const googl = require('goo.gl');
 // Set a developer key (_required by Google_; see http://goo.gl/4DvFk for more info.)
 googl.setKey('AIzaSyACqNSi3cybDvDfWMaPyXZEzQ6IeaPehLE');
 
-function shortUrl(url) {
+function shortUrl (url) {
 	return googl.shorten(url);
 }
 
-function shortUrlCn(url) {
+function shortUrlCn (url) {
 	return got(`http://api.t.sina.com.cn/short_url/shorten.json?source=3271760578&url_long=${url}`, {
 		json: true,
 	}).then(result => {
@@ -20,8 +20,7 @@ function shortUrlCn(url) {
 	});
 }
 
-
-function get(url, selector) {
+function get (url, selector) {
 	return JSDOM.fromURL(url, {
 		referrer: url,
 	}).then(dom => {
@@ -29,7 +28,7 @@ function get(url, selector) {
 	}, console.error);
 }
 
-function updateFile(file, urls, shortUrlFn) {
+function updateFile (file, urls, shortUrlFn) {
 	file = require.resolve(file);
 	let hasChange = false;
 	return fs.readJSON(file).then(shorturlCache => (
@@ -81,12 +80,12 @@ Promise.all([
 
 	// ESLint (zh-CN)
 	eslintRules.map(rule => (
-		`https://cn.eslint.org/docs/rules/${ rule }`
+		`https://cn.eslint.org/docs/rules/${rule}`
 	)),
 
 	// ESLint
 	eslintRules.map(rule => (
-		`https://eslint.org/docs/rules/${ rule }`
+		`https://eslint.org/docs/rules/${rule}`
 	)),
 
 	// JSCS
@@ -94,7 +93,7 @@ Promise.all([
 		files.filter(file => /\.js$/.test(file)).map(rule => (
 			rule.replace(/\.\w+$/, '').replace(/-[\w]/g, char => char[1].toUpperCase())
 		)).map(rule => (
-			`http://jscs.info/rule/${ rule }`
+			`http://jscs.info/rule/${rule}`
 		))
 	)),
 
@@ -106,18 +105,18 @@ Promise.all([
 		files.filter(file => /Rule\.js$/.test(file)).map(rule => (
 			rule.replace(/Rule\.\w+$/, '').replace(/[A-Z]/g, char => '-' + char.toLowerCase())
 		)).map(rule => (
-			`https://palantir.github.io/tslint/rules/${ rule }/`
+			`https://palantir.github.io/tslint/rules/${rule}/`
 		))
 	)),
 
 	// stylelint
 	Object.keys(require('stylelint/lib/rules')).map(rule => (
-		`https://stylelint.io/user-guide/rules/${ rule }/`
+		`https://stylelint.io/user-guide/rules/${rule}/`
 	)),
 
 	// HTMLHint
 	Object.keys(require('htmlhint').HTMLHint.rules).map(rule => (
-		`https://github.com/yaniswang/HTMLHint/wiki/${ rule }`
+		`https://github.com/yaniswang/HTMLHint/wiki/${rule}`
 	)),
 ]).then(urls => {
 	urls = [].concat.apply([], urls).filter(Boolean).map(url => url.toLowerCase());

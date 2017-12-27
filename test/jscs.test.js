@@ -11,7 +11,7 @@ const {
 	VirtualConsole,
 } = require('jsdom');
 
-describe('JSCS', function() {
+describe('JSCS', function () {
 	this.timeout(10000);
 	it('console reporter', done => {
 		return vfs.src('test/fixtures/jscs/invalid.js', {
@@ -62,4 +62,5 @@ describe('JSCS', function() {
 				dom.runVMScript(script);
 			})
 			.on('error', done);
-	});});
+	});
+});

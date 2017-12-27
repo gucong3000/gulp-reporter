@@ -12,7 +12,7 @@ after(() => {
 	sandbox.restore();
 });
 
-function errorHandle(error) {
+function errorHandle (error) {
 	gutil.log(error);
 	if (!process.exitCode) {
 		process.exitCode = 1;
