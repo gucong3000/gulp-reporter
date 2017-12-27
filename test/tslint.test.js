@@ -6,7 +6,7 @@ const tslint = require('tslint');
 const reporter = require('../');
 const sandbox = require('./sandbox');
 
-describe('TSLint', function() {
+describe('TSLint', function () {
 	this.timeout(10000);
 	it('console reporter', done => {
 		return vfs.src('test/fixtures/tslint/invalid.ts', {

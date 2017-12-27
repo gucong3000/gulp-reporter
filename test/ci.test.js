@@ -6,12 +6,11 @@ const path = require('path');
 const os = require('os');
 const env = process.env;
 
-
-describe('CI', function() {
+describe('CI', function () {
 	const mkdtemp = fs.mkdtemp.bind(fs, path.join(os.tmpdir(), 'gulp-reporter-ci-'));
 	let tempDir;
 
-	function getResult(fileName) {
+	function getResult (fileName) {
 		return fs.readdir(tempDir).then(items => (
 			Promise.all(items.map(item => (
 				fs.readFile(path.join(tempDir, item, fileName), 'utf-8')

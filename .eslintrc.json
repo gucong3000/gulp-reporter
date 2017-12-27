@@ -5,9 +5,10 @@
 		"node": true
 	},
 	"extends": [
-		"eslint:recommended"
+		"standard"
 	],
 	"parserOptions": {
+        "sourceType": "script",
 		"ecmaVersion": 2017
 	},
 	"root": true,
@@ -60,6 +61,9 @@
 		],
 		"no-console": [
 			"error"
+		],
+		"no-tabs": [
+			"off"
 		],
 		"no-var": [
 			"error"
