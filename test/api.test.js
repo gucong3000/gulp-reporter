@@ -13,7 +13,7 @@ const proxyquire = require('proxyquire');
 const stripAnsi = require('strip-ansi');
 const eslint = require('gulp-eslint');
 const through = require('through2');
-const gutil = require('gulp-util');
+const Vinyl = require('vinyl');
 const vfs = require('vinyl-fs');
 const path = require('path');
 
@@ -404,7 +404,7 @@ describe('API', () => {
 
 	describe('browser-reporter', () => {
 		it('file is null', () => {
-			const file = new gutil.File({
+			const file = new Vinyl({
 				cwd: '/',
 				path: '/testcase.js',
 			});
@@ -412,7 +412,7 @@ describe('API', () => {
 		});
 		it('file without error (Buffer)', () => {
 			const contents = Buffer.from('testcase_contents');
-			const file = new gutil.File({
+			const file = new Vinyl({
 				cwd: '/',
 				path: '/testcase.js',
 				contents: contents,
@@ -422,7 +422,7 @@ describe('API', () => {
 		});
 		it('file without error (streams)', done => {
 			const contents = through();
-			const file = new gutil.File({
+			const file = new Vinyl({
 				cwd: '/',
 				path: '/testcase.js',
 				contents: contents,
@@ -491,7 +491,7 @@ describe('API', () => {
 
 		stream.on('error', done);
 
-		stream.write(new gutil.File({
+		stream.write(new Vinyl({
 			cwd: '/',
 			path: '/testcase.js',
 			contents: Buffer.from('heheh'),
