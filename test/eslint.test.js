@@ -235,6 +235,7 @@ describe('ESLint', () => {
 				configFile: path.resolve('test/fixtures/eslint/standard.json'),
 			}))
 			.pipe(reporter({
+				fail: false,
 				output: false,
 				blame: false,
 			}))
