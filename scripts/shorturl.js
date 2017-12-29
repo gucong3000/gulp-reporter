@@ -1,13 +1,35 @@
 'use strict';
-// process.env.HTTP_PROXY=http://127.0.0.1:1080/
+// process.env.HTTP_PROXY = 'http://127.0.0.1:1080/';
 const JSDOM = require('jsdom').JSDOM;
 const stringify = require('json-stable-stringify');
 const fs = require('fs-extra');
 const got = require('got');
 const googl = require('goo.gl');
+const pkg = require('../package.json');
 const isCI = require('ci-info').isCI;
 // Set a developer key (_required by Google_; see http://goo.gl/4DvFk for more info.)
 googl.setKey('AIzaSyACqNSi3cybDvDfWMaPyXZEzQ6IeaPehLE');
+
+function awaitArray (arr) {
+	return Promise.all(arr.map(item => {
+		if (Array.isArray(item)) {
+			return awaitArray(item);
+		} else {
+			return item;
+		}
+	}));
+}
+
+function expandArray (arr, result) {
+	arr.forEach(item => {
+		if (Array.isArray(item)) {
+			expandArray(item, result);
+		} else if (item) {
+			result.push(item);
+		}
+	});
+	return result;
+}
 
 function shortUrl (url) {
 	return googl.shorten(url);
@@ -21,16 +43,24 @@ function shortUrlCn (url) {
 	});
 }
 
+let cont = 0;
+
 function get (url, selector) {
-	if (!isCI) {
-		return Promise.resolve([]);
-	}
-	return JSDOM.fromURL(url, {
-		referrer: url,
-	}).then(dom => {
-		return Array.from(dom.window.document.querySelectorAll(selector)).map(a => a.href);
-	}).then(error => {
-		console.error(error);
+	return got(
+		url
+	).then(
+		res => new JSDOM(res.body, {
+			url: url,
+			contentType: res.headers['content-type'],
+			referrer: res.headers['referer'],
+		}).window
+	).then(window => {
+		console.log('ready:', ++cont, window.document.location.href);
+		return Array.from(window.document.querySelectorAll(selector)).map(a => a.href);
+	}).catch(error => {
+		if (!url.endsWith('/tree/HEAD/docs/rules')) {
+			console.error(error);
+		}
 		return [];
 	});
 }
@@ -47,15 +77,24 @@ function updateFile (file, urls, shortUrlFn) {
 		// 		hasChange = true;
 		// 	}
 		// }),
-		Promise.all(urls.map(url => {
-			const urlLowerCase = url.toLowerCase();
-			return shorturlCache[urlLowerCase] || shortUrlFn(url).then(shortUrl => {
-				if (shortUrl) {
-					hasChange = true;
-					shorturlCache[urlLowerCase] = shortUrl;
-				}
-			}).catch(console.error);
-		})).then(() => (
+		Promise.all(
+			urls.filter(
+				(url, i) => !(url.toLowerCase() in shorturlCache)
+			).filter(
+				(url, i) => i < 100
+			).map(
+				url => (
+					url.endsWith('.md#readme') ? got(url) : Promise.resolve()
+				).then(() => (
+					shortUrlFn(url).then(shortUrl => {
+						if (shortUrl) {
+							hasChange = true;
+							shorturlCache[url.toLowerCase()] = shortUrl;
+						}
+					}).catch(console.error)
+				)).catch(() => {})
+			)
+		).then(() => (
 			hasChange && fs.writeFile(
 				file,
 				stringify(
@@ -66,7 +105,7 @@ function updateFile (file, urls, shortUrlFn) {
 				),
 				'utf8'
 			)
-		)).then(() => hasChange)
+		)).then(() => hasChange && updateFile(file, urls, shortUrlFn))
 	));
 }
 
@@ -77,24 +116,31 @@ const eslintRules = Object.keys(
 );
 
 const EslintPluginDocBaseUrl = {
-	import: rule => `https://github.com/benmosher/eslint-plugin-import/blob/HEAD/docs/rules/${rule}.md#readme`,
-	node: rule => `https://github.com/mysticatea/eslint-plugin-node/blob/HEAD/docs/rules/${rule}.md#readme`,
+	flowtype: rule => `https://www.npmjs.com/package/eslint-plugin-flowtype#${rule}`,
 	promise: rule => `https://www.npmjs.com/package/eslint-plugin-promise#${rule}`,
 };
 
+function getJSON (url) {
+	return got(url, {
+		json: true,
+	}).then(
+		res => res.body
+	);
+}
+
 Promise.all([
-	get('https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties', '.markdown-body h3 a[href^="#"]'),
-	get('https://cn.eslint.org/docs/rules/', '.rule-list a[href]'),
-	get('https://eslint.org/docs/rules/', '.rule-list a[href]'),
-	get('https://stylelint.io/user-guide/rules/', 'h1 ~ ul a[href$="/"]'),
-	get('https://palantir.github.io/tslint/rules/', '.rules-list a[href]').then(urls => (
+	isCI && get('https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties', '.markdown-body h3 a[href^="#"]'),
+	isCI && get('https://cn.eslint.org/docs/rules/', '.rule-list a[href]'),
+	isCI && get('https://eslint.org/docs/rules/', '.rule-list a[href]'),
+	isCI && get('https://stylelint.io/user-guide/rules/', 'h1 ~ ul a[href$="/"]'),
+	isCI && get('https://palantir.github.io/tslint/rules/', '.rules-list a[href]').then(urls => (
 		urls.map(url => (
 			url.replace(/\/*$/, '/')
 		))
 	)),
-	get('https://github.com/yaniswang/HTMLHint/wiki/Rules', '.markdown-body ul a[href*="HTMLHint"]'),
-	get('https://github.com/CSSLint/csslint/wiki/Rules', '.markdown-body ul a[href^="/CSSLint"]'),
-	get('http://jscs.info/rules', '.rule-list a[href]'),
+	isCI && get('https://github.com/yaniswang/HTMLHint/wiki/Rules', '.markdown-body ul a[href*="HTMLHint"]'),
+	isCI && get('https://github.com/CSSLint/csslint/wiki/Rules', '.markdown-body ul a[href^="/CSSLint"]'),
+	// get('http://jscs.info/rules', '.rule-list a[href]'),
 
 	// ESLint (zh-CN)
 	eslintRules.map(rule => (
@@ -120,16 +166,63 @@ Promise.all([
 		'promise',
 	].map(s => 'https://www.caniuse.com/#search=' + s),
 
-	// ESLint plugins
-	fs.readJSON('package.json').then(
-		pkg => Object.keys(pkg.devDependencies).filter(
-			pkgName => /^eslint-plugin-/.test(pkgName)
-		).map(pkgName => {
-			const baseUrl = EslintPluginDocBaseUrl[pkgName.slice(14)];
-			if (baseUrl) {
-				return Object.keys(require(pkgName).rules).map(baseUrl);
-			}
-		})
+	// ESLint plugins docs from local node modules
+	Object.keys(pkg.devDependencies).filter(
+		pkgName => /^eslint-plugin-/.test(pkgName)
+	).map(pkgName => {
+		let baseUrl = EslintPluginDocBaseUrl[pkgName.slice(14)];
+		if (!baseUrl) {
+			let repository = require(pkgName + '/package.json').repository;
+			repository = repository.url || repository;
+			repository = repository.replace(/^(?:git\+)?\w+:\/+(?:.+?@)?(.+?)(?:\/+|\.git)?$/i, 'https://$1');
+			baseUrl = rule => `${repository}/blob/HEAD/docs/rules/${rule}.md#readme`;
+		}
+		return Object.keys(require(pkgName).rules).map(baseUrl);
+	}),
+
+	// ESLint plugins docs from registry.npmjs.com
+	isCI && getJSON('http://registry.npmjs.com/-/v1/search?text=eslint-plugin-&size=250').then(
+		results => results.objects.map(
+			object => object.package
+		).filter(
+			pkgData => pkgData.name.startsWith('eslint-plugin-')
+		).filter(
+			pkgData => !/^eslint-plugin-(flow|no-implicit-side-effects|consistent-subscribe)$/.test(pkgData.name)
+		).filter(
+			pkgData => /^https?:\/\/github.com\//.test(pkgData.links.repository)
+		).map(
+			pkgData => get(
+				pkgData.links.repository + '/tree/HEAD/docs/rules',
+				'.files a[href$=".md"]'
+			).then(
+				rules => rules.map(
+					rule => rule.replace(/\/blob\/[^/]+/, '/blob/HEAD') + '#readme'
+				)
+			).then(
+				rules => rules.length ? rules : got(
+					pkgData.links.repository.replace(/\/\/github.com\//i, '//raw.githubusercontent.com/') + '/master/README.md'
+				).then(
+					res => {
+						if (!/^(#+)\s+Rules$/im.test(res.body)) {
+							return;
+						}
+						const level = RegExp.$1;
+						let md = RegExp.rightContext;
+						md = md.slice(0, md.indexOf(RegExp('^' + level + '\\s+')));
+						md = md.match(RegExp('^#' + level + '+\\s+.+?$', 'gm')) || [];
+						md = md.map(
+							rule => rule.replace(/<(\w+)>(.+?)(<\/\1>)/, '$2').replace(/<(\w+)>(.+?)(<\/\1>)/, '$2').replace(/^#+\s+(.+?)\s*$/, '$1').replace(/^.*\//, '')
+						).filter(
+							rule => /^[a-z]+(?:-[a-z]+)*$/.test(rule)
+						).map(
+							rule => `https://www.npmjs.com/package/${pkgData.name}#${rule}`
+						);
+						return md;
+					},
+					() => null
+				)
+			)
+		)
 	),
 
 	// JSCS
@@ -162,14 +255,12 @@ Promise.all([
 	Object.keys(require('htmlhint').HTMLHint.rules).map(rule => (
 		`https://github.com/yaniswang/HTMLHint/wiki/${rule}`
 	)),
-]).then(urls => {
-	do {
-		urls = [].concat.apply([], urls);
-	} while (urls.some(Array.isArray));
-
-	urls = urls.filter(Boolean);
-
-	return Promise.all([
+]).then(
+	urls => awaitArray(urls)
+).then(
+	urls => expandArray(urls, [])
+).then(
+	urls => Promise.all([
 		updateFile(
 			'../lib/shorturl.json',
 			urls,
@@ -180,8 +271,8 @@ Promise.all([
 			urls,
 			shortUrlCn
 		),
-	]);
-}).then(hasChange => {
+	])
+).then(hasChange => {
 	if (hasChange.some(Boolean)) {
 		require('child_process').spawn(
 			'git',

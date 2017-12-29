@@ -249,6 +249,7 @@ describe('ESLint', () => {
 								const packageName = 'eslint-plugin-' + RegExp.$1;
 								assert.ok(error.doc.indexOf(packageName) > 1);
 							}
+							assert.ok(error.doc.startsWith('https://'));
 						}
 					});
 				} catch (ex) {
