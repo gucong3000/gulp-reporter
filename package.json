@@ -111,7 +111,7 @@
     "report-coverage": "codecov",
     "mocha": "mocha \"test/*.test.js\" --no-timeouts",
     "pretest": "eslint scripts lib \"test/*.js\" && npm run shorturl",
-    "shorturl": "node scripts/shorturl || git add lib/shorturl*.json",
+    "shorturl": "node scripts/shorturl",
     "test": "nyc npm run test_lang"
   },
   "version": "2.5.0"

@@ -24,8 +24,8 @@ describe('HTMLHint', () => {
 				assert.ok(/^test\/fixtures\/htmlhint\/invalid.html\n/.test(log));
 				try {
 					if (locale === 'zh_CN') {
-						assert.ok(log.indexOf('doctype必须首先声明。 (HTMLHint doctype-first http://t.cn/Ro8MlrW)') >= 0);
-						assert.ok(log.indexOf('标签必须匹配，缺失：[ </h1> ]，在第7行匹配开始标签[ <h1> ]失败 (HTMLHint tag-pair http://t.cn/Ro8MlgP)') >= 0);
+						assert.ok(log.indexOf('doctype必须首先声明。 (HTMLHint doctype-first http://t.cn/') >= 0);
+						assert.ok(log.indexOf('标签必须匹配，缺失：[ </h1> ]，在第7行匹配开始标签[ <h1> ]失败 (HTMLHint tag-pair http://t.cn/') >= 0);
 					} else {
 						assert.ok(log.indexOf('Doctype must be declared first. (HTMLHint doctype-first http') >= 0);
 						assert.ok(log.indexOf('Tag must be paired, missing: [ </h1> ], start tag match failed [ <h1> ] on line 7. (HTMLHint tag-pair http') >= 0);

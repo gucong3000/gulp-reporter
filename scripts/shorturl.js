@@ -7,6 +7,8 @@ const got = require('got');
 const googl = require('goo.gl');
 const pkg = require('../package.json');
 const isCI = require('ci-info').isCI;
+const http = require('http');
+const https = require('https');
 // Set a developer key (_required by Google_; see http://goo.gl/4DvFk for more info.)
 googl.setKey('AIzaSyACqNSi3cybDvDfWMaPyXZEzQ6IeaPehLE');
 
@@ -43,7 +45,53 @@ function shortUrlCn (url) {
 	});
 }
 
-let cont = 0;
+const chechkLinkCache = {};
+function chechkLinkWithCache (url) {
+	if (!chechkLinkCache[url]) {
+		chechkLinkCache[url] = chechkLink(url);
+	}
+	return chechkLinkCache[url];
+}
+function chechkLink (url) {
+	if (/^https?:\/\/goo.gl\//i.test(url)) {
+		// if (isCI) {
+		return googl.expand(url).then(chechkLinkWithCache);
+		// } else {
+		// return Promise.reject(new Error(''));
+		// }
+	}
+	return new Promise((resolve, reject) => {
+		function reTry () {
+			req.abort();
+			chechkLink(url).then(resolve, reject);
+		}
+		const req = (
+			/^https:/i.test(url) ? https : http
+		).get(url, res => {
+			req.abort();
+			if (res.statusCode >= 400) {
+				reject(res.statusCode);
+			} else if (res.statusCode >= 300) {
+				if (res.headers.location) {
+					chechkLinkWithCache(res.headers.location).then(resolve, reject);
+				} else {
+					reject(res.statusCode);
+				}
+			} else if (res.statusCode >= 200) {
+				resolve(url);
+			}
+			res.resume();
+		}).on(
+			'error',
+			reTry
+		).setTimeout(
+			0x1FFFF,
+			reTry
+		);
+	});
+}
+
+let count = 0;
 
 function get (url, selector) {
 	return got(
@@ -55,7 +103,9 @@ function get (url, selector) {
 			referrer: res.headers['referer'],
 		}).window
 	).then(window => {
-		console.log('ready:', ++cont, window.document.location.href);
+		if (!isCI) {
+			console.log('ready:', ++count, window.document.location.href);
+		}
 		return Array.from(window.document.querySelectorAll(selector)).map(a => a.href);
 	}).catch(error => {
 		if (!url.endsWith('/tree/HEAD/docs/rules')) {
@@ -69,23 +119,13 @@ function updateFile (file, urls, shortUrlFn) {
 	file = require.resolve(file);
 	let hasChange = false;
 	return fs.readJSON(file).then(shorturlCache => (
-		// Object.keys(shorturlCache).forEach(url => {
-		// 	if (/^http:\/\/(cn.)eslint/i.test(url)) {
-		// 		// console.log(url);
-		// 		delete shorturlCache[url];
-		// 		urls.push('https' + url.slice(4));
-		// 		hasChange = true;
-		// 	}
-		// }),
 		Promise.all(
 			urls.filter(
 				(url, i) => !(url.toLowerCase() in shorturlCache)
 			).filter(
 				(url, i) => i < 100
 			).map(
-				url => (
-					url.endsWith('.md#readme') ? got(url) : Promise.resolve()
-				).then(() => (
+				url => chechkLinkWithCache(url).then(() => (
 					shortUrlFn(url).then(shortUrl => {
 						if (shortUrl) {
 							hasChange = true;
@@ -105,7 +145,7 @@ function updateFile (file, urls, shortUrlFn) {
 				),
 				'utf8'
 			)
-		)).then(() => hasChange && updateFile(file, urls, shortUrlFn))
+		)).then(() => hasChange)
 	));
 }
 
@@ -140,7 +180,7 @@ Promise.all([
 	)),
 	isCI && get('https://github.com/yaniswang/HTMLHint/wiki/Rules', '.markdown-body ul a[href*="HTMLHint"]'),
 	isCI && get('https://github.com/CSSLint/csslint/wiki/Rules', '.markdown-body ul a[href^="/CSSLint"]'),
-	// get('http://jscs.info/rules', '.rule-list a[href]'),
+	isCI && get('http://jscs.info/rules', '.rule-list a[href]'),
 
 	// ESLint (zh-CN)
 	eslintRules.map(rule => (
@@ -274,19 +314,26 @@ Promise.all([
 	])
 ).then(hasChange => {
 	if (hasChange.some(Boolean)) {
-		require('child_process').spawn(
-			'git',
-			[
-				'--no-pager',
-				'diff',
-				'--',
-				'lib/*.json',
-			],
-			{
-				stdio: 'inherit',
-			}
-		);
-		process.exitCode = 1;
+		const spawnSync = require('child_process').spawnSync;
+		const git = (args) => {
+			return spawnSync(
+				'git',
+				args,
+				{
+					stdio: 'inherit',
+				}
+			);
+		};
+		git([
+			'--no-pager',
+			'diff',
+			'--',
+			'lib/*.json',
+		]);
+		git([
+			'add',
+			'lib/*.json',
+		]);
 	}
 });
 
