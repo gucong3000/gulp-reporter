@@ -43,10 +43,10 @@
     "greenkeeper-lockfile": "^1.12.0",
     "gulp-csslint": "^1.0.0",
     "gulp-eslint": "^4.0.0",
-    "gulp-html-postcss": "^7.0.2",
+    "gulp-html-postcss": "^7.0.3",
     "gulp-htmlhint": "^1.0.0",
-    "gulp-jscs": "^4.0.0",
-    "gulp-jshint": "^2.0.4",
+    "gulp-jscs": "^4.1.0",
+    "gulp-jshint": "^2.1.0",
     "gulp-standard": "^10.1.1",
     "gulp-tslint": "^8.1.2",
     "gulp-xo": "github:sindresorhus/gulp-xo",
@@ -115,5 +115,5 @@
     "shorturl": "node scripts/shorturl",
     "test": "nyc npm run test_lang"
   },
-  "version": "2.5.0"
+  "version": "2.5.1"
 }
