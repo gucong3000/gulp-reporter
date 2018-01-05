@@ -16,6 +16,7 @@ Error report for:
 [JSONLint](https://github.com/rogeriopvl/gulp-jsonlint)
 [PostCSS](https://github.com/StartPolymer/gulp-html-postcss)
 [Standard](https://github.com/emgeee/gulp-standard)
+[StyLint](https://github.com/danielhusar/gulp-stylint)
 [TSLint](https://github.com/panuhorsmalahti/gulp-tslint)
 [XO](https://github.com/sindresorhus/gulp-xo)
 
@@ -164,5 +165,6 @@ Enable or disable [git-blame](https://git-scm.com/docs/git-blame) related featur
 - [gulp-jshint](https://github.com/spalger/gulp-jshint)
 - [gulp-jsonlint](https://github.com/rogeriopvl/gulp-jsonlint)
 - [gulp-standard](https://github.com/emgeee/gulp-standard)
+- [gulp-stylint](https://github.com/danielhusar/gulp-stylint)
 - [gulp-tslint](https://github.com/panuhorsmalahti/gulp-tslint)
 - [gulp-xo](https://github.com/sindresorhus/gulp-xo)
