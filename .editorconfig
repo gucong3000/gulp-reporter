@@ -19,3 +19,6 @@ tab_width = 2
 [{package.json,*.yml}]
 indent_style = space
 indent_size = 2
+
+[*.json]
+insert_final_newline = false
