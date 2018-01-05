@@ -4,11 +4,11 @@ const log = require('fancy-log');
 const sinon = require('sinon');
 const sandbox = sinon.sandbox.create();
 
-before(() => {
+beforeEach(() => {
 	sandbox.stub(log, 'warn');
 });
 
-after(() => {
+afterEach(() => {
 	sandbox.restore();
 });
 
