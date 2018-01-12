@@ -60,6 +60,9 @@ function chechkLink (url) {
 		// return Promise.reject(new Error(''));
 		// }
 	}
+	if (url.startsWith('https://stylelint.io/') || /^https:\/\/(?:cn\.)?eslint\.org\//i.test(url)) {
+		return Promise.resolve(url);
+	}
 	return new Promise((resolve, reject) => {
 		function reTry () {
 			req.abort();
@@ -170,9 +173,9 @@ function getJSON (url) {
 
 Promise.all([
 	isCI && get('https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties', '.markdown-body h3 a[href^="#"]'),
-	isCI && get('https://cn.eslint.org/docs/rules/', '.rule-list a[href]'),
-	isCI && get('https://eslint.org/docs/rules/', '.rule-list a[href]'),
-	isCI && get('https://stylelint.io/user-guide/rules/', 'h1 ~ ul a[href$="/"]'),
+	// isCI && get('https://cn.eslint.org/docs/rules/', '.rule-list a[href]'),
+	// isCI && get('https://eslint.org/docs/rules/', '.rule-list a[href]'),
+	// isCI && get('https://stylelint.io/user-guide/rules/', 'h1 ~ ul a[href$="/"]'),
 	isCI && get('https://palantir.github.io/tslint/rules/', '.rules-list a[href]').then(urls => (
 		urls.map(url => (
 			url.replace(/\/*$/, '/')
