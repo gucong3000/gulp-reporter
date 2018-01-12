@@ -27,12 +27,7 @@ describe('API', () => {
 			if (!errors[0].docShort) {
 				return;
 			}
-			const locale = require('../lib/locale');
-			if (locale !== 'zh_CN') {
-				assert.ok(/^https?:\/\/goo\.gl\//.test(errors[0].docShort));
-			} else {
-				assert.ok(/^https?:\/\/(goo\.gl|t\.cn)\//.test(errors[0].docShort));
-			}
+			assert.ok(/^https?:\/\/(goo\.gl|t\.cn)\//.test(errors[0].docShort));
 		});
 	});
 
@@ -44,9 +39,29 @@ describe('API', () => {
 		});
 	});
 
-	it('short-doc-url (default)', () => {
+	it('short-doc-url (offline & in GFW)', () => {
+		const getTimezoneOffset = Date.prototype.getTimezoneOffset;
+		const shortDocUrl = proxyquire('../lib/short-doc-url', {
+			'./locale': 'zh_CN',
+			'got': {
+				head: () => Promise.reject(new Error('offline')),
+			},
+		});
+		Date.prototype.getTimezoneOffset = () => (-480);
+		return shortDocUrl([{
+			doc: 'https://stylelint.io/user-guide/rules/indentation/',
+		}]).then(errors => {
+			Date.prototype.getTimezoneOffset = getTimezoneOffset;
+			assert.equal(errors[0].docShort, 'http://t.cn/Ro8Mjw5');
+		});
+	});
+
+	it('short-doc-url (offline & out GFW)', () => {
 		const shortDocUrl = proxyquire('../lib/short-doc-url', {
 			'./locale': 'en_US',
+			'got': {
+				head: () => Promise.reject(new Error('offline')),
+			},
 		});
 		return shortDocUrl([{
 			doc: 'https://stylelint.io/user-guide/rules/indentation/',
@@ -55,10 +70,19 @@ describe('API', () => {
 		});
 	});
 
-	it('short-doc-url (in GWF)', () => {
+	it('short-doc-url (online & in GWF)', () => {
 		const getTimezoneOffset = Date.prototype.getTimezoneOffset;
 		const shortDocUrl = proxyquire('../lib/short-doc-url', {
 			'./locale': 'zh_CN',
+			'got': {
+				head: (url) => {
+					if (/^https?:\/\/t\.cn\//.test(url)) {
+						return Promise.resolve();
+					} else {
+						return Promise.reject(new Error('TIMEOUT'));
+					}
+				},
+			},
 		});
 		Date.prototype.getTimezoneOffset = () => (-480);
 		return shortDocUrl([{
@@ -66,6 +90,26 @@ describe('API', () => {
 		}]).then(errors => {
 			Date.prototype.getTimezoneOffset = getTimezoneOffset;
 			assert.equal(errors[0].docShort, 'http://t.cn/Ro8Mjw5');
+		});
+	});
+
+	it('short-doc-url (online & out GFW)', () => {
+		const shortDocUrl = proxyquire('../lib/short-doc-url', {
+			'./locale': 'en_US',
+			'got': {
+				head: (url) => {
+					if (/^https?:\/\/t\.cn\//.test(url)) {
+						return Promise.reject(new Error('TIMEOUT'));
+					} else {
+						return Promise.resolve();
+					}
+				},
+			},
+		});
+		return shortDocUrl([{
+			doc: 'https://stylelint.io/user-guide/rules/indentation/',
+		}]).then(errors => {
+			assert.equal(errors[0].docShort, 'https://goo.gl/NVQ9aa');
 		});
 	});
 
