@@ -337,6 +337,7 @@ Promise.all([
 			'add',
 			'lib/*.json',
 		]);
+		process.exitCode = 127;
 	}
 });
 
