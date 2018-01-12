@@ -119,5 +119,5 @@
     "shorturl": "node scripts/shorturl",
     "test": "nyc npm run test_lang"
   },
-  "version": "2.5.1"
+  "version": "2.6.0"
 }
