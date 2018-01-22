@@ -9,6 +9,9 @@ end_of_line = lf
 indent_style = tab
 insert_final_newline = true
 trim_trailing_whitespace = true
+block_comment_start = /*
+block_comment = *
+block_comment_end = */
 
 [*.{cmd,bat}]
 end_of_line = crlf
@@ -20,5 +23,5 @@ tab_width = 2
 indent_style = space
 indent_size = 2
 
-[*.json]
+[lib/*.json]
 insert_final_newline = false

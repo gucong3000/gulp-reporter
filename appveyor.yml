@@ -12,6 +12,7 @@ environment:
 install:
   # install Node.js
   - ps: Install-Product node $env:nodejs_version
+  - npm install -g npm@latest
   # install modules
   - npm install
 
