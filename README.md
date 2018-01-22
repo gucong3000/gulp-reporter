@@ -4,7 +4,7 @@ gulp-reporter
 [![NPM version](https://img.shields.io/npm/v/gulp-reporter.svg?style=flat-square)](https://www.npmjs.com/package/gulp-reporter)
 [![Travis](https://img.shields.io/travis/gucong3000/gulp-reporter.svg?&label=Linux)](https://travis-ci.org/gucong3000/gulp-reporter)
 [![AppVeyor](https://img.shields.io/appveyor/ci/gucong3000/gulp-reporter.svg?&label=Windows)](https://ci.appveyor.com/project/gucong3000/gulp-reporter)
-[![codecov](https://img.shields.io/codecov/c/github/gucong3000/gulp-reporter.svg)](https://codecov.io/gh/gucong3000/gulp-reporter)
+[![Codecov](https://img.shields.io/codecov/c/github/gucong3000/gulp-reporter.svg)](https://codecov.io/gh/gucong3000/gulp-reporter)
 [![David](https://img.shields.io/david/gucong3000/gulp-reporter.svg)](https://david-dm.org/gucong3000/gulp-reporter)
 
 Error report for:
