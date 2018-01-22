@@ -113,7 +113,7 @@ reporter({
 		const path = file.path;
 		return error => {
 			// Do not report unrelated errors.
- 			if (error.fileName === path) {
+			if (error.fileName === path) {
 				return error
 			}
 		}

@@ -115,7 +115,8 @@
     "test_lang": "cross-env LC_ALL=zh_CN npm run mocha -- --color && cross-env LC_ALL=en_US npm run mocha -- --no-color",
     "report-coverage": "codecov",
     "mocha": "mocha \"test/*.test.js\" --no-timeouts",
-    "pretest": "eslint scripts lib \"test/*.js\" && npm run shorturl",
+    "eclint": "eclint check $(git ls-files | grep --invert-match ^test/fixtures/)",
+    "pretest": "eslint scripts lib \"test/*.js\" && npm run eclint --script-shell=sh && npm run shorturl",
     "shorturl": "node scripts/shorturl",
     "test": "nyc npm run test_lang"
   },
