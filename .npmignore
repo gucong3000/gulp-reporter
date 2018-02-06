@@ -3,6 +3,7 @@
 *.seed
 .circleci
 .editorconfig
+.babelrc
 .eslintrc*
 .gitignore
 .grunt
