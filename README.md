@@ -153,7 +153,7 @@ Enable or disable [git-blame](https://git-scm.com/docs/git-blame) related featur
 - CircleCI
 	> Output as junit format to directory that defined in [`$CIRCLE_TEST_REPORTS` ](https://circleci.com/docs/1.0/test-metadata/) or [`store_test_results`](https://circleci.com/docs/2.0/collect-test-data/).
 - Jenkins
-	> Output for [Checkstyle Plugin](https://wiki.jenkins.io/display/JENKINS/Checkstyle+Plugin), in directory defined by `$CI_REPORTS`
+	> Output as [checkstyle](http://checkstyle.sourceforge.net) format to directory defined in `$CI_REPORTS`, you need to install [Checkstyle Plugin](https://plugins.jenkins.io/checkstyle) to view it.
 
 ## Related
 
