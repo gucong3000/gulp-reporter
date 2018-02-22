@@ -64,7 +64,7 @@ Type: `boolean|function|WritableStream`
 
 Default: `true` and `false` for [Special output format](#special-output-format)
 
-Report error messages in [gutil.log()](https://github.com/gulpjs/gulp-util#logmsg) or your `function|WritableStream`
+Report error messages in [fancy-log](https://www.npmjs.com/package/fancy-log) or your `function|WritableStream`
 
 ### options.sort
 
