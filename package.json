@@ -51,7 +51,7 @@
     "gulp-standard": "^10.1.1",
     "gulp-stylint": "^4.0.1",
     "gulp-tslint": "^8.1.2",
-    "gulp-xo": "^0.16.1",
+    "gulp-xo": "^0.17.0",
     "jsdom": "^11.5.1",
     "jshint": "^2.9.5",
     "json-stable-stringify": "^1.0.1",
