@@ -21,17 +21,14 @@ jobs:
           command: npm test
       - run:
           name: code-coverage
-          command: 'npm run report-coverage'
+          command: npm run report-coverage
           when: always
       - store_artifacts:
           path: coverage
           destination: coverage reports
       - run:
           name: Creating Artifacts
-          command: |
-            mkdir -p /tmp/json_artifacts/lib;
-            cp package.json /tmp/json_artifacts/
-            cp lib/*.json /tmp/json_artifacts/lib;
+          command: test -z "`git diff && git diff --cached`" || mkdir -p /tmp/json_artifacts/lib && cp package.json /tmp/json_artifacts && cp lib/*.json /tmp/json_artifacts/lib
           when: always
       - store_artifacts:
           path: /tmp/json_artifacts
