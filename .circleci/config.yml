@@ -29,6 +29,7 @@ jobs:
       - run:
           name: Creating Artifacts
           command: |
+            npm run -s shorturl
             mkdir -p /tmp/json_artifacts/lib
             cp package.json /tmp/json_artifacts
             cp lib/*.json /tmp/json_artifacts/lib
