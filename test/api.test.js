@@ -261,6 +261,7 @@ describe('API', () => {
 
 	describe('error formatter', () => {
 		function splitLog (log) {
+			/* eslint-disable-next-line no-control-regex */
 			return stripAnsi(log.replace(/\u001b]50;\w+=.+?\u0007/g, '').replace(/([\u2000-\u3000])\ufe0f?\s+/g, '$1\u{fe0f} ')).split('\n');
 		}
 		it('break line', () => {
@@ -313,6 +314,7 @@ describe('API', () => {
 
 		it('mock Windows', () => {
 			function splitLog (log) {
+				/* eslint-disable-next-line no-control-regex */
 				return stripAnsi(log.replace(/\u001b]50;\w+=.+?\u0007/g, '')).split('\n');
 			}
 			const padStart = String.prototype.padStart;
