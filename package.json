@@ -59,7 +59,7 @@
     "npm-run-all": "^4.1.2",
     "nyc": "^11.4.1",
     "proxyquire": "^2.0.1",
-    "sinon": "^4.4.3",
+    "sinon": "^5.0.0",
     "strip-ansi": "^4.0.0",
     "stylelint": "github:stylelint/stylelint",
     "stylelint-config-standard": "^18.2.0",
