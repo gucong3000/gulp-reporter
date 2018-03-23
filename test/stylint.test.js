@@ -6,7 +6,7 @@ const reporter = require('../');
 const sandbox = require('./sandbox');
 const StyLintError = require('../lib/stylint-error');
 
-describe('stylint', function () {
+describe('stylint', () => {
 	it('StyLintError', () => {
 		const error = new StyLintError('mock: value');
 		assert.equal(error.mock, 'value');

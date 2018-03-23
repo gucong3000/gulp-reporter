@@ -1,25 +1,17 @@
 {
+	"parserOptions": {
+		"sourceType": "script",
+		"impliedStrict": false
+	},
 	"env": {
-		"browser": false,
 		"es6": true,
 		"node": true
 	},
 	"extends": [
 		"standard"
 	],
-	"parserOptions": {
-		"sourceType": "script",
-		"ecmaVersion": 2017
-	},
 	"root": true,
 	"rules": {
-		"arrow-spacing": [
-			"error",
-			{
-				"after": true,
-				"before": true
-			}
-		],
 		"comma-dangle": [
 			"error",
 			{
@@ -37,14 +29,6 @@
 				"before": false
 			}
 		],
-		"eol-last": [
-			"error",
-			"always"
-		],
-		"eqeqeq": [
-			"error",
-			"smart"
-		],
 		"indent": [
 			"error",
 			"tab",
@@ -52,20 +36,13 @@
 				"SwitchCase": 1
 			}
 		],
-		"keyword-spacing": [
-			"error",
-			{
-				"after": true,
-				"before": true
-			}
-		],
-		"no-console": [
-			"error"
-		],
 		"no-tabs": [
 			"off"
 		],
 		"no-var": [
+			"error"
+		],
+		"prefer-arrow-callback": [
 			"error"
 		],
 		"prefer-const": [
@@ -86,26 +63,19 @@
 				"omitLastInOneLineBlock": false
 			}
 		],
-		"space-before-blocks": [
-			"error",
-			"always"
-		],
-		"space-infix-ops": [
-			"error"
-		],
-		"spaced-comment": [
-			"error",
-			"always"
-		],
 		"strict": [
 			"error",
 			"safe"
-		],
-		"valid-jsdoc": [
-			"error",
-			{
-				"requireReturn": false
-			}
 		]
-	}
+	},
+	"overrides": [
+		{
+			"files": [
+				"test/**/*"
+			],
+			"env": {
+				"mocha": true
+			}
+		}
+	]
 }

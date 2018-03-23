@@ -7,7 +7,7 @@ const postcss = require('gulp-html-postcss');
 const stylelint = require('stylelint');
 const sandbox = require('./sandbox');
 
-describe('PostCSS', function () {
+describe('PostCSS', () => {
 	it('PostCSSError', () => {
 		const PostCSSError = proxyquire('../lib/postcss-error', {
 			'./lint-error': proxyquire('../lib/lint-error', {

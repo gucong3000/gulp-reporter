@@ -6,7 +6,7 @@ const path = require('path');
 const os = require('os');
 const env = process.env;
 
-describe('CI', function () {
+describe('CI', () => {
 	const mkdtemp = fs.mkdtemp.bind(fs, path.join(os.tmpdir(), 'gulp-reporter-ci-'));
 	let tempDir;
 

@@ -392,7 +392,7 @@ describe('API', () => {
 				'    01:01 \u{2714} testcase message.',
 			]);
 			if (padStart) {
-				/* eslint no-extend-native: "off"*/
+				/* eslint no-extend-native: "off" */
 				String.prototype.padStart = padStart;
 			}
 			if (VSCODE_PID) {
