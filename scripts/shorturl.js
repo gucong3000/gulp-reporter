@@ -290,7 +290,7 @@ Promise.all([
 	)),
 
 	// stylelint
-	Object.keys(require('stylelint/lib/rules')).map(rule => (
+	require('stylelint/lib/rules').map(rule => (
 		`https://stylelint.io/user-guide/rules/${rule}/`
 	)),
 
