@@ -25,7 +25,4 @@ test_script:
 # to run your custom scripts instead of provider deployments
 after_test:
   - npm run report-coverage
-  - npm run -s shorturl
-  - git diff --name-only > git_diff.log || echo ""
-  - git diff --cached --name-only >> git_diff.log || echo ""
-  - test ! -s git_diff.log || 7z a shorturl.zip @git_diff.log && appveyor PushArtifact shorturl.zip
+  - npm run -s shorturl || (7z a shorturl.zip lib/*.json && appveyor PushArtifact shorturl.zip)

@@ -1,12 +1,14 @@
 {
 	"root": true,
 	"env": {
-	"browser": true
+		"browser": true
 	},
 	"extends": [
 		"standard"
 	],
-	"plugins": ["compat"],
+	"plugins": [
+		"compat"
+	],
 	"rules": {
 		"compat/compat": [
 			"error"

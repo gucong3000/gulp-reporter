@@ -1,11 +1,6 @@
 {
 	"parserOptions": {
-		"sourceType": "script",
-		"impliedStrict": false
-	},
-	"env": {
-		"es6": true,
-		"node": true
+		"sourceType": "script"
 	},
 	"extends": [
 		"standard"

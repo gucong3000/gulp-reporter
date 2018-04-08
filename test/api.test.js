@@ -20,14 +20,37 @@ const path = require('path');
 require('./sandbox');
 
 describe('API', () => {
-	it('short-doc-url', () => {
+	it('short-doc-url (in GFW)', () => {
+		const shortDocUrl = proxyquire('../lib/short-doc-url', {
+			'./locale': 'zh_CN',
+			'in-gfw': {
+				os: () => Promise.resolve(true),
+			},
+		});
 		return shortDocUrl([{
 			doc: 'http://163.com',
 		}]).then(errors => {
 			if (!errors[0].docShort) {
 				return;
 			}
-			assert.ok(/^https?:\/\/(goo\.gl|t\.cn)\//.test(errors[0].docShort));
+			assert.ok(/^https?:\/\/t\.cn\//.test(errors[0].docShort));
+		});
+	});
+
+	it('short-doc-url (out GFW)', () => {
+		const shortDocUrl = proxyquire('../lib/short-doc-url', {
+			'./locale': 'en_US',
+			'in-gfw': {
+				os: () => Promise.resolve(false),
+			},
+		});
+		return shortDocUrl([{
+			doc: 'http://163.com',
+		}]).then(errors => {
+			if (!errors[0].docShort) {
+				return;
+			}
+			assert.ok(/^https?:\/\/goo\.gl\//.test(errors[0].docShort));
 		});
 	});
 
@@ -39,9 +62,41 @@ describe('API', () => {
 		});
 	});
 
-	it('short-doc-url (in GFW)', () => {
+	it('short-doc-url (CI in GFW)', () => {
 		const shortDocUrl = proxyquire('../lib/short-doc-url', {
 			'./locale': 'zh_CN',
+			'ci-info': {
+				isCI: true,
+				name: 'Jenkins',
+			},
+		});
+		return shortDocUrl([{
+			doc: 'https://stylelint.io/user-guide/rules/indentation/',
+		}]).then(errors => {
+			assert.equal(errors[0].docShort, 'https://t.cn/Ro8Mjw5');
+		});
+	});
+
+	it('short-doc-url (CI out GFW)', () => {
+		const shortDocUrl = proxyquire('../lib/short-doc-url', {
+			'./locale': 'en_US',
+			'ci-info': {
+				isCI: true,
+				name: 'Jenkins',
+			},
+		});
+		return shortDocUrl([{
+			doc: 'https://stylelint.io/user-guide/rules/indentation/',
+		}]).then(errors => {
+			assert.equal(errors[0].docShort, 'https://goo.gl/NVQ9aa');
+		});
+	});
+
+	it('short-doc-url (local in GFW)', () => {
+		const shortDocUrl = proxyquire('../lib/short-doc-url', {
+			'ci-info': {
+				isCI: false,
+			},
 			'in-gfw': {
 				os: () => Promise.resolve(true),
 			},
@@ -49,13 +104,15 @@ describe('API', () => {
 		return shortDocUrl([{
 			doc: 'https://stylelint.io/user-guide/rules/indentation/',
 		}]).then(errors => {
-			assert.equal(errors[0].docShort, 'http://t.cn/Ro8Mjw5');
+			assert.equal(errors[0].docShort, 'https://t.cn/Ro8Mjw5');
 		});
 	});
 
-	it('short-doc-url (out GFW)', () => {
+	it('short-doc-url (local out GFW)', () => {
 		const shortDocUrl = proxyquire('../lib/short-doc-url', {
-			'./locale': 'en_US',
+			'ci-info': {
+				isCI: false,
+			},
 			'in-gfw': {
 				os: () => Promise.resolve(false),
 			},
