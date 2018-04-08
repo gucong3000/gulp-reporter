@@ -27,12 +27,7 @@ describe('API', () => {
 			if (!errors[0].docShort) {
 				return;
 			}
-			const locale = require('../lib/locale');
-			if (locale !== 'zh_CN') {
-				assert.ok(/^https?:\/\/goo\.gl\//.test(errors[0].docShort));
-			} else {
-				assert.ok(/^https?:\/\/(goo\.gl|t\.cn)\//.test(errors[0].docShort));
-			}
+			assert.ok(/^https?:\/\/(goo\.gl|t\.cn)\//.test(errors[0].docShort));
 		});
 	});
 
@@ -44,28 +39,31 @@ describe('API', () => {
 		});
 	});
 
-	it('short-doc-url (default)', () => {
+	it('short-doc-url (in GFW)', () => {
+		const shortDocUrl = proxyquire('../lib/short-doc-url', {
+			'./locale': 'zh_CN',
+			'in-gfw': {
+				os: () => Promise.resolve(true),
+			},
+		});
+		return shortDocUrl([{
+			doc: 'https://stylelint.io/user-guide/rules/indentation/',
+		}]).then(errors => {
+			assert.equal(errors[0].docShort, 'http://t.cn/Ro8Mjw5');
+		});
+	});
+
+	it('short-doc-url (out GFW)', () => {
 		const shortDocUrl = proxyquire('../lib/short-doc-url', {
 			'./locale': 'en_US',
+			'in-gfw': {
+				os: () => Promise.resolve(false),
+			},
 		});
 		return shortDocUrl([{
 			doc: 'https://stylelint.io/user-guide/rules/indentation/',
 		}]).then(errors => {
 			assert.equal(errors[0].docShort, 'https://goo.gl/NVQ9aa');
-		});
-	});
-
-	it('short-doc-url (in GWF)', () => {
-		const getTimezoneOffset = Date.prototype.getTimezoneOffset;
-		const shortDocUrl = proxyquire('../lib/short-doc-url', {
-			'./locale': 'zh_CN',
-		});
-		Date.prototype.getTimezoneOffset = () => (-480);
-		return shortDocUrl([{
-			doc: 'https://stylelint.io/user-guide/rules/indentation/',
-		}]).then(errors => {
-			Date.prototype.getTimezoneOffset = getTimezoneOffset;
-			assert.equal(errors[0].docShort, 'http://t.cn/Ro8Mjw5');
 		});
 	});
 
