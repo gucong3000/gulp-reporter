@@ -2,7 +2,7 @@
 const stripAnsi = require('strip-ansi');
 const log = require('fancy-log');
 const sinon = require('sinon');
-const sandbox = sinon.sandbox.create();
+const sandbox = sinon.createSandbox();
 
 beforeEach(() => {
 	sandbox.stub(log, 'warn');
