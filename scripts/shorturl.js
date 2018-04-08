@@ -38,7 +38,7 @@ function shortUrl (url) {
 }
 
 function shortUrlCn (url) {
-	return got(`http://api.t.sina.com.cn/short_url/shorten.json?source=3271760578&url_long=${url}`, {
+	return got(`http://api.t.sina.com.cn/short_url/shorten.json?source=3271760578&url_long=${encodeURIComponent(url)}`, {
 		json: true,
 	}).then(result => {
 		return result.body[0].url_short;
