@@ -1,4 +1,5 @@
 'use strict';
+const ESLintError = require('../lib/eslint-error');
 const proxyquire = require('proxyquire');
 const stripAnsi = require('strip-ansi');
 const eslint = require('gulp-eslint');
@@ -242,13 +243,18 @@ describe('ESLint', () => {
 			.on('data', file => {
 				try {
 					file.report.errors.forEach(error => {
-						if (/^(.+?)\//.test(error.rule)) {
+						if (/^(.+?)\/(.+)$/.test(error.rule)) {
 							if (RegExp.$1 === 'compat') {
 								assert.ok(error.doc.startsWith('https://www.caniuse.com/#search='));
 								assert.ok(/search=[a-z]+$/.test(error.doc));
+							} else if (RegExp.$1 === 'standard') {
+								assert.equal(error.doc, 'https://www.npmjs.com/package/eslint-plugin-standard#rules-explanations');
 							} else {
-								const packageName = 'eslint-plugin-' + RegExp.$1;
-								assert.ok(error.doc.indexOf(packageName) > 1);
+								const pluginName = RegExp.$1;
+								const ruleName = RegExp.$2;
+								assert.ok(/^https?:\/\/github.com\/\w+\/eslint-plugin-(\w+)\/blob\/HEAD\/docs\/rules\/(.+?)\.md#readme$/.test(error.doc));
+								assert.equal(pluginName, RegExp.$1);
+								assert.equal(ruleName, RegExp.$2);
 							}
 							assert.ok(error.doc.startsWith('https://'));
 						}
@@ -259,5 +265,40 @@ describe('ESLint', () => {
 				}
 				done();
 			});
+	});
+
+	it('jsdoc/check-param-names', () => {
+		const error = new ESLintError({
+			'ruleId': 'jsdoc/check-param-names',
+		});
+		assert.equal(error.doc, 'https://www.npmjs.com/package/eslint-plugin-jsdoc#check-param-names');
+	});
+
+	it('gettext/no-variable-string', () => {
+		const error = new ESLintError({
+			'ruleId': 'gettext/no-variable-string',
+		});
+		assert.equal(error.doc, 'https://www.npmjs.com/package/eslint-plugin-gettext#gettextno-variable-string');
+	});
+
+	it('alint/bracket-predicates', () => {
+		const error = new ESLintError({
+			'ruleId': 'alint/bracket-predicates',
+		});
+		assert.equal(error.doc, 'https://www.npmjs.com/package/eslint-plugin-alint#bracket-predicates');
+	});
+
+	it('sql/format', () => {
+		const error = new ESLintError({
+			'ruleId': 'sql/format',
+		});
+		assert.equal(error.doc, 'https://www.npmjs.com/package/eslint-plugin-sql#eslint-plugin-sql-rules-format');
+	});
+
+	it('not/exist', () => {
+		const error = new ESLintError({
+			'ruleId': 'not/exist',
+		});
+		assert.ifError(error.doc);
 	});
 });

@@ -38,10 +38,10 @@ function shortUrl (url) {
 }
 
 function shortUrlCn (url) {
-	return got(`http://api.t.sina.com.cn/short_url/shorten.json?source=3271760578&url_long=${encodeURIComponent(url)}`, {
+	return got(`https://api.t.sina.com.cn/short_url/shorten.json?source=3271760578&url_long=${encodeURIComponent(url)}`, {
 		json: true,
 	}).then(result => {
-		return result.body[0].url_short;
+		return result.body[0].url_short.replace(/^https?/i, 'https');
 	});
 }
 
@@ -158,10 +158,20 @@ const eslintRules = Object.keys(
 	rule => rule.toLowerCase()
 );
 
+const npmUrlPrefix = 'https://www.npmjs.com/package/eslint-plugin-';
+
 const EslintPluginDocBaseUrl = {
-	flowtype: rule => `https://www.npmjs.com/package/eslint-plugin-flowtype#${rule}`,
-	promise: rule => `https://www.npmjs.com/package/eslint-plugin-promise#${rule}`,
+	sql: rule => npmUrlPrefix + `sql#eslint-plugin-sql-rules-${rule}`,
+	standard: () => npmUrlPrefix + 'standard#rules-explanations',
+	gettext: rule => npmUrlPrefix + `gettext#gettext${rule}`,
 };
+[
+	'flowtype',
+	'jsdoc',
+	'alint',
+].forEach((plugin) => {
+	EslintPluginDocBaseUrl[plugin] = rule => npmUrlPrefix + plugin + '#' + rule;
+});
 
 function getJSON (url) {
 	return got(url, {
@@ -183,7 +193,11 @@ Promise.all([
 	)),
 	isCI && get('https://github.com/yaniswang/HTMLHint/wiki/Rules', '.markdown-body ul a[href*="HTMLHint"]'),
 	isCI && get('https://github.com/CSSLint/csslint/wiki/Rules', '.markdown-body ul a[href^="/CSSLint"]'),
-	isCI && get('http://jscs.info/rules', '.rule-list a[href]'),
+	isCI && get('http://jscs.info/rules', '.rule-list a[href]').then(urls => (
+		urls.map(
+			url => url.replace(/#/, '/')
+		)
+	)),
 
 	// ESLint (zh-CN)
 	eslintRules.map(rule => (
@@ -196,7 +210,11 @@ Promise.all([
 	)),
 
 	// eslint-plugin-standard
-	'https://www.npmjs.com/package/eslint-plugin-standard#rules-explanations',
+	npmUrlPrefix + 'standard#rules-explanations',
+
+	// eslint-plugin-sql
+	npmUrlPrefix + 'sql#eslint-plugin-sql-rules-format',
+	npmUrlPrefix + 'sql#eslint-plugin-sql-rules-no-unsafe-query',
 
 	// eslint-plugin-compat
 	[
@@ -249,6 +267,11 @@ Promise.all([
 						if (!/^(#+)\s+Rules$/im.test(res.body)) {
 							return;
 						}
+						const pluginName = pkgData.name.slice(14);
+						let baseUrl = EslintPluginDocBaseUrl[pluginName];
+						if (!baseUrl) {
+							baseUrl = rule => npmUrlPrefix + pluginName + '#' + rule;
+						}
 						const level = RegExp.$1;
 						let md = RegExp.rightContext;
 						md = md.slice(0, md.indexOf(RegExp('^' + level + '\\s+')));
@@ -257,9 +280,7 @@ Promise.all([
 							rule => rule.replace(/<(\w+)>(.+?)(<\/\1>)/, '$2').replace(/<(\w+)>(.+?)(<\/\1>)/, '$2').replace(/^#+\s+(.+?)\s*$/, '$1').replace(/^.*\//, '')
 						).filter(
 							rule => /^[a-z]+(?:-[a-z]+)*$/.test(rule)
-						).map(
-							rule => `https://www.npmjs.com/package/${pkgData.name}#${rule}`
-						);
+						).map(baseUrl);
 						return md;
 					},
 					() => null
