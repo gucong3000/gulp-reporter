@@ -367,106 +367,127 @@ describe('API', () => {
 			]);
 		});
 
-		it('mock Windows', () => {
+		describe('mock Windows', () => {
+			const fileName = path.join(__dirname, 'fixtures/testcase');
+			const VSCODE_PID = process.env.VSCODE_PID;
+			const ConEmuPID = process.env.ConEmuPID;
+			const isTTY = process.stdout.isTTY;
+			before(() => {
+				process.stdout.isTTY = true;
+			});
+			after(() => {
+				if (VSCODE_PID) {
+					process.env.VSCODE_PID = VSCODE_PID;
+				} else {
+					delete process.env.VSCODE_PID;
+				}
+				if (ConEmuPID) {
+					process.env.ConEmuPID = ConEmuPID;
+				} else {
+					delete process.env.ConEmuPID;
+				}
+				if (isTTY) {
+					process.stdout.isTTY = isTTY;
+				} else {
+					delete process.stdout.isTTY;
+				}
+			});
 			function splitLog (log) {
 				/* eslint-disable-next-line no-control-regex */
 				return stripAnsi(log.replace(/\u001b]50;\w+=.+?\u0007/g, '')).split('\n');
 			}
-			const VSCODE_PID = process.env.VSCODE_PID;
-			const fileName = path.join(__dirname, 'fixtures/testcase');
-
-			process.env.VSCODE_PID = 'mock_pid';
-			let formatter = proxyquire('../lib/formatter', {
-				'ci-info': {
-					isCI: false,
-				},
-				'is-windows': () => true,
-			});
-
-			assert.deepEqual(splitLog(formatter({
-				cwd: __dirname,
-				path: fileName,
-				report: {
-					errors: [{
-						message: 'testcase message.',
-						source: 'testcase source',
-						fileName,
-					}],
-				},
-			}, {
-				blame: false,
-				_termColumns: 60,
-			})), [
-				'fixtures/testcase',
-				'    01:01 \u{2714}\u{FE0F}  testcase message.',
-			]);
-
-			assert.deepEqual(splitLog(formatter({
-				cwd: __dirname,
-				path: fileName,
-				report: {
-					errors: [{
-						message: 'testcase message.',
-						source: 'testcase source',
-						severity: 'info',
-						fileName,
-					}],
-				},
-			}, {
-				blame: false,
-				_termColumns: 60,
-			})), [
-				'fixtures/testcase',
-				'    01:01 \u{2139}\u{FE0F} testcase message.',
-			]);
-
-			delete process.env.VSCODE_PID;
-			formatter = proxyquire('../lib/formatter', {
-				'ci-info': {
-					isCI: false,
-				},
-				'is-windows': () => true,
-			});
-
-			assert.deepEqual(splitLog(formatter({
-				cwd: __dirname,
-				path: fileName,
-				report: {
-					errors: [{
-						message: 'testcase message.',
-						source: 'testcase source',
-						fileName,
-					}],
-				},
-			}, {
-				blame: false,
-				_termColumns: 60,
-			})), [
-				'fixtures/testcase',
-				'    01:01 √ testcase message.',
-			]);
-
-			assert.deepEqual(splitLog(formatter({
-				cwd: __dirname,
-				path: fileName,
-				report: {
-					errors: [{
-						message: 'testcase message.',
-						source: 'testcase source',
-						fileName,
-					}],
-				},
-			}, {
-				blame: false,
-				_termColumns: 60,
-			})), [
-				'fixtures/testcase',
-				'    01:01 √ testcase message.',
-			]);
-
-			if (VSCODE_PID) {
-				process.env.VSCODE_PID = VSCODE_PID;
+			function formatter (env, error) {
+				delete process.env.VSCODE_PID;
+				delete process.env.ConEmuPID;
+				Object.assign(process.env, env);
+				const formatter = proxyquire('../lib/formatter', {
+					'ci-info': {
+						isCI: false,
+					},
+					'is-windows': () => true,
+				});
+				return splitLog(formatter({
+					cwd: __dirname,
+					path: fileName,
+					report: {
+						errors: [Object.assign({}, {
+							message: 'testcase message.',
+							source: 'testcase source',
+							fileName,
+						}, error)],
+					},
+				}, {
+					blame: false,
+					_termColumns: 60,
+				}));
 			}
+
+			it('vscode', () => {
+				assert.deepEqual(formatter({
+					VSCODE_PID: 'mock_pid',
+				}), [
+					'fixtures/testcase',
+					'    01:01 \u{2714}\u{FE0F}  testcase message.',
+				]);
+				assert.deepEqual(formatter({
+					VSCODE_PID: 'mock_pid',
+				}, {
+					severity: 'error',
+				}), [
+					'fixtures/testcase',
+					'    01:01 \u{274C}  testcase message.',
+				]);
+				assert.deepEqual(formatter({
+					VSCODE_PID: 'mock_pid',
+				}, {
+					severity: 'info',
+				}), [
+					'fixtures/testcase',
+					'    01:01 \u{2139}\u{FE0F} testcase message.',
+				]);
+			});
+
+			it('ConEmu', () => {
+				assert.deepEqual(formatter({
+					ConEmuPID: 'mock_pid',
+				}, {
+				}), [
+					'fixtures/testcase',
+					'    01:01 \u{2714}\u{FE0F} testcase message.',
+				]);
+				assert.deepEqual(formatter({
+					ConEmuPID: 'mock_pid',
+				}, {
+					severity: 'error',
+				}), [
+					'fixtures/testcase',
+					'    01:01 \u{274C}\u{FE0F} testcase message.',
+				]);
+				assert.deepEqual(formatter({
+					ConEmuPID: 'mock_pid',
+				}, {
+					severity: 'info',
+				}), [
+					'fixtures/testcase',
+					'    01:01 ‼ testcase message.',
+				]);
+			});
+			it('cmd', () => {
+				assert.deepEqual(formatter({
+				}, {
+					severity: 'error',
+				}), [
+					'fixtures/testcase',
+					'    01:01 \u{274C} testcase message.',
+				]);
+				assert.deepEqual(formatter({
+				}, {
+					severity: 'info',
+				}), [
+					'fixtures/testcase',
+					'    01:01 \u{2139} testcase message.',
+				]);
+			});
 		});
 	});
 
