@@ -124,5 +124,5 @@
     "test-cov": "nyc npm-run-all --parallel test:*",
     "test": "env npm-run-all --parallel lint:* test-cov"
   },
-  "version": "2.8.0"
+  "version": "2.8.1"
 }
