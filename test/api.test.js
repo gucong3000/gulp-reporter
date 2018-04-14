@@ -372,44 +372,17 @@ describe('API', () => {
 				/* eslint-disable-next-line no-control-regex */
 				return stripAnsi(log.replace(/\u001b]50;\w+=.+?\u0007/g, '')).split('\n');
 			}
-			const padStart = String.prototype.padStart;
 			const VSCODE_PID = process.env.VSCODE_PID;
-			const ConEmuPID = process.env.ConEmuPID;
+			const fileName = path.join(__dirname, 'fixtures/testcase');
 
-			if (padStart) {
-				delete String.prototype.padStart;
-			}
-			delete process.env.VSCODE_PID;
-			process.env.ConEmuPID = 'mock_pid';
-
-			const formatter = proxyquire('../lib/formatter', {
+			process.env.VSCODE_PID = 'mock_pid';
+			let formatter = proxyquire('../lib/formatter', {
 				'ci-info': {
 					isCI: false,
 				},
 				'is-windows': () => true,
 			});
 
-			const fileName = path.join(__dirname, 'fixtures/testcase');
-
-			assert.deepEqual(splitLog(formatter({
-				cwd: __dirname,
-				path: fileName,
-				report: {
-					errors: [{
-						message: 'testcase message.',
-						source: 'testcase source',
-						fileName,
-					}],
-				},
-			}, {
-				blame: false,
-				_termColumns: 60,
-			})), [
-				'fixtures/testcase',
-				'    01:01 \u{2714}\u{FE0F} testcase message.',
-			]);
-			delete process.env.ConEmuPID;
-			process.env.VSCODE_PID = 'mock_pid';
 			assert.deepEqual(splitLog(formatter({
 				cwd: __dirname,
 				path: fileName,
@@ -428,7 +401,33 @@ describe('API', () => {
 				'    01:01 \u{2714}\u{FE0F}  testcase message.',
 			]);
 
+			assert.deepEqual(splitLog(formatter({
+				cwd: __dirname,
+				path: fileName,
+				report: {
+					errors: [{
+						message: 'testcase message.',
+						source: 'testcase source',
+						severity: 'info',
+						fileName,
+					}],
+				},
+			}, {
+				blame: false,
+				_termColumns: 60,
+			})), [
+				'fixtures/testcase',
+				'    01:01 \u{2139}\u{FE0F} testcase message.',
+			]);
+
 			delete process.env.VSCODE_PID;
+			formatter = proxyquire('../lib/formatter', {
+				'ci-info': {
+					isCI: false,
+				},
+				'is-windows': () => true,
+			});
+
 			assert.deepEqual(splitLog(formatter({
 				cwd: __dirname,
 				path: fileName,
@@ -444,17 +443,29 @@ describe('API', () => {
 				_termColumns: 60,
 			})), [
 				'fixtures/testcase',
-				'    01:01 \u{2714} testcase message.',
+				'    01:01 √ testcase message.',
 			]);
-			if (padStart) {
-				/* eslint no-extend-native: "off" */
-				String.prototype.padStart = padStart;
-			}
+
+			assert.deepEqual(splitLog(formatter({
+				cwd: __dirname,
+				path: fileName,
+				report: {
+					errors: [{
+						message: 'testcase message.',
+						source: 'testcase source',
+						fileName,
+					}],
+				},
+			}, {
+				blame: false,
+				_termColumns: 60,
+			})), [
+				'fixtures/testcase',
+				'    01:01 √ testcase message.',
+			]);
+
 			if (VSCODE_PID) {
 				process.env.VSCODE_PID = VSCODE_PID;
-			}
-			if (ConEmuPID) {
-				process.env.ConEmuPID = ConEmuPID;
 			}
 		});
 	});
