@@ -52,7 +52,7 @@ describe('CI', () => {
 		return ciReporter().then(() => (
 			getResult('lint-result.xml')
 		)).then(results => {
-			assert.ifError(results.length);
+			assert.equal(results.length, 0);
 		});
 	});
 

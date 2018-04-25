@@ -44,8 +44,8 @@ describe('ECLint', () => {
 				const log = sandbox.getLog();
 				assert.ok(log.indexOf('(EditorConfig charset http') >= 0);
 				assert.ok(log.indexOf('(EditorConfig indent_style http') >= 0);
-				assert.ifError(/\bdone\(\)/.test(log));
-				assert.ifError(/@/.test(log));
+				assert.equal(/\bdone\(\)/.test(log), false);
+				assert.equal(/@/.test(log), false);
 				done();
 			});
 	});
