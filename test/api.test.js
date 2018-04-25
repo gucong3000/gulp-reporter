@@ -544,7 +544,7 @@ describe('API', () => {
 				cwd: __dirname,
 			}).then(options => {
 				assert.ifError(options._expiresTime);
-				assert.ifError(options.author);
+				assert.equal(options.author, false);
 			});
 		});
 		it('mock', () => {

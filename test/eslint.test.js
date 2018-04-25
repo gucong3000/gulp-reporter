@@ -72,7 +72,7 @@ describe('ESLint', () => {
 			.on('error', done)
 			.on('data', file => {
 				assert.ifError(file.report.fail);
-				assert.ifError(reports.length);
+				assert.equal(reports.length, 0);
 				done();
 			});
 	});
@@ -108,7 +108,7 @@ describe('ESLint', () => {
 			.on('data', file => {
 				files.push(file);
 				if (/\.min\.\w+/.test(file.path)) {
-					assert.ifError(file.report.errors.length);
+					assert.equal(file.report.errors.length, 0);
 				} else {
 					assert.ok(file.report.errors.length);
 				}

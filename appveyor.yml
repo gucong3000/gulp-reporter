@@ -17,7 +17,6 @@ install:
   - npm install
   - bash -c "cd node_modules/nyc && npm i https://github.com/pangrr/spawn-wrap/archive/fix/shebang-path-space.tar.gz --production"
 
-
 # to run your custom scripts instead of automatic tests
 test_script:
   - npm test
