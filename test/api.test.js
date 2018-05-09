@@ -606,11 +606,9 @@ describe('API', () => {
 			base: process.cwd(),
 		})
 			.pipe(eslint())
-			.pipe(reporter(() => {
-				return {
-					author: 'not exist',
-				};
-			}))
+			.pipe(reporter(() => ({
+				author: 'not exist',
+			})))
 			.on('finish', done)
 			.on('error', done);
 	});
