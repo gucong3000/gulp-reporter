@@ -6,7 +6,6 @@ build: off
 environment:
   matrix:
     - nodejs_version: stable
-    - nodejs_version: 6
 
 # Install scripts. (runs after repo cloning)
 install:
