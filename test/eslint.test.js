@@ -92,8 +92,12 @@ describe('ESLint', () => {
 				assert.ok(/\n\s+at\s+https?:\/\/(?:\w+\.)?eslint.org\/docs\/rules\/strict$/m.test(error));
 			})
 			.on('error', ex => {
-				assert.equal(ex.plugin, 'gulp-reporter');
-				done();
+				try {
+					assert.equal(ex.plugin, 'gulp-reporter');
+					done();
+				} catch (ex) {
+					done(ex);
+				}
 			});
 	});
 
@@ -114,9 +118,13 @@ describe('ESLint', () => {
 				}
 			})
 			.on('error', ex => {
-				assert.equal(ex.plugin, 'gulp-reporter');
-				assert.ok(files.length >= 2);
-				done();
+				try {
+					assert.equal(ex.plugin, 'gulp-reporter');
+					assert.ok(files.length >= 2);
+					done();
+				} catch (ex) {
+					done(ex);
+				}
 			});
 	});
 
@@ -132,29 +140,28 @@ describe('ESLint', () => {
 			.on('error', done);
 	});
 
-	it('not commit file', done => {
+	it('not commit file', () => {
 		const message = [];
-		const stream = eslint({
+		const srcStream = eslint({
 			fix: true,
 		});
-		stream.pipe(reporter({
+		const stream = srcStream.pipe(reporter({
 			fail: false,
 			output: msg => {
 				message.push(stripAnsi(msg));
 			},
-		}))
-			.on('finish', () => {
-				assert.ok(/^\s*0+…?\s+\(Not Committed Yet\s+<not.committed.yet>\s+\d+-\d+-\d+ \d+:\d+:\d+\)$/m.test(message[0]));
-				done();
-			})
-			.on('error', done);
-
-		stream.write(new Vinyl({
-			base: process.cwd(),
-			path: __filename,
-			contents: Buffer.from('"use strict";\nalert(console > 1);'),
 		}));
-		stream.end();
+
+		process.nextTick(() => {
+			srcStream.end(new Vinyl({
+				base: process.cwd(),
+				path: __filename,
+				contents: Buffer.from('"use strict";\nalert(console > 1);'),
+			}));
+		});
+		return sandbox.thenable(stream).then(() => {
+			assert.ok(/^\s*0+…?\s+\(Not Committed Yet\s+<not.committed.yet>\s+\d+-\d+-\d+ \d+:\d+:\d+\)$/m.test(message[0]));
+		});
 	});
 
 	it('warn', done => {

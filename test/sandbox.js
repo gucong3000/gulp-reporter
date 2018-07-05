@@ -30,3 +30,31 @@ exports.getLog = () => (
 		.replace(/\n +\(/g, ' (')
 		.replace(/ +/g, ' ')
 );
+
+exports.thenable = (stream) => {
+	return new Promise((resolve, reject) => {
+		const rst = [];
+		stream
+			.on('data', (data) => {
+				rst.push(data);
+			})
+			.on('end', () => {
+				resolve(rst);
+			})
+			.on('error', reject);
+	});
+};
+
+exports.gotError = (stream) => {
+	return new Promise((resolve, reject) => {
+		const rst = [];
+		stream
+			.on('data', (data) => {
+				rst.push(data);
+			})
+			.on('end', () => {
+				reject(rst);
+			})
+			.on('error', resolve);
+	});
+};

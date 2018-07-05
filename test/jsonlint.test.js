@@ -6,8 +6,8 @@ const reporter = require('../');
 const sandbox = require('./sandbox');
 
 describe('JSONLint', () => {
-	it('console reporter', done => {
-		return vfs.src('test/fixtures/jsonlint/fails/*.json', {
+	it('console reporter', () => {
+		const stream = vfs.src('test/fixtures/jsonlint/fails/*.json', {
 			base: process.cwd(),
 		})
 			.pipe(jsonlint())
@@ -20,25 +20,26 @@ describe('JSONLint', () => {
 				const log = sandbox.getLog();
 				assert.ok(log.startsWith(file.relative.replace(/\\/g, '/')));
 				assert.ok(/^\s*\d+:\d+\s+.+\bExpecting\b.+,\s+got/m.test(log));
-			}).on('error', ex => {
-				assert.equal(ex.plugin, 'gulp-reporter');
-				done();
 			});
+		return sandbox.gotError(stream).then(error => {
+			assert.equal(error.plugin, 'gulp-reporter');
+		});
 	});
-	it('passes json', done => {
-		return vfs.src('test/fixtures/jsonlint/passes/*.json', {
+	it('passes json', () => {
+		const stream = vfs.src('test/fixtures/jsonlint/passes/*.json', {
 			base: process.cwd(),
 		})
 			.pipe(jsonlint())
 			.pipe(reporter({
 				output: true,
 				blame: false,
-			}))
-			.on('data', (file) => {
+			}));
+
+		return sandbox.thenable(stream).then(files => {
+			files.forEach(file => {
 				assert.ok(file.jsonlint);
 				assert.ok(file.jsonlint.success);
-			})
-			.on('error', done)
-			.on('finish', done);
+			});
+		});
 	});
 });
