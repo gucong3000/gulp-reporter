@@ -23,9 +23,7 @@ describe('API', () => {
 	it('short-doc-url (in GFW)', () => {
 		const shortDocUrl = proxyquire('../lib/short-doc-url', {
 			'./locale': 'zh_CN',
-			'in-gfw': {
-				os: () => Promise.resolve(true),
-			},
+			'in-gfw': () => Promise.resolve(true),
 		});
 		return shortDocUrl([{
 			doc: 'http://163.com',
@@ -40,9 +38,7 @@ describe('API', () => {
 	it('short-doc-url (out GFW)', () => {
 		const shortDocUrl = proxyquire('../lib/short-doc-url', {
 			'./locale': 'en_US',
-			'in-gfw': {
-				os: () => Promise.resolve(false),
-			},
+			'in-gfw': () => Promise.resolve(false),
 		});
 		return shortDocUrl([{
 			doc: 'http://163.com',
@@ -97,9 +93,7 @@ describe('API', () => {
 			'ci-info': {
 				isCI: false,
 			},
-			'in-gfw': {
-				os: () => Promise.resolve(true),
-			},
+			'in-gfw': () => Promise.resolve(true),
 		});
 		return shortDocUrl([{
 			doc: 'https://stylelint.io/user-guide/rules/indentation/',
@@ -113,9 +107,7 @@ describe('API', () => {
 			'ci-info': {
 				isCI: false,
 			},
-			'in-gfw': {
-				os: () => Promise.resolve(false),
-			},
+			'in-gfw': () => Promise.resolve(false),
 		});
 		return shortDocUrl([{
 			doc: 'https://stylelint.io/user-guide/rules/indentation/',
