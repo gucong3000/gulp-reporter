@@ -13,8 +13,8 @@ const {
 
 describe('JSCS', function () {
 	this.timeout(10000);
-	it('console reporter', done => {
-		return vfs.src('test/fixtures/jscs/invalid.js', {
+	it('console reporter', () => {
+		const stream = vfs.src('test/fixtures/jscs/invalid.js', {
 			base: process.cwd(),
 		})
 			.pipe(jscs({
@@ -23,19 +23,18 @@ describe('JSCS', function () {
 			.pipe(reporter({
 				output: true,
 				blame: false,
-			})).on('error', ex => {
-				assert.equal(ex.plugin, 'gulp-reporter');
-				assert.equal(ex.message, 'Lint failed for: test/fixtures/jscs/invalid.js');
-			}).on('finish', () => {
-				const result = sandbox.getLog().split(/\s*\r?\n\s*/g);
-				assert.equal(result[0], 'test/fixtures/jscs/invalid.js');
-				assert.ok(/\d+:\d+/.test(result[1]));
-				assert.ok(/\bMultiple var declaration \(JSCS disallowMultipleVarDecl http/.test(result[1]));
-				done();
-			});
+			}));
+		return sandbox.gotError(stream).then(error => {
+			assert.equal(error.plugin, 'gulp-reporter');
+			assert.equal(error.message, 'Lint failed for: test/fixtures/jscs/invalid.js');
+			const result = sandbox.getLog().split(/\s*\r?\n\s*/g);
+			assert.equal(result[0], 'test/fixtures/jscs/invalid.js');
+			assert.ok(/\d+:\d+/.test(result[1]));
+			assert.ok(/\bMultiple var declaration \(JSCS disallowMultipleVarDecl http/.test(result[1]));
+		});
 	});
-	it('browser reporter', done => {
-		return vfs.src('test/fixtures/jscs/invalid.js', {
+	it('browser reporter', () => {
+		const stream = vfs.src('test/fixtures/jscs/invalid.js', {
 			base: process.cwd(),
 		})
 			.pipe(jscs({
@@ -46,21 +45,25 @@ describe('JSCS', function () {
 				output: false,
 				blame: false,
 				fail: false,
-			}))
-			.on('data', file => {
-				const virtualConsole = new VirtualConsole();
-				const dom = new JSDOM('', {
-					runScripts: 'dangerously',
-					virtualConsole: virtualConsole,
+			}));
+		return sandbox.thenable(stream).then(files => {
+			files = files.map(file => {
+				return new Promise((resolve) => {
+					const virtualConsole = new VirtualConsole();
+					const dom = new JSDOM('', {
+						runScripts: 'dangerously',
+						virtualConsole: virtualConsole,
+					});
+					const script = new Script(file.contents.toString(), {
+						filename: file.path,
+					});
+					virtualConsole.once('error', () => {
+						process.nextTick(resolve);
+					});
+					dom.runVMScript(script);
 				});
-				const script = new Script(file.contents.toString(), {
-					filename: file.path,
-				});
-				virtualConsole.once('error', () => {
-					process.nextTick(done);
-				});
-				dom.runVMScript(script);
-			})
-			.on('error', done);
+			});
+			return Promise.all(files);
+		});
 	});
 });

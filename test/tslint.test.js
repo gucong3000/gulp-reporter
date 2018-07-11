@@ -8,8 +8,8 @@ const sandbox = require('./sandbox');
 
 describe('TSLint', function () {
 	this.timeout(10000);
-	it('console reporter', done => {
-		return vfs.src('test/fixtures/tslint/invalid.ts', {
+	it('console reporter', () => {
+		const stream = vfs.src('test/fixtures/tslint/invalid.ts', {
 			base: process.cwd(),
 		})
 			.pipe(gulpTslint({
@@ -18,20 +18,18 @@ describe('TSLint', function () {
 			.pipe(reporter({
 				output: true,
 				blame: false,
-			}))
-
-			.on('error', ex => {
-				assert.equal(ex.plugin, 'gulp-reporter');
-				assert.equal(ex.message, 'Lint failed for: test/fixtures/tslint/invalid.ts');
-				const log = sandbox.getLog();
-				assert.ok(/\s+\d+:\d+/.test(log));
-				assert.ok(log.indexOf('missing whitespace (TSLint one-line http') >= 0);
-				assert.ok(log.indexOf('missing whitespace (TSLint whitespace http') >= 0);
-				done();
-			});
+			}));
+		return sandbox.gotError(stream).then(error => {
+			assert.equal(error.plugin, 'gulp-reporter');
+			assert.equal(error.message, 'Lint failed for: test/fixtures/tslint/invalid.ts');
+			const log = sandbox.getLog();
+			assert.ok(/\s+\d+:\d+/.test(log));
+			assert.ok(log.indexOf('missing whitespace (TSLint one-line http') >= 0);
+			assert.ok(log.indexOf('missing whitespace (TSLint whitespace http') >= 0);
+		});
 	});
-	it('fail function', done => {
-		return vfs.src('test/fixtures/tslint/invalid.ts', {
+	it('fail function', () => {
+		const stream = vfs.src('test/fixtures/tslint/invalid.ts', {
 			base: process.cwd(),
 		})
 			.pipe(gulpTslint({
@@ -42,10 +40,7 @@ describe('TSLint', function () {
 				fail: () => {
 					return false;
 				},
-			}))
-			.on('finish', () => {
-				done();
-			})
-			.on('error', done);
+			}));
+		return sandbox.thenable(stream);
 	});
 });

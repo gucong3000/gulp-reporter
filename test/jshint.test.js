@@ -26,20 +26,22 @@ describe('JSHint', () => {
 		assert.notEqual(error2.message, 'tesecase');
 	});
 
-	it('console reporter', done => {
-		return vfs.src('test/fixtures/jshint/invalid.js', {
+	it('console reporter', () => {
+		const stream = vfs.src('test/fixtures/jshint/invalid.js', {
 			base: process.cwd(),
 		})
 			.pipe(jshint())
 			.pipe(reporter({
 				output: true,
 				blame: false,
-			})).on('error', () => {
-				const log = sandbox.getLog();
-				assert.ok(/^test\/fixtures\/jshint\/invalid.js$/m.test(log));
-				assert.ok(/\s+\d+:\d+/.test(log));
-				assert.ok(/\(JSHint W033\)$/m.test(log));
-				done();
-			});
+			}));
+		return sandbox.gotError(stream).then(error => {
+			assert.equal(error.plugin, 'gulp-reporter');
+			assert.equal(error.message, 'Lint failed for: test/fixtures/jshint/invalid.js');
+			const log = sandbox.getLog();
+			assert.ok(/^test\/fixtures\/jshint\/invalid.js$/m.test(log));
+			assert.ok(/\s+\d+:\d+/.test(log));
+			assert.ok(/\(JSHint W033\)$/m.test(log));
+		});
 	});
 });

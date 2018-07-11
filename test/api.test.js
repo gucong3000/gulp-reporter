@@ -13,8 +13,9 @@ const proxyquire = require('proxyquire');
 const stripAnsi = require('strip-ansi');
 const eslint = require('gulp-eslint');
 const through = require('through2');
-const Vinyl = require('vinyl');
+const inGFW = require('in-gfw');
 const vfs = require('vinyl-fs');
+const Vinyl = require('vinyl');
 const path = require('path');
 
 require('./sandbox');
@@ -35,20 +36,22 @@ describe('API', () => {
 		});
 	});
 
-	it('short-doc-url (out GFW)', () => {
-		const shortDocUrl = proxyquire('../lib/short-doc-url', {
-			'./locale': 'en_US',
-			'in-gfw': () => Promise.resolve(false),
+	if (!inGFW.sync()) {
+		it('short-doc-url (out GFW)', () => {
+			const shortDocUrl = proxyquire('../lib/short-doc-url', {
+				'./locale': 'en_US',
+				'in-gfw': () => Promise.resolve(false),
+			});
+			return shortDocUrl([{
+				doc: 'http://163.com',
+			}]).then(errors => {
+				if (!errors[0].docShort) {
+					return;
+				}
+				assert.ok(/^https?:\/\/goo\.gl\//.test(errors[0].docShort));
+			});
 		});
-		return shortDocUrl([{
-			doc: 'http://163.com',
-		}]).then(errors => {
-			if (!errors[0].docShort) {
-				return;
-			}
-			assert.ok(/^https?:\/\/goo\.gl\//.test(errors[0].docShort));
-		});
-	});
+	}
 
 	it('short-doc-url error', () => {
 		return shortDocUrl([{
