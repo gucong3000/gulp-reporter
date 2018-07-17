@@ -19,10 +19,10 @@ describe('XO', () => {
 				blame: false,
 			}));
 		return sandbox.gotError(stream).then(error => {
-			assert.equal(error.plugin, 'gulp-reporter');
-			assert.equal(error.message, 'Lint failed for: invalid.js');
+			assert.strictEqual(error.plugin, 'gulp-reporter');
+			assert.strictEqual(error.message, 'Lint failed for: invalid.js');
 			const result = sandbox.getLog().split(/\s*\r?\n\s*/g);
-			assert.equal(result[0], 'invalid.js');
+			assert.strictEqual(result[0], 'invalid.js');
 		});
 	});
 });

@@ -16,13 +16,13 @@ describe('JSONLint', () => {
 				blame: false,
 			})).on('data', (file) => {
 				assert.ok(file.jsonlint);
-				assert.equal(file.jsonlint.success, false);
+				assert.strictEqual(file.jsonlint.success, false);
 				const log = sandbox.getLog();
 				assert.ok(log.startsWith(file.relative.replace(/\\/g, '/')));
 				assert.ok(/^\s*\d+:\d+\s+.+\bExpecting\b.+,\s+got/m.test(log));
 			});
 		return sandbox.gotError(stream).then(error => {
-			assert.equal(error.plugin, 'gulp-reporter');
+			assert.strictEqual(error.plugin, 'gulp-reporter');
 		});
 	});
 	it('passes json', () => {

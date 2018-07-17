@@ -17,8 +17,8 @@ describe('ECLint', () => {
 				author: null,
 			}));
 		return sandbox.gotError(stream).then(error => {
-			assert.equal(error.plugin, 'gulp-reporter');
-			assert.equal(error.message, 'Lint failed for: test/fixtures/eclint/invalid.js');
+			assert.strictEqual(error.plugin, 'gulp-reporter');
+			assert.strictEqual(error.message, 'Lint failed for: test/fixtures/eclint/invalid.js');
 
 			const log = sandbox.getLog();
 			assert.ok(log.indexOf('(EditorConfig charset http') >= 0);
@@ -38,14 +38,14 @@ describe('ECLint', () => {
 				blame: false,
 			}));
 		return sandbox.gotError(stream).then(error => {
-			assert.equal(error.plugin, 'gulp-reporter');
-			assert.equal(error.message, 'Lint failed for: test/fixtures/eclint/invalid.js');
+			assert.strictEqual(error.plugin, 'gulp-reporter');
+			assert.strictEqual(error.message, 'Lint failed for: test/fixtures/eclint/invalid.js');
 
 			const log = sandbox.getLog();
 			assert.ok(log.indexOf('(EditorConfig charset http') >= 0);
 			assert.ok(log.indexOf('(EditorConfig indent_style http') >= 0);
-			assert.equal(/\bdone\(\)/.test(log), false);
-			assert.equal(/@/.test(log), false);
+			assert.strictEqual(/\bdone\(\)/.test(log), false);
+			assert.strictEqual(/@/.test(log), false);
 		});
 	});
 });

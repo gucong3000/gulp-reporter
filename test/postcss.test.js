@@ -20,8 +20,8 @@ describe('PostCSS', () => {
 			},
 			text: 'mock_message',
 		});
-		assert.equal(error.fileName, __filename);
-		assert.equal(error.severity, 'error');
+		assert.strictEqual(error.fileName, __filename);
+		assert.strictEqual(error.severity, 'error');
 	});
 
 	it('not fail when valid', () => {
@@ -74,10 +74,10 @@ describe('PostCSS', () => {
 			const reBlame = /^\w+…?\s\(\S+.*?\s+<.+?>\s+\d+.+?\)$/;
 			const reSource = /^\d+|\s*.*?\S$/;
 
-			assert.equal(error.plugin, 'gulp-reporter');
-			assert.equal(error.message, 'Lint failed for: test/fixtures/postcss/invalid.css');
+			assert.strictEqual(error.plugin, 'gulp-reporter');
+			assert.strictEqual(error.message, 'Lint failed for: test/fixtures/postcss/invalid.css');
 			const log = sandbox.getLog().split(/\s*\r?\n\s*/g);
-			assert.equal(log[0], 'test/fixtures/postcss/invalid.css');
+			assert.strictEqual(log[0], 'test/fixtures/postcss/invalid.css');
 			assert.ok(reMessage.test(log[1]));
 			assert.ok(reMessage.test(log[4]));
 

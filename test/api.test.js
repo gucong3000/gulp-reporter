@@ -72,7 +72,7 @@ describe('API', () => {
 		return shortDocUrl([{
 			doc: 'https://stylelint.io/user-guide/rules/indentation/',
 		}]).then(errors => {
-			assert.equal(errors[0].docShort, 'https://t.cn/Ro8Mjw5');
+			assert.strictEqual(errors[0].docShort, 'https://t.cn/Ro8Mjw5');
 		});
 	});
 
@@ -87,7 +87,7 @@ describe('API', () => {
 		return shortDocUrl([{
 			doc: 'https://stylelint.io/user-guide/rules/indentation/',
 		}]).then(errors => {
-			assert.equal(errors[0].docShort, 'https://goo.gl/NVQ9aa');
+			assert.strictEqual(errors[0].docShort, 'https://goo.gl/NVQ9aa');
 		});
 	});
 
@@ -101,7 +101,7 @@ describe('API', () => {
 		return shortDocUrl([{
 			doc: 'https://stylelint.io/user-guide/rules/indentation/',
 		}]).then(errors => {
-			assert.equal(errors[0].docShort, 'https://t.cn/Ro8Mjw5');
+			assert.strictEqual(errors[0].docShort, 'https://t.cn/Ro8Mjw5');
 		});
 	});
 
@@ -115,7 +115,7 @@ describe('API', () => {
 		return shortDocUrl([{
 			doc: 'https://stylelint.io/user-guide/rules/indentation/',
 		}]).then(errors => {
-			assert.equal(errors[0].docShort, 'https://goo.gl/NVQ9aa');
+			assert.strictEqual(errors[0].docShort, 'https://goo.gl/NVQ9aa');
 		});
 	});
 
@@ -147,10 +147,10 @@ describe('API', () => {
 			]);
 
 			assert.ifError(result[0].severity);
-			assert.equal(result[1].severity, 'error');
-			assert.equal(result[2].severity, 'warn');
-			assert.equal(result[3].severity, 'info');
-			assert.equal(result[4].severity, '!');
+			assert.strictEqual(result[1].severity, 'error');
+			assert.strictEqual(result[2].severity, 'warn');
+			assert.strictEqual(result[3].severity, 'info');
+			assert.strictEqual(result[4].severity, '!');
 		});
 
 		it('sort by fileName', () => {
@@ -172,10 +172,10 @@ describe('API', () => {
 			]);
 
 			assert.ifError(result[0].fileName);
-			assert.equal(result[1].fileName, '!');
-			assert.equal(result[2].fileName, 'aaa');
-			assert.equal(result[3].fileName, 'bbb');
-			assert.equal(result[4].fileName, 'ccc');
+			assert.strictEqual(result[1].fileName, '!');
+			assert.strictEqual(result[2].fileName, 'aaa');
+			assert.strictEqual(result[3].fileName, 'bbb');
+			assert.strictEqual(result[4].fileName, 'ccc');
 		});
 
 		it('sort by demote', () => {
@@ -225,26 +225,26 @@ describe('API', () => {
 			assert.ifError(result[0].lineNumber);
 			assert.ifError(result[0].columnNumber);
 			assert.ifError(result[1].lineNumber);
-			assert.equal(result[1].columnNumber, 2);
-			assert.equal(result[2].lineNumber, 4);
-			assert.equal(result[2].columnNumber, 3);
-			assert.equal(result[3].lineNumber, 4);
-			assert.equal(result[3].columnNumber, 6);
-			assert.equal(result[4].lineNumber, 8);
-			assert.equal(result[4].columnNumber, 3);
-			assert.equal(result[5].lineNumber, 8);
-			assert.equal(result[5].columnNumber, 6);
+			assert.strictEqual(result[1].columnNumber, 2);
+			assert.strictEqual(result[2].lineNumber, 4);
+			assert.strictEqual(result[2].columnNumber, 3);
+			assert.strictEqual(result[3].lineNumber, 4);
+			assert.strictEqual(result[3].columnNumber, 6);
+			assert.strictEqual(result[4].lineNumber, 8);
+			assert.strictEqual(result[4].columnNumber, 3);
+			assert.strictEqual(result[5].lineNumber, 8);
+			assert.strictEqual(result[5].columnNumber, 6);
 		});
 	});
 
 	describe('add-postcss-source', () => {
 		it('get source fail', () => {
 			const errors = ['testcase'];
-			assert.equal(addPostcssSource({}, errors), errors);
+			assert.strictEqual(addPostcssSource({}, errors), errors);
 		});
 		it('get error line fail', () => {
 			const errors = ['testcase'];
-			assert.deepEqual(addPostcssSource({
+			assert.deepStrictEqual(addPostcssSource({
 				postcss: {
 					root: {
 						source: {
@@ -272,7 +272,7 @@ describe('API', () => {
 		});
 
 		it('getEvnAuthor()', () => {
-			assert.deepEqual(gitAuthor(), {
+			assert.deepStrictEqual(gitAuthor(), {
 				time: 1498558291,
 				name: 'name.test',
 				email: 'test@test.com',
@@ -281,7 +281,7 @@ describe('API', () => {
 
 		it('getEvnAuthor() fail', () => {
 			delete process.env.GIT_AUTHOR_NAME;
-			assert.notDeepEqual(gitAuthor(), {
+			assert.notDeepStrictEqual(gitAuthor(), {
 				time: 1498558291,
 				name: 'name.test',
 				email: 'test@test.com',
@@ -303,7 +303,7 @@ describe('API', () => {
 					sort: false,
 				}))
 				.on('error', ex => {
-					assert.equal(ex.plugin, 'gulp-reporter');
+					assert.strictEqual(ex.plugin, 'gulp-reporter');
 					done();
 				});
 		});
@@ -317,7 +317,7 @@ describe('API', () => {
 		it('break line', () => {
 			const fileName = path.join(__dirname, 'fixtures/testcase');
 
-			assert.deepEqual(splitLog(formatter({
+			assert.deepStrictEqual(splitLog(formatter({
 				cwd: __dirname,
 				path: fileName,
 				report: {
@@ -343,7 +343,7 @@ describe('API', () => {
 		it('simple', () => {
 			const fileName = path.join(__dirname, 'fixtures/testcase');
 
-			assert.deepEqual(splitLog(formatter({
+			assert.deepStrictEqual(splitLog(formatter({
 				cwd: __dirname,
 				path: fileName,
 				report: {
@@ -418,13 +418,13 @@ describe('API', () => {
 			}
 
 			it('vscode', () => {
-				assert.deepEqual(formatter({
+				assert.deepStrictEqual(formatter({
 					VSCODE_PID: 'mock_pid',
 				}), [
 					'fixtures/testcase',
 					'    01:01 \u{2714}\u{FE0F}  testcase message.',
 				]);
-				assert.deepEqual(formatter({
+				assert.deepStrictEqual(formatter({
 					VSCODE_PID: 'mock_pid',
 				}, {
 					severity: 'error',
@@ -432,7 +432,7 @@ describe('API', () => {
 					'fixtures/testcase',
 					'    01:01 \u{274C}  testcase message.',
 				]);
-				assert.deepEqual(formatter({
+				assert.deepStrictEqual(formatter({
 					VSCODE_PID: 'mock_pid',
 				}, {
 					severity: 'info',
@@ -443,14 +443,14 @@ describe('API', () => {
 			});
 
 			it('ConEmu', () => {
-				assert.deepEqual(formatter({
+				assert.deepStrictEqual(formatter({
 					ConEmuPID: 'mock_pid',
 				}, {
 				}), [
 					'fixtures/testcase',
 					'    01:01 \u{2714}\u{FE0F} testcase message.',
 				]);
-				assert.deepEqual(formatter({
+				assert.deepStrictEqual(formatter({
 					ConEmuPID: 'mock_pid',
 				}, {
 					severity: 'error',
@@ -458,7 +458,7 @@ describe('API', () => {
 					'fixtures/testcase',
 					'    01:01 \u{274C}\u{FE0F} testcase message.',
 				]);
-				assert.deepEqual(formatter({
+				assert.deepStrictEqual(formatter({
 					ConEmuPID: 'mock_pid',
 				}, {
 					severity: 'info',
@@ -468,14 +468,14 @@ describe('API', () => {
 				]);
 			});
 			it('cmd', () => {
-				assert.deepEqual(formatter({
+				assert.deepStrictEqual(formatter({
 				}, {
 					severity: 'error',
 				}), [
 					'fixtures/testcase',
 					'    01:01 \u{274C} testcase message.',
 				]);
-				assert.deepEqual(formatter({
+				assert.deepStrictEqual(formatter({
 				}, {
 					severity: 'info',
 				}), [
@@ -502,7 +502,7 @@ describe('API', () => {
 				contents: contents,
 			});
 			browserReporter(file, []);
-			assert.equal(file.contents.contents);
+			assert.strictEqual(file.contents.contents);
 		});
 		it('file without error (streams)', done => {
 			const contents = through();
@@ -513,7 +513,7 @@ describe('API', () => {
 			});
 			browserReporter(file, []);
 			file.contents.on('data', contents => {
-				assert.equal(contents.toString(), 'testcase_contents');
+				assert.strictEqual(contents.toString(), 'testcase_contents');
 				done();
 			});
 			contents.end(Buffer.from('testcase_contents'));
@@ -539,7 +539,7 @@ describe('API', () => {
 				cwd: __dirname,
 			}).then(options => {
 				assert.ifError(options._expiresTime);
-				assert.equal(options.author, false);
+				assert.strictEqual(options.author, false);
 			});
 		});
 		it('mock', () => {
@@ -656,7 +656,7 @@ describe('API', () => {
 				expires: Infinity,
 			}))
 			.on('error', ex => {
-				assert.equal(ex.message, 'Lint failed for: test/fixtures/eslint/invalid.js');
+				assert.strictEqual(ex.message, 'Lint failed for: test/fixtures/eslint/invalid.js');
 				done();
 			});
 	});
@@ -671,7 +671,7 @@ describe('API', () => {
 				expires: true,
 			}))
 			.on('error', ex => {
-				assert.equal(ex.message, '`options.expires` must be `Number`, `Date` or `string`.');
+				assert.strictEqual(ex.message, '`options.expires` must be `Number`, `Date` or `string`.');
 				done();
 			});
 	});
@@ -686,7 +686,7 @@ describe('API', () => {
 				expires: -Infinity,
 			}))
 			.on('error', ex => {
-				assert.equal(ex.message, '`options.expires` must be greater than 0.');
+				assert.strictEqual(ex.message, '`options.expires` must be greater than 0.');
 				done();
 			});
 	});
@@ -701,7 +701,7 @@ describe('API', () => {
 				expires: 'error',
 			}))
 			.on('error', ex => {
-				assert.equal(ex.message, '`options.expires` must be valid `Date`.');
+				assert.strictEqual(ex.message, '`options.expires` must be valid `Date`.');
 				done();
 			});
 	});
@@ -730,7 +730,7 @@ describe('API', () => {
 				},
 			}))
 			.on('error', ex => {
-				assert.equal(ex.message, 'Lint failed for: test/fixtures/eslint/invalid.js');
+				assert.strictEqual(ex.message, 'Lint failed for: test/fixtures/eslint/invalid.js');
 				done();
 			});
 	});
@@ -759,7 +759,7 @@ describe('API', () => {
 				},
 			}))
 			.on('error', ex => {
-				assert.equal(ex.message, 'Lint failed for: test/fixtures/eslint/invalid.js');
+				assert.strictEqual(ex.message, 'Lint failed for: test/fixtures/eslint/invalid.js');
 				done();
 			});
 	});
@@ -774,7 +774,7 @@ describe('API', () => {
 				maxLineLength: null,
 			}))
 			.on('error', ex => {
-				assert.equal(ex.message, 'Lint failed for: test/fixtures/eslint/invalid.min.js');
+				assert.strictEqual(ex.message, 'Lint failed for: test/fixtures/eslint/invalid.min.js');
 				done();
 			});
 	});

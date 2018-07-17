@@ -25,10 +25,10 @@ describe('JSCS', function () {
 				blame: false,
 			}));
 		return sandbox.gotError(stream).then(error => {
-			assert.equal(error.plugin, 'gulp-reporter');
-			assert.equal(error.message, 'Lint failed for: test/fixtures/jscs/invalid.js');
+			assert.strictEqual(error.plugin, 'gulp-reporter');
+			assert.strictEqual(error.message, 'Lint failed for: test/fixtures/jscs/invalid.js');
 			const result = sandbox.getLog().split(/\s*\r?\n\s*/g);
-			assert.equal(result[0], 'test/fixtures/jscs/invalid.js');
+			assert.strictEqual(result[0], 'test/fixtures/jscs/invalid.js');
 			assert.ok(/\d+:\d+/.test(result[1]));
 			assert.ok(/\bMultiple var declaration \(JSCS disallowMultipleVarDecl http/.test(result[1]));
 		});

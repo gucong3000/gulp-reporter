@@ -52,7 +52,7 @@ describe('CI', () => {
 		return ciReporter().then(() => (
 			getResult('lint-result.xml')
 		)).then(results => {
-			assert.equal(results.length, 0);
+			assert.strictEqual(results.length, 0);
 		});
 	});
 
@@ -78,7 +78,7 @@ describe('CI', () => {
 		}]).then(() => (
 			getResult('lint-result.xml')
 		)).then(results => {
-			assert.equal(results.length, 1);
+			assert.strictEqual(results.length, 1);
 			assert.ok(results[0]);
 		});
 	});
@@ -107,7 +107,7 @@ describe('CI', () => {
 		}]).then(() => (
 			getResult('checkstyle-result.xml')
 		)).then(results => {
-			assert.equal(results.length, 1);
+			assert.strictEqual(results.length, 1);
 			assert.ok(results[0]);
 		});
 	});
