@@ -24,7 +24,7 @@ describe('ESLint', () => {
 		const error = new ESLintError({
 			ruleId: 'indent',
 		});
-		assert.equal(error.doc, 'https://eslint.org/docs/rules/indent');
+		assert.strictEqual(error.doc, 'https://eslint.org/docs/rules/indent');
 	});
 
 	it('ESLintError, zh_CN', () => {
@@ -34,7 +34,7 @@ describe('ESLint', () => {
 		const error = new ESLintError({
 			ruleId: 'indent',
 		});
-		assert.equal(error.doc, 'https://cn.eslint.org/docs/rules/indent');
+		assert.strictEqual(error.doc, 'https://cn.eslint.org/docs/rules/indent');
 	});
 
 	it('console reporter', done => {
@@ -47,10 +47,10 @@ describe('ESLint', () => {
 				blame: false,
 			}))
 			.on('error', ex => {
-				assert.equal(ex.plugin, 'gulp-reporter');
-				assert.equal(ex.message, 'Lint failed for: test/fixtures/eslint/invalid.js');
+				assert.strictEqual(ex.plugin, 'gulp-reporter');
+				assert.strictEqual(ex.message, 'Lint failed for: test/fixtures/eslint/invalid.js');
 				const result = sandbox.getLog().split(/\s*\r?\n\s*/g);
-				assert.equal(result[0], 'test/fixtures/eslint/invalid.js');
+				assert.strictEqual(result[0], 'test/fixtures/eslint/invalid.js');
 				done();
 			});
 	});
@@ -72,7 +72,7 @@ describe('ESLint', () => {
 			.on('error', done)
 			.on('data', file => {
 				assert.ifError(file.report.fail);
-				assert.equal(reports.length, 0);
+				assert.strictEqual(reports.length, 0);
 				done();
 			});
 	});
@@ -93,7 +93,7 @@ describe('ESLint', () => {
 			})
 			.on('error', ex => {
 				try {
-					assert.equal(ex.plugin, 'gulp-reporter');
+					assert.strictEqual(ex.plugin, 'gulp-reporter');
 					done();
 				} catch (ex) {
 					done(ex);
@@ -112,14 +112,14 @@ describe('ESLint', () => {
 			.on('data', file => {
 				files.push(file);
 				if (/\.min\.\w+/.test(file.path)) {
-					assert.equal(file.report.errors.length, 0);
+					assert.strictEqual(file.report.errors.length, 0);
 				} else {
 					assert.ok(file.report.errors.length);
 				}
 			})
 			.on('error', ex => {
 				try {
-					assert.equal(ex.plugin, 'gulp-reporter');
+					assert.strictEqual(ex.plugin, 'gulp-reporter');
 					assert.ok(files.length >= 2);
 					done();
 				} catch (ex) {
@@ -178,7 +178,7 @@ describe('ESLint', () => {
 			}))
 			.on('data', file => {
 				const errors = file.report.errors;
-				assert.equal(errors[errors.length - 1].severity, 'warn');
+				assert.strictEqual(errors[errors.length - 1].severity, 'warn');
 			})
 			.on('error', () => {
 				done();
@@ -225,7 +225,7 @@ describe('ESLint', () => {
 				},
 			}))
 			.on('data', file => {
-				assert.equal(file.report.errors[0].inspect(), [
+				assert.strictEqual(file.report.errors[0].inspect(), [
 					'ESLintError: Parsing error: Unexpected token (ESLint)',
 					'    at ' + path.resolve('test/fixtures/eslint/SyntaxError.js') + ':2:1',
 				].join('\n'));
@@ -255,13 +255,13 @@ describe('ESLint', () => {
 								assert.ok(error.doc.startsWith('https://www.caniuse.com/#search='));
 								assert.ok(/search=[a-z]+$/.test(error.doc));
 							} else if (RegExp.$1 === 'standard') {
-								assert.equal(error.doc, 'https://www.npmjs.com/package/eslint-plugin-standard#rules-explanations');
+								assert.strictEqual(error.doc, 'https://www.npmjs.com/package/eslint-plugin-standard#rules-explanations');
 							} else {
 								const pluginName = RegExp.$1;
 								const ruleName = RegExp.$2;
 								assert.ok(/^https?:\/\/github.com\/\w+\/eslint-plugin-(\w+)\/blob\/HEAD\/docs\/rules\/(.+?)\.md#readme$/.test(error.doc));
-								assert.equal(pluginName, RegExp.$1);
-								assert.equal(ruleName, RegExp.$2);
+								assert.strictEqual(pluginName, RegExp.$1);
+								assert.strictEqual(ruleName, RegExp.$2);
 							}
 							assert.ok(error.doc.startsWith('https://'));
 						}
@@ -278,28 +278,28 @@ describe('ESLint', () => {
 		const error = new ESLintError({
 			'ruleId': 'jsdoc/check-param-names',
 		});
-		assert.equal(error.doc, 'https://www.npmjs.com/package/eslint-plugin-jsdoc#check-param-names');
+		assert.strictEqual(error.doc, 'https://www.npmjs.com/package/eslint-plugin-jsdoc#check-param-names');
 	});
 
 	it('gettext/no-variable-string', () => {
 		const error = new ESLintError({
 			'ruleId': 'gettext/no-variable-string',
 		});
-		assert.equal(error.doc, 'https://www.npmjs.com/package/eslint-plugin-gettext#gettextno-variable-string');
+		assert.strictEqual(error.doc, 'https://www.npmjs.com/package/eslint-plugin-gettext#gettextno-variable-string');
 	});
 
 	it('alint/bracket-predicates', () => {
 		const error = new ESLintError({
 			'ruleId': 'alint/bracket-predicates',
 		});
-		assert.equal(error.doc, 'https://www.npmjs.com/package/eslint-plugin-alint#bracket-predicates');
+		assert.strictEqual(error.doc, 'https://www.npmjs.com/package/eslint-plugin-alint#bracket-predicates');
 	});
 
 	it('sql/format', () => {
 		const error = new ESLintError({
 			'ruleId': 'sql/format',
 		});
-		assert.equal(error.doc, 'https://www.npmjs.com/package/eslint-plugin-sql#eslint-plugin-sql-rules-format');
+		assert.strictEqual(error.doc, 'https://www.npmjs.com/package/eslint-plugin-sql#eslint-plugin-sql-rules-format');
 	});
 
 	it('not/exist', () => {

@@ -9,7 +9,7 @@ const StyLintError = require('../lib/stylint-error');
 describe('stylint', () => {
 	it('StyLintError', () => {
 		const error = new StyLintError('mock: value');
-		assert.equal(error.mock, 'value');
+		assert.strictEqual(error.mock, 'value');
 	});
 
 	it('console reporter', () => {
@@ -30,10 +30,10 @@ describe('stylint', () => {
 			}));
 
 		return sandbox.gotError(stream).then(error => {
-			assert.equal(error.plugin, 'gulp-reporter');
-			assert.equal(error.message, 'Lint failed for: test/fixtures/stylint/novalid.styl');
+			assert.strictEqual(error.plugin, 'gulp-reporter');
+			assert.strictEqual(error.message, 'Lint failed for: test/fixtures/stylint/novalid.styl');
 			const result = sandbox.getLog().split(/\s*\r?\n\s*/g);
-			assert.equal(result[0], 'test/fixtures/stylint/novalid.styl');
+			assert.strictEqual(result[0], 'test/fixtures/stylint/novalid.styl');
 			assert.ok(/\d+:\d+/.test(result[1]));
 			assert.ok(result[1].endsWith('0 is preferred. Unit value is unnecessary (StyLint)'));
 			assert.ok(/\d+:\d+/.test(result[2]));

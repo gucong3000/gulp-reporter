@@ -20,8 +20,8 @@ describe('CSSLint', function () {
 				blame: false,
 			}));
 		return sandbox.gotError(stream).then(error => {
-			assert.equal(error.plugin, 'gulp-reporter');
-			assert.equal(error.message, 'Lint failed for: test/fixtures/csslint/invalid.css');
+			assert.strictEqual(error.plugin, 'gulp-reporter');
+			assert.strictEqual(error.message, 'Lint failed for: test/fixtures/csslint/invalid.css');
 			const log = sandbox.getLog();
 			assert.ok(log.indexOf('test/fixtures/csslint/invalid.css') >= 0);
 			assert.ok(log.indexOf('(CSSLint order-alphabetical') >= 0);
