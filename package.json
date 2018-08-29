@@ -33,7 +33,7 @@
     "csslint": "^1.0.5",
     "eclint": "^2.7.0",
     "eslint": "^5.1.0",
-    "eslint-config-standard": "^11.0.0",
+    "eslint-config-standard": "^12.0.0",
     "eslint-plugin-compat": "^2.5.0",
     "eslint-plugin-import": "^2.13.0",
     "eslint-plugin-node": "^7.0.1",
