@@ -145,7 +145,7 @@ function updateFile (file, urls, shortUrlFn) {
 					{
 						space: '\t',
 					}
-				),
+				) + '\n',
 				'utf8'
 			)
 		)).then(() => hasChange)
