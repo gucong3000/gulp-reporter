@@ -28,10 +28,10 @@ jobs:
       - run:
           name: Creating Artifacts
           command: |
-            npm run -s shorturl || (mkdir -p /tmp/short_urls/lib && cp lib/*.json /tmp/short_urls/lib)
+            npm run -s shorturl || tar -zcvf shorturl.tar.gz lib/*.json
           when: always
       - store_artifacts:
-          path: /tmp/short_urls
+          path: shorturl.tar.gz
           destination: short URLs
       - store_test_results:
           path: ~/lint-reports

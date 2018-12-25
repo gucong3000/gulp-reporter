@@ -2,8 +2,8 @@ gulp-reporter
 ======
 
 [![NPM version](https://img.shields.io/npm/v/gulp-reporter.svg?style=flat-square)](https://www.npmjs.com/package/gulp-reporter)
-[![Travis](https://img.shields.io/travis/gucong3000/gulp-reporter.svg?&label=Linux)](https://travis-ci.org/gucong3000/gulp-reporter)
-[![AppVeyor](https://img.shields.io/appveyor/ci/gucong3000/gulp-reporter.svg?&label=Windows)](https://ci.appveyor.com/project/gucong3000/gulp-reporter)
+[![Travis](https://img.shields.io/travis/gucong3000/gulp-reporter.svg?label=Linux)](https://travis-ci.org/gucong3000/gulp-reporter)
+[![AppVeyor](https://img.shields.io/appveyor/ci/gucong3000/gulp-reporter.svg?label=Windows)](https://ci.appveyor.com/project/gucong3000/gulp-reporter)
 [![Codecov](https://img.shields.io/codecov/c/github/gucong3000/gulp-reporter.svg)](https://codecov.io/gh/gucong3000/gulp-reporter)
 [![David](https://img.shields.io/david/gucong3000/gulp-reporter.svg)](https://david-dm.org/gucong3000/gulp-reporter)
 
@@ -33,8 +33,8 @@ npm install gulp-reporter
 
 ```js
 gulp.src('test/fixtures/eslint/invalid.js')
-	.pipe(eslint())
-	.pipe(reporter(options));
+  .pipe(eslint())
+  .pipe(reporter(options));
 ```
 
 ![demo](demo.png)
@@ -110,15 +110,15 @@ Convert errors.
 
 ```
 reporter({
-	mapper: file => {
-		const path = file.path;
-		return error => {
-			// Do not report unrelated errors.
-			if (error.fileName === path) {
-				return error
-			}
-		}
-	}
+  mapper: file => {
+    const path = file.path;
+    return error => {
+      // Do not report unrelated errors.
+      if (error.fileName === path) {
+        return error
+      }
+    }
+  }
 })
 ```
 
@@ -149,11 +149,11 @@ Enable or disable [git-blame](https://git-scm.com/docs/git-blame) related featur
 ## Special output format
 
 - AppVeyor
-	> Output as compilation message use [Build Worker API](https://www.appveyor.com/docs/build-worker-api/#add-compilation-message)
+  > Output as compilation message use [Build Worker API](https://www.appveyor.com/docs/build-worker-api/#add-compilation-message)
 - CircleCI
-	> Output as junit format to directory that defined in [`$CIRCLE_TEST_REPORTS` ](https://circleci.com/docs/1.0/test-metadata/) or [`store_test_results`](https://circleci.com/docs/2.0/collect-test-data/).
+  > Output as junit format to directory that defined in [`$CIRCLE_TEST_REPORTS` ](https://circleci.com/docs/1.0/test-metadata/) or [`store_test_results`](https://circleci.com/docs/2.0/collect-test-data/).
 - Jenkins
-	> Output as [checkstyle](http://checkstyle.sourceforge.net) format to directory defined in `$CI_REPORTS`, you need to install [Checkstyle Plugin](https://plugins.jenkins.io/checkstyle) to view it.
+  > Output as [checkstyle](http://checkstyle.sourceforge.net) format to directory defined in `$CI_REPORTS`, you need to install [Checkstyle Plugin](https://plugins.jenkins.io/checkstyle) to view it.
 
 ## Related
 

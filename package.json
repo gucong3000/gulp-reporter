@@ -6,6 +6,7 @@
   "description": "Error report for: CSSLint/EditorConfig/ESLint/HTMLHint/JSCS/JSHint/PostCSS/Standard/TSLint/XO",
   "dependencies": {
     "ansi-escapes": "^3.1.0",
+    "axios": "^0.18.0",
     "buffered-spawn": "^3.3.2",
     "bufferstreams": "^2.0.1",
     "chalk": "^2.4.1",
@@ -15,7 +16,6 @@
     "emphasize": "^2.0.0",
     "fancy-log": "^1.3.2",
     "fs-extra": "^7.0.0",
-    "got": "^8.3.2",
     "in-gfw": "^1.2.0",
     "is-windows": "^1.0.2",
     "js-yaml": "^3.12.0",
