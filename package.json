@@ -24,7 +24,7 @@
     "os-locale": "^3.0.1",
     "plugin-error": "^1.0.1",
     "string-width": "^3.0.0",
-    "term-size": "^1.2.0",
+    "term-size": "^2.0.0",
     "through2": "^3.0.0",
     "to-time": "^1.0.2"
   },
