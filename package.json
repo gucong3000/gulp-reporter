@@ -61,7 +61,7 @@
     "nyc": "^13.1.0",
     "proxyquire": "^2.1.0",
     "sinon": "^7.2.2",
-    "strip-ansi": "^5.0.0",
+    "strip-ansi": "^6.0.0",
     "stylelint": "^9.9.0",
     "stylelint-config-standard": "^18.2.0",
     "tslint": "^5.12.0",
