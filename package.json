@@ -29,7 +29,7 @@
     "to-time": "^1.0.2"
   },
   "devDependencies": {
-    "codecov": "^3.1.0",
+    "codecov": "^3.6.4",
     "csslint": "^1.0.5",
     "eclint": "^2.8.1",
     "eslint": "^5.11.0",
