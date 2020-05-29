@@ -45,7 +45,7 @@
     "gulp-csslint": "^1.0.1",
     "gulp-eslint": "^5.0.0",
     "gulp-html-postcss": "^7.1.4",
-    "gulp-htmlhint": "^2.2.1",
+    "gulp-htmlhint": "^3.0.1",
     "gulp-jscs": "^4.1.0",
     "gulp-jshint": "^2.1.0",
     "gulp-jsonlint": "^1.2.2",
